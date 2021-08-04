@@ -67,7 +67,6 @@ class Controller:
     # Frequency: 100 Hz
     def callback_converter(self, event):  
         try:
-            #trans = self.tfBuffer.lookup_transform('base_link', 'tag_0', rospy.Time(0))
             bot = self.tfBuffer.lookup_transform('world', 'base_link', rospy.Time(0))
             self.running = True
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
@@ -111,7 +110,7 @@ class Controller:
             angular = self.K_HDG*yawErr
             #if abs(goalYaw) < self.HDG_TOL:
             if abs(yawErr) < self.HDG_TOL:
-                linear = .25
+                linear = .15
             else:
                 linear = 0
         else:
@@ -123,28 +122,17 @@ class Controller:
             angular = 1.5
         elif (angular < -1.5) :
             angular = -1.5
-        elif (0 < angular and angular < 1 and linear == 0):
-            angular = 1
-        elif(-1 < angular and angular < 0 and linear == 0):
-            angular = -1
+        elif (0.0 < angular and angular < 0.5 and linear == 0.0):
+            angular = 0.5
+        elif(-0.5 < angular and angular < 0.0 and linear == 0.0):
+            angular = -0.5
 
         self.twist.linear.x = linear
         self.twist.angular.z = angular
         self.pub.publish(self.twist)
 
-    # Handler that publishes the linear x and 
-    # angular z values that are sent to drive the TI Bot
-    # the TI Bot from roadrunner
-    # Topic: Cmd_vel
-    # Msg type: Twist
-    # Frequency: 100 Hz
-    def handler(self):
-        while not rospy.is_shutdown():
-            self.rate.sleep()
-
 if __name__ == '__main__':
     rospy.init_node('controller', anonymous = True)
 
     c = Controller()
-    #c.handler()
     rospy.spin()
