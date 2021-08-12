@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<launch>
+
+
+	<!-- BEGIN ROBOT 0-->
+	<group ns="USAFABOT0">
+	<!-- A urdf file describes the physical configuration of the robot for simulation -->
+	<param name="robot_description" command="cat $(find usafabot)/urdf/usafabot.urdf"/>
+	<param name ="tf_prefix" value="USAFABOT0_tf" />
+	<node
+		name="bot_to_map" pkg="tf2_ros" type="static_transform_publisher"
+		args="0 0 0 0 0 0 map odom"
+	/>
+	<machine
+        name="usafabot0"
+        address="192.168.1.223"
+        user="pi"
+        password="dfec3141"
+        timeout="10"
+        env-loader="~/robotics_ws/devel/remote_env_loader.sh"
+        default="true"
+    />
+
+	<!-- Publish robot states -->
+	<node 
+		name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+	/>
+
+	<!-- Publish joint transforms -->
+	<node
+		name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"
+	/>
+
+	<!-- Node to send commands to robot and gets wheel speeds from robot -->
+	<node
+		name="serial" pkg="usafabot" type="usafabot_serial.py"
+	/>
+	<!-- Node to tell the robot where to go -->
+	<node
+	    name="controller" pkg="capstone21-22" type="controller.py"
+	/>
+	<node
+	    name="roadrunner" pkg="capstone21-22" type="roadrunner.py"
+	/>
+	</group>
+
+</launch>
