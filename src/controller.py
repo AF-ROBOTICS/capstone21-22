@@ -7,15 +7,15 @@ from geometry_msgs.msg import Twist
 
 ## Controller
 #
-#  Subscribes to TI_Bot's current position (from Roadrunner) and destination 
+#  Subscribes to usafabot_Bot's current position (from Roadrunner) and destination 
 #   position (from master node) to determine linear and angular velocity and
-#   publishes those values to the TI_Bot
+#   publishes those values to the usafabot_Bot
 #
 #  Subscriber
-#   Topic: ti_curr_pos
+#   Topic: usafabot_curr_pos
 #     Msg type: Pose
 #     Freq: 100 Hz
-#   Topic: ti_dest_pos
+#   Topic: usafabot_dest_pos
 #     Msg type: Point
 #     Freq: 100 Hz
 #
@@ -43,8 +43,8 @@ class Controller:
         # Frequency of publisher - 100 Hz
         self.rate = rospy.Rate(100)
 
-        rospy.Subscriber('ti_curr_pos', Pose, self.callback_CurrPos)
-        rospy.Subscriber('ti_dest_pos', Point, self.callback_DestPos)
+        rospy.Subscriber('usafabot_curr_pos', Pose, self.callback_CurrPos)
+        rospy.Subscriber('usafabot_dest_pos', Point, self.callback_DestPos)
         
         self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=100)
 
@@ -52,7 +52,7 @@ class Controller:
 
     # Subscribe function that gets current position of 
     # the TI Bot from roadrunner
-    # Topic: TI_Curr_Pos
+    # Topic: usafabot_Curr_Pos
     # Msg type: Pose
     def callback_CurrPos(self, data):
         self.currX = data.position.x
@@ -61,7 +61,7 @@ class Controller:
     
     # Subscribe function that gets destination position of 
     # the TI Bot from controller
-    # Topic: TI_Dest_Pos
+    # Topic: usafabot_Dest_Pos
     # Msg type: Point
     def callback_DestPos(self, data):
         self.nextX = data.x
@@ -78,8 +78,8 @@ class Controller:
             return yaw
 
     # Callback function that calculates orientation offset needed to navigate
-    # the TI_Bot to the destination. Provides a linear/angular velocity
-    # to TI_Bot using a proportional controller based on the orientation offset
+    # the usafabot_Bot to the destination. Provides a linear/angular velocity
+    # to usafabot_Bot using a proportional controller based on the orientation offset
     # Frequency: 100 Hz
     def callback_converter(self, event):  
         if(self.nextX == 0 and self.nextY ==0):
@@ -118,7 +118,7 @@ class Controller:
         
         # TODO: Update to PID controller
         # Porportional controller that updates angular and linear velocity
-        # of the TI_Bot until within distance tolerance
+        # of the usafabot_Bot until within distance tolerance
         if dist > self.DEST_TOL :
             zIn = self.K_HDG * yawErr
             if abs(yawErr) < self.HDG_TOL :
