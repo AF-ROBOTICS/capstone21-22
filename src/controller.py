@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 import rospy
 import math
-from geometry_msgs.msg import Pose
-from geometry_msgs.msg import Point
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Pose, Point, Twist
 
 ## Controller
 #
@@ -40,8 +38,9 @@ class Controller:
         self.currYaw = 0
         self.twist = Twist()
         
-        # Frequency of publisher - 100 Hz
-        self.rate = rospy.Rate(100)
+        self.ctrl_c = False
+        
+        rospy.on_shutdown(self.shutdownhook)
 
         rospy.Subscriber('usafabot_curr_pos', Pose, self.callback_CurrPos)
         rospy.Subscriber('usafabot_dest_pos', Point, self.callback_DestPos)
@@ -49,6 +48,8 @@ class Controller:
         self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=100)
 
         rospy.Timer(rospy.Duration(.01), self.callback_converter)
+        
+
 
     # Subscribe function that gets current position of 
     # the TI Bot from roadrunner
@@ -82,72 +83,77 @@ class Controller:
     # to usafabot_Bot using a proportional controller based on the orientation offset
     # Frequency: 100 Hz
     def callback_converter(self, event):  
-        if(self.nextX == 0 and self.nextY ==0):
-            self.twist.linear.x = 0
-            self.twist.angular.z = 0
-            return
-        goalYaw = 0
-        yawErr = 0
-        currYaw360 = 0
-        goalYaw360 = 0
-        dist = 0
-        
-        # calculate orientation offset to destination
-        # tan^-1((nextY-currY)/(nextX-currX))
-        goalYaw = math.degrees(math.atan2(self.nextY - self.currY, 
-                                            self.nextX - self.currX))
+        if not self.ctrl_c:
+            if(self.nextX == 0 and self.nextY ==0):
+                self.twist.linear.x = 0
+                self.twist.angular.z = 0
+                self.pub.publish(self.twist)
+                return
+            goalYaw = 0
+            yawErr = 0
+            currYaw360 = 0
+            goalYaw360 = 0
+            dist = 0
+            
+            # calculate orientation offset to destination
+            # tan^-1((nextY-currY)/(nextX-currX))
+            goalYaw = math.degrees(math.atan2(self.nextY - self.currY, 
+                                                self.nextX - self.currX))
 
-        # Current yaw provided between 0 to +-180 deg
-        # Convert both current and goal headings to 0 to 360 deg
-        currYaw360 = self.headingConvert(self.currYaw)
-        goalYaw360 = self.headingConvert(goalYaw)
+            # Current yaw provided between 0 to +-180 deg
+            # Convert both current and goal headings to 0 to 360 deg
+            currYaw360 = self.headingConvert(self.currYaw)
+            goalYaw360 = self.headingConvert(goalYaw)
 
-        yawErr = goalYaw360 - currYaw360
+            yawErr = goalYaw360 - currYaw360
 
-        # determine if the robot should move clockwise or counterclockwise
-        if yawErr > 180 :
-            yawErr = yawErr - 360
-        elif yawErr < -180 :
-            yawErr = yawErr + 360
-        
-        # determine how far TI Bot is from the goal
-        dist = math.sqrt((self.nextY - self.currY)**2 
-                        + (self.nextX - self.currX)**2)
-        xIn = 0
-        zIn = 0
-        
-        # TODO: Update to PID controller
-        # Porportional controller that updates angular and linear velocity
-        # of the usafabot_Bot until within distance tolerance
-        if dist > self.DEST_TOL :
-            zIn = self.K_HDG * yawErr
-            if abs(yawErr) < self.HDG_TOL :
-                xIn = .5
-            else :
-                xIn = 0
+            # determine if the robot should move clockwise or counterclockwise
+            if yawErr > 180 :
+                yawErr = yawErr - 360
+            elif yawErr < -180 :
+                yawErr = yawErr + 360
+            
+            # determine how far TI Bot is from the goal
+            dist = math.sqrt((self.nextY - self.currY)**2 
+                            + (self.nextX - self.currX)**2)
+                            
+            linear = 0
+            angular = 0
+            
+            # TODO: Update to PID controller
+            # Porportional controller that updates angular and linear velocity
+            # of the usafabot until within distance tolerance
+            if dist > self.DEST_TOL :
+                angular = self.K_HDG * yawErr
+                if abs(yawErr) < self.HDG_TOL :
+                    linear = .5
+                else :
+                    linear = 0
 
-        # limits bounding
-        if zIn > 6 :
-            zIn = 6
-        elif (zIn < -6) :
-            zIn = -6
-        
-        self.twist.linear.x = xIn
-        self.twist.angular.z = zIn
-        
-    # Handler that publishes the linear x and 
-    # angular z values that are sent to drive the TI Bot
-    # the TI Bot from roadrunner
-    # Topic: Cmd_vel
-    # Msg type: Twist
-    # Frequency: 100 Hz
-    def handler(self):
-        while not rospy.is_shutdown():
+            # limits bounding
+            if angular > 2 :
+                angular = 2
+            elif (angular < -2) :
+                angular = -2
+
+            # TODO: remove this line when moving to real robot; 
+            # this is used because the simulated robot moves clockwise with a 
+            # positive angular vel while real robot moves counterclockwise
+            angular = -angular
+            
+            self.twist.linear.x = linear
+            self.twist.angular.z = angular
             self.pub.publish(self.twist)
-            self.rate.sleep()
+        
+    def shutdownhook(self):
+        self.ctrl_c = True
+        rospy.loginfo("Shutting down controller and stopping USAFABOT")
+        self.twist.linear.x = 0
+        self.twist.angular.z = 0
+        self.pub.publish(self.twist)
     
 if __name__ == '__main__':
     rospy.init_node('controller', anonymous = True)
 
-    c = Controller()
-    c.handler()
+    Controller()
+    rospy.spin()
