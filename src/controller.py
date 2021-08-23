@@ -42,8 +42,8 @@ class Controller:
         
         rospy.on_shutdown(self.shutdownhook)
 
-        rospy.Subscriber('usafabot_curr_pos', Pose, self.callback_CurrPos)
-        rospy.Subscriber('usafabot_dest_pos', Point, self.callback_DestPos)
+        rospy.Subscriber('curr_pos', Pose, self.callback_CurrPos)
+        rospy.Subscriber('dest_pos', Point, self.callback_DestPos)
         
         self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=100)
 
