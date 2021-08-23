@@ -3,6 +3,8 @@ import rospy
 import math
 from geometry_msgs.msg import Pose, Point, Twist
 
+from squaternion import Quaternion
+
 ## Controller
 #
 #  Subscribes to usafabot_Bot's current position (from Roadrunner) and destination 
@@ -58,7 +60,10 @@ class Controller:
     def callback_CurrPos(self, data):
         self.currX = data.position.x
         self.currY = data.position.y
-        self.currYaw = data.orientation.z
+       
+        q = Quaternion(data.orientation.w, data.orientation.x, data.orientation.y, data.orientation.z)
+        e = q.to_euler(degrees=True)
+        self.currYaw = e[2]
     
     # Subscribe function that gets destination position of 
     # the TI Bot from controller
