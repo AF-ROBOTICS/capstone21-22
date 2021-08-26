@@ -10,7 +10,7 @@ import time
 from scipy.optimize import linear_sum_assignment
 
 #Robots
-robots = ["TIBOT0", "TIBOT1", "TIBOT2", "TIBOT3", "TIBOT4", "TIBOT5", "TIBOT6", "TIBOT7", "TIBOT8", "TIBOT9", "TIBOT10", "TIBOT11", "TIBOT12", "TIBOT13", "TIBOT14", "TIBOT15", "TIBOT16", "TIBOT17", "TIBOT18", "TIBOT19", "TIBOT20", "TIBOT21", "TIBOT22", "TIBOT23", "TIBOT24"]
+robots = ["usafabot0", "usafabot1", "usafabot2", "usafabot3", "usafabot4", "usafabot5", "usafabot6", "usafabot7", "usafabot8", "usafabot9", "usafabot10", "usafabot11", "usafabot12", "usafabot13", "usafabot14", "usafabot15", "usafabot16", "usafabot17", "usafabot18", "usafabot19", "usafabot20", "usafabot21", "usafabot22", "usafabot23", "usafabot24"]
 
 
 
@@ -19,8 +19,8 @@ x_robot = [0, 0, 0, 0, 0, 0, 0.75, 1.50, 2.25, 3.0, 3.75, 4.25, 5.0, 5.0, 5.0, 5
 y_robot = [0.75, 1.50, 2.25, 3.0, 3.75, 4.25, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 0.75, 1.50, 2.25, 3.0, 3.75, 4.25, 0, 0, 0, 0, 0, 0, 0]
 
 #Destination Points
-x_dest = [1.75, 1.50, 1.25, 1.25, 1.75, 1.50, 1.25, 1.25, 2.25, 2.25, 2.50, 3.25, 3.00, 3.00, 3.25, 3.75, 4.00, 3.75, 4.00, 3.00, 3.25, 3.00, 2.50, 2.25, 2.25]
-y_dest = [2.25, 1.75, 1.75, 2.25, 2.75, 3.25, 2.75, 3.25, 2.75, 3.25, 3.25, 2.75, 2.75, 3.25, 3.25, 2.75, 3.25, 2.25, 1.75, 2.25, 1.75, 1.75, 2.75, 2.25, 1.75]
+x_dest = [2.0, 2.45, 3.0, 2.15, 2.15, 2.45, 2.0, 2.45, 3.0, 2.0, 2.45, 2.0, 2.0, 2.45, 3.0, 2.0, 2.45, 3.0, 2.0, 3.0, 2.0, 2.45, 3.0, 2.0, 3.0]
+y_dest = [1.0, 1.0, 1.0, 1.25, 1.25, 1.55, 2.0, 2.0, 2.0, 2.25, 2.25, 2.55, 3.0, 3.0, 3.0, 3.25, 3.25, 3.25, 3.55, 3.55, 4.0, 4.0, 4.0, 4.55, 4.55]
 
 rows = 25
 cols = 25
