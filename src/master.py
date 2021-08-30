@@ -43,29 +43,29 @@ robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
 
 #y_dest = [1, 1.5, 2, 2, 3, 3, 3.5, 4, 3, 4, 4, 3, 4, 3, 4, 4, 3, 2, 1, 2, 1, 1, 3, 2, 1]
 
-x_dest = [3, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 4.5, 4.5, 4.5, 4.5, 4.5, 4.5, 4, 3.5, 3, 2.5]
+x_dest = [1.0, 1.0, 1.0, 1.30, 1.30, 1.60, 2.0, 2.0, 2.0, 2.3, 2.3, 2.6, 3.0, 3.0, 3.0, 3.3, 3.3, 3.3, 3.6, 3.6, 4.0, 4.0, 4.0, 4.6, 4.6]
 
-y_dest = [2, 5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4, 4, 4, 4, 4, 4, 3.5, 3, 2.5, 2, 1.5, 1, 1, 1, 1, 1]
+y_dest = [3.0, 2.5, 2.0, 2.75, 2.25, 2.5, 3.0, 2.5, 2.0, 3.0, 2.5, 3.0, 3.0, 2.5, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0]
 
 
 # Define the Controller class
 class Master:
 
-    def __init__(self, TIBot):
+    def __init__(self, USAFABOT):
         self.gnd_curr = Pose()
         self.gnd_dest = Point()
-        self.TIBot = TIBot
+        self.USAFABOT = USAFABOT
 
         # -----------------------------------------------------------------------------
         # Topics and Timers 
         # -----------------------------------------------------------------------------      
         # Publish to the controller
-        self.pub = rospy.Publisher(TIBot + '/ti_dest_pos', Point, queue_size = 10)
+        self.pub = rospy.Publisher(USAFABOT + '/dest_pos', Point, queue_size = 10)
         rospy.Timer(rospy.Duration(.1), self.callback_groundTalker)
 
         # Listen for the bots' current position to the controller
-        rospy.Subscriber(TIBot + '/ti_curr_pos', Pose, self.callback_groundListener)
-        #rospy.Subscriber(TIBot + '/odom', Odometry, self.callback_groundListener)
+        rospy.Subscriber(USAFABOT + '/curr_pos', Pose, self.callback_groundListener)
+        #rospy.Subscriber(USAFABOT + '/odom', Odometry, self.callback_groundListener)
 
     #-------------------------------------------------------------------------------
     # Class Functions
@@ -268,7 +268,7 @@ if __name__ == '__main__':
             x,y = bot.getCurrentPos()
         xrobot.append(x)
         yrobot.append(y)
-        print("Completed bot: " + bot.TIBot)
+        print("Completed bot: " + bot.USAFABOT)
 
     # Calculation functions
     coordList = wordToPoints(word)
@@ -298,7 +298,7 @@ if __name__ == '__main__':
             curr_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5        
             if (init_dist - curr_dist) > .25:
                 i+=1
-                print(bot.TIBot + " is complete")
+                print(bot.USAFABOT + " is complete")
                 bot.setGroundDestPosition(0, 0)
                 break
 
