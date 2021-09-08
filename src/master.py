@@ -95,12 +95,15 @@ if __name__ == '__main__':
     print("Robot Init X = ", xrobot)
     print("Robot Init Y = ", yrobot)
     updatePos = potential_field(xrobot, yrobot, coordList)
+    print("TEST", updatePos)
     
     # Assign final bot destinations
     i = 0
 
     for bot in bots:
-        bot.setDestPosition(updatePos[bot.name][0]+xrobot[bot], updatePos[bot.name][1]+yrobot[bot])
+        for i in range(0, len(bots)):
+            bot.setDestPosition(updatePos[i][0]+xrobot[i], updatePos[i][1]+yrobot[i])
+            
         bot.pub.publish(bot.dest_pos)
         print(bot.dest_pos)
         curr_x,curr_y = bot.getCurrPos()

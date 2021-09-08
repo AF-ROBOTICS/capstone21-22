@@ -3,6 +3,7 @@
 # Import important libraries
 import rospy
 import math
+import numpy as np
 
 from geometry_msgs.msg import Point, Pose
 
@@ -19,21 +20,22 @@ def potential_field(xrobot, yrobot, coordList):
 	pointDistY = []
 	botDistX = []
 	botDistY = []
-	vector = {}
-	
-	for bot in range(0, len(xrobot)):
-		pointDistX.append(abs(coordList[robots[bot]][0]-xrobot[bot]))
-		pointDistY.append(abs(coordList[robots[bot]][1]-yrobot[bot]))
-		
-		for i in range(0, len(xrobot)):
-				distanceX = xrobot[i] - xrobot[bot]
-				distanceY = yrobot[i] - yrobot[bot]
-				botDistX.append(abs(distanceX)) 
-				botDistY.append(abs(distanceY))
+	vectorX = []
+	vectorY = []
+	vector = (vectorX, vectorY)
 	
 	for bot in range(0, len(xrobot)):
 		sumX = 0
 		sumY = 0
+		
+		pointDistX.append(round(abs(coordList[robots[bot]][0]-xrobot[bot]), 3))
+		pointDistY.append(round(abs(coordList[robots[bot]][1]-yrobot[bot]), 3))
+		
+		for i in range(0, len(xrobot)):
+				distanceX = xrobot[i] - xrobot[bot]
+				distanceY = yrobot[i] - yrobot[bot]
+				botDistX.append(round(abs(distanceX), 3)) 
+				botDistY.append(round(abs(distanceY), 3))		
 		
 		for i in range(0, len(xrobot)):
 			sumX = sumX - botDistX[i]
@@ -42,10 +44,10 @@ def potential_field(xrobot, yrobot, coordList):
 		sumX = sumX + destmult*pointDistX[bot]
 		sumY = sumY + destmult*pointDistY[bot]
 		
-		for robot in zip(robots):
-		
-			vector[robot] = [sumX, sumY]
 
-	return vector
+		vectorX.append(sumX)
+		vectorY.append(sumY)
+			
+	return np.vstack((vectorX, vectorY)).T
 		
 		
