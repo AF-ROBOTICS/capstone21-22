@@ -4,6 +4,7 @@
 import rospy
 import time
 from hungarian import build_hungarian
+from potential_field import potential_field
 
 from geometry_msgs.msg import Point, Pose
 
@@ -93,12 +94,13 @@ if __name__ == '__main__':
 
     print("Robot Init X = ", xrobot)
     print("Robot Init Y = ", yrobot)
-
+    updatePos = potential_field(xrobot, yrobot, coordList)
+    
     # Assign final bot destinations
     i = 0
 
     for bot in bots:
-        bot.setDestPosition(coordList[bot.name][0], coordList[bot.name][1])
+        bot.setDestPosition(updatePos[bot.name][0]+xrobot[bot], updatePos[bot.name][1]+yrobot[bot])
         bot.pub.publish(bot.dest_pos)
         print(bot.dest_pos)
         curr_x,curr_y = bot.getCurrPos()
