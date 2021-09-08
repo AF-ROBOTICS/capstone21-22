@@ -28,14 +28,20 @@ def potential_field(xrobot, yrobot, coordList):
 		sumX = 0
 		sumY = 0
 		
-		pointDistX.append(round(abs(coordList[robots[bot]][0]-xrobot[bot]), 3))
-		pointDistY.append(round(abs(coordList[robots[bot]][1]-yrobot[bot]), 3))
+		pointDistX.append(round(abs(1/((coordList[robots[bot]][0]-xrobot[bot])**2)), 3))
+		pointDistY.append(round(abs(1/((coordList[robots[bot]][1]-yrobot[bot])**2)), 3))
 		
 		for i in range(0, len(xrobot)):
 				distanceX = xrobot[i] - xrobot[bot]
 				distanceY = yrobot[i] - yrobot[bot]
-				botDistX.append(round(abs(distanceX), 3)) 
-				botDistY.append(round(abs(distanceY), 3))		
+
+				if (distanceX != 0 and distanceY != 0):
+					botDistX.append(round(abs(1/(distanceX**2)), 3))
+					botDistY.append(round(abs(1/(distanceY**2)), 3))	
+				
+				else:
+					botDistX.append(0)
+					botDistY.append(0)	
 		
 		for i in range(0, len(xrobot)):
 			sumX = sumX - botDistX[i]
