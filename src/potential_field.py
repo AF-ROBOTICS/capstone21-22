@@ -16,43 +16,52 @@ robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
 def potential_field(xrobot, yrobot, coordList):
 
 	destmult = 25
-	pointDistX = []
-	pointDistY = []
-	botDistX = []
-	botDistY = []
+	potPointX = []
+	potPointY = []
+	potBotX = []
+	potBotY = []
 	vectorX = []
 	vectorY = []
 	vector = (vectorX, vectorY)
 	
 	for bot in range(0, len(xrobot)):
-		sumX = 0
-		sumY = 0
+
+		pointDistX = coordList[robots[bot]][0]-xrobot[bot]
+		pointDistY = coordList[robots[bot]][1]-yrobot[bot]
 		
-		pointDistX.append(round(abs(1/((coordList[robots[bot]][0]-xrobot[bot])**2)), 3))
-		pointDistY.append(round(abs(1/((coordList[robots[bot]][1]-yrobot[bot])**2)), 3))
+		if(pointDistX >= 0):
+			potPointX.append(round(1/(pointDistX ** 2), 3))
+		else:
+			potPointX.append(-1*round(1/(pointDistX ** 2), 3))
+			
+		if(pointDistY >= 0):
+			potPointY.append(round(1/(pointDistY ** 2), 3))
+		else:
+			potPointY.append(-1*round(1/(pointDistY ** 2), 3))
 		
 		for i in range(0, len(xrobot)):
-				distanceX = xrobot[i] - xrobot[bot]
-				distanceY = yrobot[i] - yrobot[bot]
+				distanceX = round(xrobot[i] - xrobot[bot], 3)
+				distanceY = round(yrobot[i] - yrobot[bot], 3)
 
-				if (distanceX != 0 and distanceY != 0):
-					botDistX.append(round(abs(1/(distanceX**2)), 3))
-					botDistY.append(round(abs(1/(distanceY**2)), 3))	
-				
+				if (distanceX != 0):
+					if (distanceX > 0):
+						potBotX.append(-1*(round((1/(distanceX**2)), 3)))
+					elif (distanceX < 0):
+						potBotX.append((round((1/(distanceX**2)), 3)))
 				else:
-					botDistX.append(0)
-					botDistY.append(0)	
-		
-		for i in range(0, len(xrobot)):
-			sumX = sumX - botDistX[i]
-			sumY = sumY - botDistY[i]
-		
-		sumX = sumX + destmult*pointDistX[bot]
-		sumY = sumY + destmult*pointDistY[bot]
-		
+					potBotX.append(0)
+						
+				if (distanceY != 0):
+					if (distanceY > 0):
+						potBotY.append(-1*(round((1/(distanceY**2)), 3)))
+					elif (distanceX < 0):
+						potBotY.append((round((1/(distanceY**2)), 3)))
+				else:
+					potBotY.append(0)	
 
-		vectorX.append(sumX)
-		vectorY.append(sumY)
+		vectorX.append(sum(potBotX) + destmult*potPointX[bot])
+		vectorY.append(sum(potBotY) + destmult*potPointY[bot])
+		
 			
 	return np.vstack((vectorX, vectorY)).T
 		
