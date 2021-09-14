@@ -15,7 +15,7 @@ robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
           
 def potential_field(xrobot, yrobot, coordList):
 
-	destmult = 25
+	destmult = 500
 	potPointX = []
 	potPointY = []
 	potBotX = []
@@ -29,13 +29,17 @@ def potential_field(xrobot, yrobot, coordList):
 		pointDistX = coordList[robots[bot]][0]-xrobot[bot]
 		pointDistY = coordList[robots[bot]][1]-yrobot[bot]
 		
-		if(pointDistX >= 0):
+		if(pointDistX > 0):
 			potPointX.append(round(1/(pointDistX ** 2), 3))
+		elif (pointDistX == 0):
+			potPointX.append(round(1/(0.001 ** 2), 3))
 		else:
 			potPointX.append(-1*round(1/(pointDistX ** 2), 3))
 			
-		if(pointDistY >= 0):
+		if(pointDistY > 0):
 			potPointY.append(round(1/(pointDistY ** 2), 3))
+		elif (pointDistY == 0):
+			potPointY.append(round(1/(0.001 **2), 3))
 		else:
 			potPointY.append(-1*round(1/(pointDistY ** 2), 3))
 		

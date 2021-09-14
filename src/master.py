@@ -90,30 +90,34 @@ if __name__ == '__main__':
     print(yrobot)
     coordList = build_hungarian(xrobot, yrobot, x_dest, y_dest)
     
-    
+    updatePos = potential_field(xrobot, yrobot, coordList)
+    print("test", updatePos)
     #updatePos = potential_field(xrobot, yrobot, coordList)
     
     # Assign final bot destinations
-    
-    while ((round(xrobot[0], 3) != round(coordList['usafabot0'][0], 3)) and ((round(yrobot[0], 3) != round(coordList['usafabot0'][1], 3)))):
+    for bot in bots:
+        for i in range(0, len(bots)):
+            bot.setDestPosition(coordList[bot.name][0], coordList[bot.name][1])
+
+        bot.pub.publish(bot.dest_pos)
+
+    while not rospy.is_shutdown():
+        count = 0
+        updatePos = potential_field(xrobot, yrobot, coordList)
+
         for bot in bots:
-            for i in range(0, len(bots)):
-                bot.setDestPosition(coordList[bot.name][0], coordList[bot.name][1])
-		
-            updatePos = potential_field(xrobot, yrobot, coordList)
-            bot.setDestPosition(updatePos[[bot][0]]+xrobot[bot], updatePos[[bot][1]] + yrobot[bot])
+            bot.setDestPosition(updatePos[count][0]+xrobot[count], updatePos[count][1] + yrobot[count])
+
+            xrobot[count], yrobot[count] = bot.getCurrPos()
+                
             bot.pub.publish(bot.dest_pos)
-            print(bot.dest_pos)
-            curr_x,curr_y = bot.getCurrPos()
-            # init_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5      
-		 
-    
+            count = count + 1
+            
+        print("X:", xrobot)
+        print("Y:", yrobot)
 
     rospy.spin()
-
-
-
-
+        		
 
 
 
