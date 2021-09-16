@@ -15,13 +15,15 @@ robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
           
 def potential_field(xrobot, yrobot, coordList):
 
-	destmult = 500
+	destmult = 100
 	potPointX = []
 	potPointY = []
 	potBotX = []
 	potBotY = []
 	vectorX = []
 	vectorY = []
+	sumX = []
+	sumY = []
 	vector = (vectorX, vectorY)
 	
 	for bot in range(0, len(xrobot)):
@@ -29,16 +31,16 @@ def potential_field(xrobot, yrobot, coordList):
 		pointDistX = coordList[robots[bot]][0]-xrobot[bot]
 		pointDistY = coordList[robots[bot]][1]-yrobot[bot]
 		
-		if(pointDistX > 0):
+		if(pointDistX > 0.05):
 			potPointX.append(round(1/(pointDistX ** 2), 3))
-		elif (pointDistX == 0):
+		elif (pointDistX <= 0.05 and pointDistX >=-0.05):
 			potPointX.append(round(1/(0.001 ** 2), 3))
 		else:
 			potPointX.append(-1*round(1/(pointDistX ** 2), 3))
 			
-		if(pointDistY > 0):
+		if(pointDistY > 0.05):
 			potPointY.append(round(1/(pointDistY ** 2), 3))
-		elif (pointDistY == 0):
+		elif (pointDistY <= 0.05 and pointDistY >=-0.05):
 			potPointY.append(round(1/(0.001 **2), 3))
 		else:
 			potPointY.append(-1*round(1/(pointDistY ** 2), 3))
@@ -62,9 +64,18 @@ def potential_field(xrobot, yrobot, coordList):
 						potBotY.append((round((1/(distanceY**2)), 3)))
 				else:
 					potBotY.append(0)	
-
-		vectorX.append(sum(potBotX) + destmult*potPointX[bot])
-		vectorY.append(sum(potBotY) + destmult*potPointY[bot])
+		sumX.append(sum(potBotX) + destmult*potPointX[bot])
+		sumY.append(sum(potBotY) + destmult*potPointY[bot])
+		
+		if (sumX > 0):
+			vectorX.append(sumX[bot]/max(sumX))
+		if (sumX < 0):
+			vectorX.append(-abs(sumX[bot]/min(sumX)))
+			
+		if (sumY > 0):
+			vectorY.append(sumY[bot]/max(sumY))
+		if (sumY < 0):
+			vectorY.append(-abs(sumY[bot]/min(sumY)))
 		
 			
 	return np.vstack((vectorX, vectorY)).T

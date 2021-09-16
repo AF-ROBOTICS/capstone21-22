@@ -104,17 +104,15 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         count = 0
         updatePos = potential_field(xrobot, yrobot, coordList)
+        print("UPDATE:", updatePos)
 
         for bot in bots:
-            bot.setDestPosition(updatePos[count][0]+xrobot[count], updatePos[count][1] + yrobot[count])
+            bot.setDestPosition(updatePos[count][0] + xrobot[count], updatePos[count][1] + yrobot[count])
 
             xrobot[count], yrobot[count] = bot.getCurrPos()
                 
             bot.pub.publish(bot.dest_pos)
             count = count + 1
-            
-        print("X:", xrobot)
-        print("Y:", yrobot)
 
     rospy.spin()
         		
