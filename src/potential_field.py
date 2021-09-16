@@ -67,14 +67,14 @@ def potential_field(xrobot, yrobot, coordList):
 		sumX.append(sum(potBotX) + destmult*potPointX[bot])
 		sumY.append(sum(potBotY) + destmult*potPointY[bot])
 		
-		if (sumX > 0):
+		if (sumX[bot] > 0):
 			vectorX.append(sumX[bot]/max(sumX))
-		if (sumX < 0):
+		if (sumX[bot] < 0):
 			vectorX.append(-abs(sumX[bot]/min(sumX)))
 			
-		if (sumY > 0):
+		if (sumY[bot] > 0):
 			vectorY.append(sumY[bot]/max(sumY))
-		if (sumY < 0):
+		if (sumY[bot] < 0):
 			vectorY.append(-abs(sumY[bot]/min(sumY)))
 		
 			
