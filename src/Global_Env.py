@@ -13,35 +13,11 @@ import time
 import math
 import numpy as np
 from geometry_msgs.msg import Point, Pose
+from robot import Robot
+from field import Field
 
-# Global Variables
-FIELD_X = 5     # (m)
-FIELD_Y = 5.5   # (m)
-ROBOT_W = 0.1   # (m)
-ROBOT_L = 0.15  # (m)
-
-# Definition Class Concepts
-class Robot:
-    """Robots"""
-    def  __init__(self):
-        self.ID = self.getID()
-        self.pose = self.getPose()
-        self.dest = self.getDest()
-        self.status = self.getStatus()
-
-    def getID():
-        return 0
-
-    def getPose():
-        return Pose(0, 0, 0)
-    
-    def getDest():
-        return Point(0, 0, 0)
-
-    def getStatus():
-        return "Finshed"
-
-class Field:
-    """Field of Robot Operations"""
-
-# Main
+# Mapping
+def mapping(robots: Robot[25]):
+    field = Field()
+    # TODO: Actually Add a Mapping System
+    return (field)
