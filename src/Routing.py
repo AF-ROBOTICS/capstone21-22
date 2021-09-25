@@ -7,8 +7,29 @@
 # Subscriptions: rostopic '/global_env' (from Global_Env.py)
 # Publications: rostopic '/routes' (to Driver.py)
 
-# a*
-def aStarSearch(problem, heuristic=nullHeuristic):
+# Imports
+from field import Field
+from robot import Robot
+from enum import Enum
+
+class Action(Enum):
+    STAY = 0
+    RIGHT = 1
+    UP = 2
+    LEFT = 3
+    DOWN = 4
+
+
+# Cleanup: Centers Robots in Cells and Orients at Right Angles
+def cleanup(field: Field):
+    # TODO: Create Cleanup
+    return
+
+def evaluate_action(field: Field, action: Action):
+    return
+
+# a*: A-Star Search Algorithm for Routing
+def aStarSearch(field: Field, heuristic=manhattan):
     """CS 471 PEX 1 Question 4"""
 
     from game import Directions

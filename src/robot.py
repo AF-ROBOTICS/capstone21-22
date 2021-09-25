@@ -15,21 +15,29 @@ ROBOT_W = 0.1   # (m)
 ROBOT_L = 0.15  # (m)
 
 class Robot:
-    """Robots"""
+    """Robot objects have an ID, position, destination, and status"""
+    
     def  __init__(self):
         self.ID = self.getID()
-        self.pose = self.getPose()
+        self.pose = Ground_Pose(None)
         self.dest = self.getDest()
         self.status = self.getStatus()
 
     def getID():
-        return 0
+        return None
 
     def getPose(): # TODO: Get Pose
-        return Pose(0, 0, 0) # x, y, theta
+        return Ground_Pose(None)
     
     def getDest(): # TODO: Get Dest
-        return Point(0, 0, 0) # x, y, theta
+        return Ground_Pose(None)
 
     def getStatus(): # TODO: Get Status
-        return "Finshed" # "Running" "Finished" or 
+        return None # "Running" "Finished" or 
+    
+class Ground_Pose:
+    def __init__(self):
+        """Our ground bots need only x, y, and theta for navigation"""
+        self.x      = float(None)
+        self.y      = float(None)
+        self.theta  = float(None)

@@ -17,7 +17,8 @@ from robot import Robot
 from field import Field
 
 # Mapping
-def mapping(robots: Robot[25]):
+def map_robots(robots: Robot[25]):
     field = Field()
-    # TODO: Actually Add a Mapping System
+    for robot in robots:
+        
     return (field)
