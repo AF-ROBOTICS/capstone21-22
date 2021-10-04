@@ -21,6 +21,11 @@ hungarian = np.zeros((rows,cols))
 assignments={}
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 790654cbd66916055d939d2a842a60cf6880e730
 def build_hungarian(x_robot, y_robot, x_dest, y_dest):
     for i in range(0, len(x_robot)): # find the distance for every starting point to each destination
         jobs = []
