@@ -81,7 +81,7 @@ class Controller:
         if yaw < 0 :
             return 360 + yaw
         else :
-            return yaw
+            return yaw	
 
     # Callback function that calculates orientation offset needed to navigate
     # the usafabot_Bot to the destination. Provides a linear/angular velocity
