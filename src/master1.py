@@ -74,17 +74,13 @@ class Master:
     	# all robot's current locations are in bot.curr_pos.position.x and self.curr_pos.position.y
     	# what I need to find is the closest robots distance and if that distance is smaller than the threshold, have the robot turn right
     	# how do I iterate through all the robots current positions
-    	for i in range(0, len(robots)):
-    		for j in range(0, len(robots)):
+    	for i in range(0, len(robots)): # the i robot is the robot we will be manipulating
+    		for j in range(0, len(robots)): # the j robots are the bots around the main i robot we are manipulating
     			if (curr_x[i] != curr_x[j]  and curr_y[i] != curr_y[j]): # if the robot compares itself to itself, it will always be turning
     				dist = math.sqrt((curr_y[i]- curr_y[j])**2 + (curr_x[i] - curr_x[j])**2)
     				print(dist)
     				if (abs(dist) < AVOID_TOL): # if the distance between the i robot and j robot (exculding itself) is small enough, the robot will turn right with the following algorithm
     				# There has to be a better way to do this
-    					if(curr_x[i] > x_dest[i]): # moving left
-    						#temp_y[i] = y_dest[i] + 2
-    						temp_y[i] = y_dest[i] + 1.5**(1/dist)
-    						#temp_y[i] = 5 #works
     						
     					#if(x_dest[i] >= curr_x[i] and y_dest[i] >= curr_y[i]): # dest is above and to the right of curr
     					#	temp_x[i] = curr_x + (5*(x_dest-curr_x))
@@ -103,18 +99,19 @@ class Master:
     					#	temp_x[i] = curr_x + (5*(x_dest-curr_x))
     					#	temp_y[i] = curr_y + (5*(y_dest-curr_y))
     					
+    					if(curr_x[i] > x_dest[i]): # moving left
+    						temp_y[i] = y_dest[i] + 1.5**(1/dist)
+    					
     					else: # moving right
-    						#temp_y[i] = y_dest[i] - 2
     						temp_y[i] = y_dest[i] - 1.5**(1/dist)
-    						#temp_y[i] = 5 #works
+    						
     					if(curr_y[i] > y_dest[i]): # moving up
-    						#temp_x[i] = x_dest[i] + 2
     						temp_x[i] = x_dest[i] + 1.5**(1/dist)
-    						#temp_x[i] = 5 #works
+    						
     					else: # moving down
-    						#temp_x[i] = x_dest[i] - 2
     						temp_x[i] = x_dest[i] - 1.5**(1/dist)
-    						# temp_x[i] = 5 #works
+    						
+    						
     					break # if there is a single bot next to bot i, it needs to start changing instead of stopping the turn if the next bot is not close.
     				else: # executes when the distance between the i robot and j robot (exculding itself) is no longer critical
     					# set dest position back to its original dest position
@@ -126,7 +123,7 @@ class Master:
     	for bot in bots:
     		bot.setDestPosition(coordList[bot.name][0], coordList[bot.name][1])
     		bot.pub.publish(bot.dest_pos)
-    		print(bot.dest_pos)
+    		#print(bot.dest_pos)
 
 bots = [] 
 DEST_TOL = 0.1
@@ -179,10 +176,7 @@ if __name__ == '__main__':
     while 1==1:
     	k=0 # Needs to have a k because bots are not number iteratable? There's probobly a better way to do this...
     	for bot in bots:
-    		curr_x[k] = bot.curr_pos.position.x
-    		print(curr_x)
-    		curr_y[k] = bot.curr_pos.position.y
-    		print(curr_y)
+    		curr_x[k], curr_y[k] = bot.getCurrPos()
     		k = k+1
     		
     	# Current positions are now in arrays curr_x and curr_y. Run airplane to check for collisions.
