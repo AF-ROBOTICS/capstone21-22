@@ -14,7 +14,7 @@ from enum import Enum
 
 # 
 class Big_Action(Enum):
-    HOLD = 0
+    STAY = 0
     RIGHT = 1
     UP = 2
     LEFT = 3
