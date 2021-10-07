@@ -12,12 +12,20 @@ from field import Field
 from robot import Robot
 from enum import Enum
 
-class Action(Enum):
-    STAY = 0
+# 
+class Big_Action(Enum):
+    HOLD = 0
     RIGHT = 1
     UP = 2
     LEFT = 3
     DOWN = 4
+
+class Action(Enum):
+    STAY = 0
+    FORW_1 = 1
+    BACK_1 = 2
+    RIGH_90 = 3
+    LEFT_90 = 4
 
 
 # Cleanup: Centers Robots in Cells and Orients at Right Angles
@@ -65,3 +73,22 @@ def aStarSearch(field: Field, heuristic=manhattan):
 
     # If Goal not Found Return Empty List
     return []
+
+def drive(robots: Robot[25]):
+    """Creates drive commands from Action Decisons"""
+    for robot in robots:
+        if robot.action is Action(0): # FIXME: Stay
+            # TODO: Implement Stay
+            break
+        elif robot.action is Action(1): # FIXME: FORW_1
+            # TODO: Implement FORW
+            break
+        elif robot.action is Action(2): # FIXME: BACK_1
+            # TODO: Implement FORW
+            break
+        elif robot.action is Action(3): # FIXME: RIGH_90
+            # TODO: Implement FORW
+            break
+        elif robot.action is Action(4): # FIXME: LEFT_90
+            # TODO: Implement FORW
+            break

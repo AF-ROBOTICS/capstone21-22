@@ -9,6 +9,7 @@ import time
 import math
 import numpy as np
 from geometry_msgs.msg import Point, Pose
+from routing import Action
 
 # Global Constants
 ROBOT_W = 0.1   # (m)
@@ -22,6 +23,7 @@ class Robot:
         self.pose = Ground_Pose(None)
         self.dest = self.getDest()
         self.status = self.getStatus()
+        self.action = self.getAction()
 
     def getID():
         return None
@@ -34,6 +36,9 @@ class Robot:
 
     def getStatus(): # TODO: Get Status
         return None # "Running" "Finished" or 
+    
+    def getAction(): # TODO: Get Action
+        return Action(None)
     
 class Ground_Pose:
     def __init__(self):
