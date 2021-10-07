@@ -26,9 +26,7 @@ class Robot:
         # self.pose = Ground_Pose(None)
         # self.dest = self.getDest()
         self.status = self.getStatus()
-<<<<<<< HEAD
         self.action = self.getAction()
-=======
         self.curr_pos = Ground_Pose()
         self.dest_pos = Point()
         self.name = USAFABOT
@@ -36,7 +34,6 @@ class Robot:
         self.pub = rospy.Publisher(self.name + '/dest_pos', Point, queue_size = 10)
         # Ros Listener
         rospy.Subscriber(self.name + '/curr_pos', Pose, self.callback_currPos)
->>>>>>> 3548520b12b8e4e3cfad73d7f01a92bc788c284d
 
     def getID(self):
         return self.name
