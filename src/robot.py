@@ -10,6 +10,7 @@ import math
 import numpy as np
 import rospy
 from geometry_msgs.msg import Point, Pose
+from routing import Action
 
 # Global Constants
 ROBOT_W = 0.1   # (m)
@@ -25,6 +26,7 @@ class Robot:
         # self.pose = Ground_Pose(None)
         # self.dest = self.getDest()
         self.status = self.getStatus()
+        self.action = self.getAction()
         self.curr_pos = Ground_Pose()
         self.dest_pos = Point()
         self.name = USAFABOT
@@ -57,6 +59,9 @@ class Robot:
     def setDest(self, dest_point): # changed from (x,y) to single object, Can change back
         self.dest_pos.x = dest_point.x
         self.dest_pos.y = dest_point.y
+    
+    def getAction(): # TODO: Get Action
+        return Action(None)
     
 class Ground_Pose:
     def __init__(self):

@@ -20,7 +20,7 @@ robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
           'usafabot15', 'usafabot16', 'usafabot17', 'usafabot18', 'usafabot19',
           'usafabot20', 'usafabot21', 'usafabot22', 'usafabot23', 'usafabot24']
 
-#Destination Points
+# Destination Points
 x_dest = [1.0, 1.0, 1.0, 1.30, 1.30, 1.60, 2.0, 2.0, 2.0, 2.3, 2.3, 2.6, 3.0, 3.0, 3.0, 3.3, 3.3, 3.3, 3.6, 3.6, 4.0, 4.0, 4.0, 4.6, 4.6]
 y_dest = [3.0, 2.5, 2.0, 2.82, 2.18, 2.5, 3.0, 2.5, 2.0, 3.0, 2.5, 3.0, 3.0, 2.5, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0]
 
@@ -50,7 +50,7 @@ class Master:
         self.curr_pos.orientation.z = round(data.orientation.z, 3)
 
     def getCurrPos(self):
-        return self.curr_pos.position.x, self.curr_pos.position.y;
+        return self.curr_pos.position.x, self.curr_pos.position.y
 
     def setDestPosition(self, x, y):
         # Data based on drone position
@@ -125,15 +125,3 @@ if __name__ == '__main__':
     
 
     rospy.spin()
-
-
-
-
-
-
-
-
-
-
-
-

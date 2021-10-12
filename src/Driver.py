@@ -6,3 +6,9 @@
 #   robots using the routes produced in Routing.py
 # Subscriptions: rostopic '/routes' (from Routing.py)
 # Publications: rostopic '/drivers' (to Robot_Driver.py)
+
+# Imports
+from field import Field
+from robot import Robot
+from enum import Enum
+
