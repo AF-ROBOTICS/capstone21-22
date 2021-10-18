@@ -10,7 +10,7 @@ import math
 import numpy as np
 import rospy
 from geometry_msgs.msg import Point, Pose
-from routing import Action
+from Routing import Action
 
 # Global Constants
 ROBOT_W = 0.1   # (m)
@@ -21,7 +21,7 @@ DEST_TOLERANCE = (ROBOT_W**2 + ROBOT_L**2)**.5 # (m) temporary until we figure o
 class Robot:
     """Robot objects have an ID, position, destination, and status"""
 
-    def __init__(self, USAFABOT):
+    def __init__(self, usafabot):
         self.ID = self.getID()
         # self.pose = Ground_Pose(None)
         # self.dest = self.getDest()
@@ -29,7 +29,7 @@ class Robot:
         self.action = self.getAction()
         self.curr_pos = Ground_Pose()
         self.dest_pos = Point()
-        self.name = USAFABOT
+        self.name = usafabot
         # Ros Publisher
         self.pub = rospy.Publisher(self.name + '/dest_pos', Point, queue_size = 10)
         # Ros Listener
@@ -60,12 +60,13 @@ class Robot:
         self.dest_pos.x = dest_point.x
         self.dest_pos.y = dest_point.y
     
-    def getAction(): # TODO: Get Action
+    def getAction(self): # TODO: Get Action
         return Action(None)
     
 class Ground_Pose:
     def __init__(self):
         """Our ground bots need only x, y, and theta for navigation"""
-        self.x = float(None)
-        self.y = float(None)
-        self.theta = float(None)
+        # float(None) threw an error. -1 represents init/error vals
+        self.x = float(-1)
+        self.y = float(-1)
+        self.theta = float(-1)
