@@ -13,7 +13,7 @@ from robot import Robot
 from enum import Enum
 import util
 
-# 
+#
 class Big_Action(Enum):
     STAY = 0
     RIGHT = 1
