@@ -13,7 +13,7 @@ from robot import Robot
 from enum import Enum
 import util
 
-# 
+#
 class Big_Action(Enum):
     STAY = 0
     RIGHT = 1
@@ -38,7 +38,7 @@ def evaluate_action(field: Field, action: Action):
     return
 
 # a*: A-Star Search Algorithm for Routing
-def aStarSearch(field: Field, heuristic=manhattan):
+def aStarSearch(field: Field, heuristic=manhattan): # FIXME: This is CS471 A*
     """CS 471 PEX 1 Question 4"""
 
     from game import Directions
