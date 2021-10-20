@@ -20,7 +20,7 @@ robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
           'usafabot15', 'usafabot16', 'usafabot17', 'usafabot18', 'usafabot19',
           'usafabot20', 'usafabot21', 'usafabot22', 'usafabot23', 'usafabot24']
 
-#Destination Points
+# Destination Points
 x_dest = [1.0, 1.0, 1.0, 1.30, 1.30, 1.60, 2.0, 2.0, 2.0, 2.3, 2.3, 2.6, 3.0, 3.0, 3.0, 3.3, 3.3, 3.3, 3.6, 3.6, 4.0, 4.0, 4.0, 4.6, 4.6]
 y_dest = [3.0, 2.5, 2.0, 2.82, 2.18, 2.5, 3.0, 2.5, 2.0, 3.0, 2.5, 3.0, 3.0, 2.5, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0]
 
@@ -50,7 +50,7 @@ class Master:
         self.curr_pos.orientation.z = round(data.orientation.z, 3)
 
     def getCurrPos(self):
-        return self.curr_pos.position.x, self.curr_pos.position.y;
+        return self.curr_pos.position.x, self.curr_pos.position.y
 
     def setDestPosition(self, x, y):
         # Data based on drone position
@@ -95,6 +95,21 @@ if __name__ == '__main__':
     
     # Assign final bot destinations
     
+    # Waterfall loop
+    for bot in bots:
+        bot.setGroundDestPosition(x_dest[i], y_dest[i])
+        curr_x,curr_y = bot.getCurrentPos()
+        init_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5        
+
+        while True:
+            curr_x,curr_y = bot.getCurrentPos()
+            curr_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5        
+            if (init_dist - curr_dist) > .25:
+                i+=1
+                print(bot.TIBot + " is complete")
+                bot.setGroundDestPosition(0, 0)
+                break
+    
     while ((round(xrobot[0], 3) != round(coordList['usafabot0'][0], 3)) and ((round(yrobot[0], 3) != round(coordList['usafabot0'][1], 3)))):
         for bot in bots:
             for i in range(0, len(bots)):
@@ -110,15 +125,3 @@ if __name__ == '__main__':
     
 
     rospy.spin()
-
-
-
-
-
-
-
-
-
-
-
-

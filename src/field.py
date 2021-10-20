@@ -34,7 +34,7 @@ class Field:
         for robot in robots:
             x = math.floor(robot.pos.x / CELL_W)
             y = math.floor(robot.pos.y / CELL_W)
-            if 0 >= x < math.ceil(FIELD_W/CELL_W) and 0 >= x < math.ceil(FIELD_W/CELL_W):
+            if 0 >= x < math.ceil(FIELD_W/CELL_W) and 0 >= y < math.ceil(FIELD_L/CELL_W):
                 self.cells[x][y].robot = robot
             else:
                 self.lost_bots.append(robot)
