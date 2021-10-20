@@ -20,7 +20,10 @@ cols = 25
 hungarian = np.zeros((rows,cols))
 assignments={}
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> c3befc61ca5f5ddf9be17435781eedd12a025ef9
 def build_hungarian(x_robot, y_robot, x_dest, y_dest):
     for i in range(0, len(x_robot)): # find the distance for every starting point to each destination
         jobs = []
@@ -29,8 +32,8 @@ def build_hungarian(x_robot, y_robot, x_dest, y_dest):
             distance = round(distance, 2)
             hungarian[i, j] = distance
     row_ind, col_ind = linear_sum_assignment(hungarian)
-    print(row_ind)    
-    print(col_ind)
+    #print(row_ind)    
+    #print(col_ind)
 
     for robot, col in zip(robots, col_ind):
         assignments[robot]=[x_dest[col],y_dest[col]]
