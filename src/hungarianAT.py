@@ -29,7 +29,7 @@ def build_hungarian(bots, destinations):
         for i in range(1, len(bots)):
             distance = ((bot.curr_pos.x - destinations[i].x)**2 + (bot.curr_pos.y - destinations[i].y)**2) ** 0.5
             distance = round(distance, 2)
-            hungarian[i, j] = distance
+            hungarian[bot, i] = distance
 
     row_ind, col_ind = linear_sum_assignment(hungarian)
     print(row_ind)
