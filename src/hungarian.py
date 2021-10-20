@@ -28,8 +28,8 @@ def build_hungarian(x_robot, y_robot, x_dest, y_dest):
             distance = round(distance, 2)
             hungarian[i, j] = distance
     row_ind, col_ind = linear_sum_assignment(hungarian)
-    print(row_ind)    
-    print(col_ind)
+    #print(row_ind)    
+    #print(col_ind)
 
     for robot, col in zip(robots, col_ind):
         assignments[robot]=[x_dest[col],y_dest[col]]
