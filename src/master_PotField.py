@@ -89,45 +89,11 @@ if __name__ == '__main__':
     print(xrobot)
     print(yrobot)
     coordList = build_hungarian(xrobot, yrobot, x_dest, y_dest)
-    print("coords:", coordList)
     
-    updatePos = potential_field(xrobot, yrobot, coordList)
-    print("test", updatePos)
+    
     #updatePos = potential_field(xrobot, yrobot, coordList)
     
     # Assign final bot destinations
-<<<<<<< HEAD:src/master.py
-    for bot in bots:
-        for i in range(0, len(bots)):
-            bot.setDestPosition(coordList[bot.name][0], coordList[bot.name][1])
-
-        bot.pub.publish(bot.dest_pos)
-
-    while not rospy.is_shutdown():
-        count = 0
-        updatePos = potential_field(xrobot, yrobot, coordList)
-        print("UPDATE:", updatePos)
-
-        for bot in bots:
-            if(abs(coordList[bot.name][0]-xrobot[count]) <=0.05 and abs(coordList[bot.name][1]-yrobot[count]) <=0.05):
-                bot.setDestPosition(xrobot[count], yrobot[count])
-            else:
-                bot.setDestPosition(updatePos[count][0] + xrobot[count], updatePos[count][1] + yrobot[count])
-
-            xrobot[count], yrobot[count] = bot.getCurrPos()
-                
-            bot.pub.publish(bot.dest_pos)
-            count += 1
-        		
-
-
-
-
-
-
-
-
-=======
     
     # Waterfall loop
     for bot in bots:
@@ -159,4 +125,3 @@ if __name__ == '__main__':
     
 
     rospy.spin()
->>>>>>> d9906ce73ec8143514264efcd81a15505796a320:src/master_PotField.py
