@@ -24,7 +24,7 @@ temp_x = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
 temp_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 # closest distance tolerance for avoidance
-AVOID_TOL = 1 # 0.2 worked
+AVOID_TOL = 0.2 # 0.2 worked
 COLL_TOL = 0.1
 TooClose = False
 
@@ -74,58 +74,59 @@ class Master:
     	for i in range(0, len(robots)): # the i robot is the robot we will be manipulating
     		TooClose = False
     		for j in range(0, len(robots)): # the j robots are the bots around the main i robot we are manipulating
-    			if (bots[i].curr_pos.position.x != bots[j].curr_pos.position.x  and bots[i].curr_pos.position.y != bots[j].curr_pos.position.y): # skip self
+    			if (bots[i].curr_pos.position.x != bots[j].curr_pos.position.x and bots[i].curr_pos.position.y != bots[j].curr_pos.position.y): # skip self
     				dist = math.sqrt((bots[i].curr_pos.position.y- bots[j].curr_pos.position.y)**2 + (bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)**2)
-    				print(dist)
+    				#print(dist)
     				if (dist < AVOID_TOL): # if the distance between the i robot and j robot (exculding itself) is small enough, the robot will turn right
     					#print(i)
-    					
-    					
-    					TRASH GEOMETRY
-    					
-    					if(temp_x[i] >= bots[i].curr_pos.position.x and temp_y[i] >= bots[i].curr_pos.position.y): # dest is above and to the right of curr
-    						temp_x[i] = temp_x[i]
+    				
+    					# CASE I
+    					if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # close bot is above and right
+    						temp_x[i] = bots[i].curr_pos.position.x + 100*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y) #Multipy because differences will always be very small
     						#if (temp_x[i]<0):
     						#	temp_x[i] = 0
     						#elif (temp_x[i]>6):
     						#	temp_x[i] = 6	
-    						temp_y[i] = bots[i].curr_pos.position.y - (temp_y-bots[i].curr_pos.position.y)
+    						temp_y[i] = bots[i].curr_pos.position.y - 100*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
     						#if (temp_y[i]<0):
     						#	temp_y[i] = 0
     						#elif (temp_y[i]>6):
     						#	temp_y[i] = 6
     						
-    					if(temp_x[i] <= bots[i].curr_pos.position.x and temp_y[i] >= bots[i].curr_pos.position.y): # dest is above and to the left of curr
-    						temp_x[i] = -temp_x[i]
+    					# CASE II	
+    					if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # close bot is above and left
+    						temp_x[i] = bots[i].curr_pos.position.x + 100*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
     						#if (temp_x[i]<0):
     						#	temp_x[i] = 0
     						#elif (temp_x[i]>6):
     						#	temp_x[i] = 6	
-    						temp_y[i] = temp_y[i]
+    						temp_y[i] = bots[i].curr_pos.position.y + 100*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
     						#if (temp_y[i]<0):
     						#	temp_y[i] = 0
     						#elif (temp_y[i]>6):
     						#	temp_y[i] = 6
-    						
-    					if(temp_x[i] >= bots[i].curr_pos.position.x and temp_y[i] <= bots[i].curr_pos.position.y): # dest is below and to the right of curr
-    						temp_x[i] = -temp_x[i]
+    					
+    					# CASE III	
+    					if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # close bot is below and right
+    						temp_x[i] = bots[i].curr_pos.position.x - 100*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
     						#if (temp_x[i]<0):
     						#	temp_x[i] = 0
     						#elif (temp_x[i]>6):
     						#	temp_x[i] = 6	
-    						temp_y[i] = temp_y[i]
+    						temp_y[i] = bots[i].curr_pos.position.y - 100*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
     						#if (temp_y[i]<0):
     						#	temp_y[i] = 0
     						#elif (temp_y[i]>6):
     						#	temp_y[i] = 6	
-    						
-    					if(temp_x[i] <= bots[i].curr_pos.position.x and temp_y[i] <= bots[i].curr_pos.position.y): # dest is below and to the left of curr
-    						temp_x[i] = temp_x[i]
+    					
+    					# CASE IV	
+    					if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # close bot is below and left
+    						temp_x[i] = bots[i].curr_pos.position.x - 100*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
     						#if (temp_x[i]<0):
     						#	temp_x[i] = 0
     						#elif (temp_x[i]>6):
     						#	temp_x[i] = 6	
-    						temp_y[i] = -temp_y[i]
+    						temp_y[i] = bots[i].curr_pos.position.y + 100*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
     						#if (temp_y[i]<0):
     						#	temp_y[i] = 0
     						#elif (temp_y[i]>6):
@@ -146,6 +147,7 @@ class Master:
     			#print('SAFE')
     			temp_x[i] = x_dest[i]
     			temp_y[i] = y_dest[i]	
+    			print(bots[i].name + 'bots[i].dest_pos.x')
     		
     	#	bots[i].setDestPosition(temp_x[i], temp_y[i])
     	#	bots[i].pub.publish(bots[i].dest_pos)
@@ -154,6 +156,8 @@ class Master:
     		for i in range(0, len(robots)):
     			bots[i].setDestPosition(temp_x[i], temp_y[i])
     			bots[i].pub.publish(bots[i].dest_pos)
+    		
+    		
     		
     		
     		#coordList = build_hungarian(bots[i].curr_pos.position.x, bots[i].curr_pos.position.y, temp_x, temp_y)
@@ -185,8 +189,7 @@ if __name__ == '__main__':
         bots.append(Master(k))
     
     # initializes temporary destination points to final destination points
-    temp_x = x_dest
-    temp_y = y_dest
+    
 
     # Global Variables
     xrobot = []	# initial x position for first hungarian assignment
@@ -212,13 +215,23 @@ if __name__ == '__main__':
     i = 0
 
     # Uses setDestPosition to assign initial destination positions in coordList to self.dest_pos.x/y and then publishes to bot.dest_pos 
-    for bot in bots:
-        bot.setDestPosition(coordList[bot.name][0], coordList[bot.name][1])
-        bot.pub.publish(bot.dest_pos)
+    #for bot in bots:
+    #    bot.setDestPosition(coordList[bot.name][0], coordList[bot.name][1])
+    #    bot.pub.publish(bot.dest_pos)
         #print(bot.dest_pos)
         #the_x,the_y = bot.getCurrPos()
         #init_dist = ((x_dest[i] - the_x) ** 2 + (y_dest[i] - the_y) ** 2) ** 0.5 
-        #print("running in main")   
+        #print("running in main") 
+    for i in range(0, len(robots)):
+    	 x_dest[i] = coordList[bots[i].name][0]
+    	 y_dest[i] = coordList[bots[i].name][1]
+    # SHOULD I BE RUNNING THIS MULTIPLE TIMES?????????
+    
+    
+    temp_x = x_dest
+    temp_y = y_dest
+    
+    
     
     # At this point all initial setup is done. xrobot and yrobot are arrays of the initial positions. x_dest and y_dest are arrays of the desination points, not neccesarily ties to a specific robot.
     # curr_x, curr_y, temp_x, and temp_y are all still empty
