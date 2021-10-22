@@ -21,8 +21,11 @@ hungarian = np.zeros((rows,cols))
 assignments={}
 
 
+#<<<<<<< HEAD
+#=======
 
 
+#>>>>>>> 790654cbd66916055d939d2a842a60cf6880e730
 def build_hungarian(x_robot, y_robot, x_dest, y_dest):
     for i in range(0, len(x_robot)): # find the distance for every starting point to each destination
         jobs = []
@@ -30,8 +33,8 @@ def build_hungarian(x_robot, y_robot, x_dest, y_dest):
             distance = ((x_dest[j] - x_robot[i]) ** 2 + (y_dest[j] - y_robot[i]) ** 2) ** 0.5
             distance = round(distance, 2)
             hungarian[i, j] = distance
-    print("hungarian: ", hungarian)
     row_ind, col_ind = linear_sum_assignment(hungarian)
+    rospy.loginfo(hungarian)
     print(row_ind)    
     print(col_ind)
 
@@ -44,4 +47,3 @@ def build_hungarian(x_robot, y_robot, x_dest, y_dest):
 if __name__ == '__main__':
     start_time = time.time()
     build_hungarian()
-    print("Program took: ", time.time() - start_time)

@@ -6,3 +6,19 @@
 #   and orientations of all robots in the environment and any detected obstacles
 # Subscriptions: rostopic '/global_pos' (from Master.py)
 # Publications: rostopic '/global_env' (to Routing.py)
+
+# Imports
+import rospy
+import time
+import math
+import numpy as np
+from geometry_msgs.msg import Point, Pose
+from robot import Robot
+from field import Field
+
+# Mapping
+def map_robots(robots: Robot[25]):
+    field = Field()
+    for robot in robots:
+        
+    return (field)

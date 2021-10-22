@@ -20,7 +20,7 @@ robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
           'usafabot15', 'usafabot16', 'usafabot17', 'usafabot18', 'usafabot19',
           'usafabot20', 'usafabot21', 'usafabot22', 'usafabot23', 'usafabot24']
 
-#Destination Points
+# Destination Points
 x_dest = [1.0, 1.0, 1.0, 1.30, 1.30, 1.60, 2.0, 2.0, 2.0, 2.3, 2.3, 2.6, 3.0, 3.0, 3.0, 3.3, 3.3, 3.3, 3.6, 3.6, 4.0, 4.0, 4.0, 4.6, 4.6]
 y_dest = [3.0, 2.5, 2.0, 2.82, 2.18, 2.5, 3.0, 2.5, 2.0, 3.0, 2.5, 3.0, 3.0, 2.5, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0]
 
@@ -50,7 +50,7 @@ class Master:
         self.curr_pos.orientation.z = round(data.orientation.z, 3)
 
     def getCurrPos(self):
-        return self.curr_pos.position.x, self.curr_pos.position.y;
+        return self.curr_pos.position.x, self.curr_pos.position.y
 
     def setDestPosition(self, x, y):
         # Data based on drone position
@@ -90,34 +90,34 @@ if __name__ == '__main__':
     print(yrobot)
     coordList = build_hungarian(xrobot, yrobot, x_dest, y_dest)
     print("coords:", coordList)
-    rospy.loginfo(coordList)
     
     updatePos = potential_field(xrobot, yrobot, coordList)
     print("test", updatePos)
     #updatePos = potential_field(xrobot, yrobot, coordList)
     
     # Assign final bot destinations
- #   for bot in bots:
-  #      for i in range(0, len(bots)):
-   #         bot.setDestPosition(coordList[bot.name][0], coordList[bot.name][1])
+<<<<<<< HEAD:src/master.py
+    for bot in bots:
+        for i in range(0, len(bots)):
+            bot.setDestPosition(coordList[bot.name][0], coordList[bot.name][1])
 
-    #    bot.pub.publish(bot.dest_pos)
-    
-    #while not rospy.is_shutdown():
-    #    count = 0
-    #    updatePos = potential_field(xrobot, yrobot, coordList)
-    #    print("UPDATE:", updatePos)
-       
-    #    for bot in bots:
-     #       if(abs(coordList[bot.name][0]-xrobot[count]) <=0.05 and abs(coordList[bot.name][1]-yrobot[count]) <=0.05):
-      #          bot.setDestPosition(xrobot[count], yrobot[count])
-       #     else:
-        #        bot.setDestPosition(updatePos[count][0] + xrobot[count], updatePos[count][1] + yrobot[count])
+        bot.pub.publish(bot.dest_pos)
 
-         #   xrobot[count], yrobot[count] = bot.getCurrPos()
-               
-          #  bot.pub.publish(bot.dest_pos)
-           # count += 1
+    while not rospy.is_shutdown():
+        count = 0
+        updatePos = potential_field(xrobot, yrobot, coordList)
+        print("UPDATE:", updatePos)
+
+        for bot in bots:
+            if(abs(coordList[bot.name][0]-xrobot[count]) <=0.05 and abs(coordList[bot.name][1]-yrobot[count]) <=0.05):
+                bot.setDestPosition(xrobot[count], yrobot[count])
+            else:
+                bot.setDestPosition(updatePos[count][0] + xrobot[count], updatePos[count][1] + yrobot[count])
+
+            xrobot[count], yrobot[count] = bot.getCurrPos()
+                
+            bot.pub.publish(bot.dest_pos)
+            count += 1
         		
 
 
@@ -127,3 +127,36 @@ if __name__ == '__main__':
 
 
 
+=======
+    
+    # Waterfall loop
+    for bot in bots:
+        bot.setGroundDestPosition(x_dest[i], y_dest[i])
+        curr_x,curr_y = bot.getCurrentPos()
+        init_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5        
+
+        while True:
+            curr_x,curr_y = bot.getCurrentPos()
+            curr_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5        
+            if (init_dist - curr_dist) > .25:
+                i+=1
+                print(bot.TIBot + " is complete")
+                bot.setGroundDestPosition(0, 0)
+                break
+    
+    while ((round(xrobot[0], 3) != round(coordList['usafabot0'][0], 3)) and ((round(yrobot[0], 3) != round(coordList['usafabot0'][1], 3)))):
+        for bot in bots:
+            for i in range(0, len(bots)):
+                bot.setDestPosition(coordList[bot.name][0], coordList[bot.name][1])
+		
+            updatePos = potential_field(xrobot, yrobot, coordList)
+            bot.setDestPosition(updatePos[[bot][0]]+xrobot[bot], updatePos[[bot][1]] + yrobot[bot])
+            bot.pub.publish(bot.dest_pos)
+            print(bot.dest_pos)
+            curr_x,curr_y = bot.getCurrPos()
+            # init_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5      
+		 
+    
+
+    rospy.spin()
+>>>>>>> d9906ce73ec8143514264efcd81a15505796a320:src/master_PotField.py
