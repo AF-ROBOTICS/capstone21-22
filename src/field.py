@@ -7,6 +7,7 @@
 # Imports
 import math
 from robot import Robot
+from enum import Enum
 
 # Global Variables
 FIELD_W = 5.5   # (m) x-axis
@@ -57,5 +58,12 @@ class Cell:
         """Cell objects can contain a robot's position or destination"""
         
         self.robot  = Robot(None)
+        self.cardinal = Cardinal(None)
         self.dest   = Robot(None)
 
+class Cardinal(Enum):
+    E = 0
+    N = 1
+    W = 2
+    S = 3
+    
