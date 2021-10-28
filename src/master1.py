@@ -24,7 +24,7 @@ curr_x = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
 curr_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 # closest distance tolerance for avoidance
-AVOID_TOL = 0.2 # 0.2 worked
+AVOID_TOL = 0.3 # 0.2 worked
 #COLL_TOL = 0.1
 TooClose = False
 
@@ -70,34 +70,41 @@ class Master:
     		TooClose = False	# Reset too close variable
     		#print('new i, should be after publish')
     		for j in range(0, len(robots)): # the j robots are the bots around the main i robot we are manipulating
-    			if (bots[i].curr_pos.position.x != bots[j].curr_pos.position.x and bots[i].curr_pos.position.y != bots[j].curr_pos.position.y): # skip self
-    				#dist = math.sqrt((bots[i].curr_pos.position.y- bots[j].curr_pos.position.y)**2 + (bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)**2)
-    				#if (dist < AVOID_TOL): # if the distance between the i robot and j robot (exculding itself) is small enough, the robot will turn right
+    			if (i != j): # skip self
+    				dist = math.sqrt((bots[i].curr_pos.position.y- bots[j].curr_pos.position.y)**2 + (bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)**2)
+    				if (dist < AVOID_TOL): # if the distance between the i robot and j robot (exculding itself) is small enough, the robot will turn right
     				# if there is a single j bot next to bot i, it needs to start changing instead of stopping the turn if the next bot is not close.
-    				#	TooClose = True
-    				#	if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # close bot is above and right
-    				#		temp_x[i] = bots[i].curr_pos.position.x + 100*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    				#		temp_y[i] = bots[i].curr_pos.position.y - 100*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
-    				#	if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # close bot is above and left
-    				#		temp_x[i] = bots[i].curr_pos.position.x + 100*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    				#		temp_y[i] = bots[i].curr_pos.position.y + 100*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
-    				#	if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # close bot is below and right
-    				#		temp_x[i] = bots[i].curr_pos.position.x - 100*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    				#		temp_y[i] = bots[i].curr_pos.position.y - 100*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
-    				#	if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # close bot is below and left
-    				#		temp_x[i] = bots[i].curr_pos.position.x - 100*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    				#		temp_y[i] = bots[i].curr_pos.position.y + 100*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
-    				#	#print('TooClose, Break! Break! Break!')
-    				#else:
-    				#	temp_x[i] = x_dest[i]
-    				#	temp_y[i] = y_dest[i]
-    				print('Continue')
-    			else:
-    				print("same robot")
+    					TooClose = True
+    					
+    					#FIX TURNS! They just stop when they get within the tolerance threshold.
+    					
+    					
+    					temp_x[i] = 0
+    					temp_y[i] = 0
+    					#if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # close bot is above and right
+    					#	temp_x[i] = bots[i].curr_pos.position.x + 100*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
+    					#	temp_y[i] = bots[i].curr_pos.position.y - 100*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
+    					#if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # close bot is above and left
+    					#	temp_x[i] = bots[i].curr_pos.position.x + 100*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
+    					#	temp_y[i] = bots[i].curr_pos.position.y + 100*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
+    					#if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # close bot is below and right
+    					#	temp_x[i] = bots[i].curr_pos.position.x - 100*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
+    					#	temp_y[i] = bots[i].curr_pos.position.y - 100*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
+    					#if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # close bot is below and left
+    					#	temp_x[i] = bots[i].curr_pos.position.x - 100*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
+    					#	temp_y[i] = bots[i].curr_pos.position.y + 100*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
+    					#print('TooClose, Break! Break! Break!')
+    				else:
+    					temp_x[i] = x_dest[i]
+    					temp_y[i] = y_dest[i]
+    				#print('Continue')
     			# this needs to be a separate if statement so the correct loop is broken out of. We did not know how to do a double break
     			if (TooClose == True): # if a j robot is too close to the i robot, we're not even going to keep checking because the i robot needs to get turning ASAP
     				#print('Break! Break! Break!')
     				break # breaks out of j iteration loop
+    			else:
+    				temp_x[i] = x_dest[i]
+    				temp_y[i] = y_dest[i]	
     		#bots[i].setDestPosition(temp_x[i], temp_y[i])
     		#bots[i].pub.publish(bots[i].dest_pos)
     		#print('publish')
