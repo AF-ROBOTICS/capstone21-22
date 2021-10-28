@@ -23,10 +23,10 @@ from nav_msgs.msg import Odometry
 # Global Variables
 listX = []
 listY = []
-xrobot = []
-yrobot = []
-# yrobot = [11, 12, 13, 14, 16, 17, 18, 19, 30, 30, 30, 30, 30, 30, 30, 17, 16, 14, 13, 0, 0, 0, 0, 0, 0]
-# xrobot = [0, 0, 0, 0, 0, 0, 0, 0, 12, 13, 14, 16, 17, 18, 19, 30, 30, 30, 30, 18, 17, 16, 14, 13, 12]
+#xrobot = []
+#yrobot = []
+yrobot = [11, 12, 13, 14, 16, 17, 18, 19, 30, 30, 30, 30, 30, 30, 30, 17, 16, 14, 13, 0, 0, 0, 0, 0, 0]
+xrobot = [0, 0, 0, 0, 0, 0, 0, 0, 12, 13, 14, 16, 17, 18, 19, 30, 30, 30, 30, 18, 17, 16, 14, 13, 12]
 robotDestination = []
 
 # TODO: change this list to match number of robots
@@ -37,11 +37,11 @@ robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
           'usafabot15', 'usafabot16', 'usafabot18', 'usafabot19',
           'usafabot20', 'usafabot21', 'usafabot22', 'usafabot23', 'usafabot24']
 
-# x_dest = [10, 9, 8, 8, 10, 9, 8, 8, 12, 12, 13, 16, 16, 17, 17, 21, 20, 20, 21, 16, 17, 16, 13, 12, 12]
-# y_dest = [14, 13, 13, 14, 15, 16, 16, 15, 15, 16, 16, 15, 16, 15, 16,16, 15, 14, 13, 14, 13, 13, 14, 14, 13]
-# x_dest = [0, .5,  1, 0, 1, 0, .5, 0, 1.75, 1.75, 2.5, 3, 3, 3.5, 4, 5.25, 4.5, 4.5, 5.25, 3, 4, 3, 2.25, 1.75, 1.75]
+#x_dest = [10, 9, 8, 8, 10, 9, 8, 8, 12, 12, 13, 16, 16, 17, 17, 21, 20, 20, 21, 16, 17, 16, 13, 12, 12]
+#y_dest = [14, 13, 13, 14, 15, 16, 16, 15, 15, 16, 16, 15, 16, 15, 16,16, 15, 14, 13, 14, 13, 13, 14, 14, 13]
+#x_dest = [0, .5,  1, 0, 1, 0, .5, 0, 1.75, 1.75, 2.5, 3, 3, 3.5, 4, 5.25, 4.5, 4.5, 5.25, 3, 4, 3, 2.25, 1.75, 1.75]
 
-# y_dest = [1, 1.5, 2, 2, 3, 3, 3.5, 4, 3, 4, 4, 3, 4, 3, 4, 4, 3, 2, 1, 2, 1, 1, 3, 2, 1]
+#y_dest = [1, 1.5, 2, 2, 3, 3, 3.5, 4, 3, 4, 4, 3, 4, 3, 4, 4, 3, 2, 1, 2, 1, 1, 3, 2, 1]
 
 x_dest = [3, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 4.5, 4.5, 4.5, 4.5, 4.5, 4.5, 4, 3.5, 3, 2.5]
 
@@ -267,41 +267,44 @@ if __name__ == '__main__':
         bots.append(Master(k))
 
     # Get initial bot positions
-    for bot in bots:
-        x = 0
-        y = 0
+#    for bot in bots:
+#        x = 0
+#        y = 0
         # block until bot's RR is operational
-        while x == 0 and y == 0:
-            x, y = bot.getCurrentPos()
-        xrobot.append(x)
-        yrobot.append(y)
-        print("Completed bot: " + bot.TIBot)
+#        print("Waiting bot: " + bot.TIBot)
+#        while x == 0 and y == 0:
+#           x, y = bot.getCurrentPos()
+#        xrobot.append(x)
+#        yrobot.append(y)
+#        print("Completed bot: " + bot.TIBot)
 
     # Calculation functions
-    coordList = wordToPoints(word)
+ #   coordList = wordToPoints(word)
 
     # robotPlacement(numRobots)
 
     # robotAssignment(numRobots)
 
-    print("x = ", listX)
-    print("y = ", listY)
-    print("Comined coordList = ", coordList)
+#    print("x = ", listX)
+#    print("y = ", listY)
+#    print("Comined coordList = ", coordList)
 
     print("Robot Init X = ", xrobot)
     print("Robot Init Y = ", yrobot)
-    print("Combined RobotDestination = ", robotDestination)
+    print("Combined RobotDestination = ", x_dest, y_dest)
 
     # Assign final bot destinations
     i = 0
 
     for bot in bots:
         bot.setGroundDestPosition(x_dest[i], y_dest[i])
-        curr_x, curr_y = bot.getCurrentPos()
+        print("Dest set for:" + bot.TIBot)
+#        curr_x, curr_y = bot.getCurrentPos()
         init_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
 
         while True:
-            curr_x, curr_y = bot.getCurrentPos()
+            curr_x, curr_y = bot.getCurrentPos() #TODO Doesn't work. Why?
+            print(curr_x, curr_y)
             curr_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
             if (init_dist - curr_dist) > .25:
                 i += 1
