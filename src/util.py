@@ -20,7 +20,7 @@ class PriorityQueue:
         (_, _, item) = heapq.heappop(self.heap)
         return item
 
-    def isEmpty(self):
+    def is_empty(self):
         return len(self.heap) == 0
 
     def update(self, item, priority):
@@ -55,6 +55,6 @@ class PriorityQueueWithFunction(PriorityQueue):
         PriorityQueue.push(self, item, self.priorityFunction(item))
 
 
-def manhattanDistance( xy1, xy2 ):
-    "Returns the Manhattan distance between points xy1 and xy2"
-    return abs( xy1[0] - xy2[0] ) + abs( xy1[1] - xy2[1] )
+def manhattan_distance(x1, y1, x2, y2):
+    "Returns the Manhattan distance between two cells"
+    return abs(x1 - x2) + abs(y1 - y2)
