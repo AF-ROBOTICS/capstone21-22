@@ -24,7 +24,7 @@ temp_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
 #curr_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 # closest distance tolerance for avoidance
-AVOID_TOL = 0.3 # 0.2 worked
+AVOID_TOL = 0.245 # 0.2 worked
 #COLL_TOL = 0.1
 BreakJ = False
 
@@ -82,17 +82,17 @@ class Master:
     						print(dist)
     						print("Since there is a bot that is too close, I'll go towards 10,10.")
     						if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # above and right
-    							temp_x[i] = bots[i].curr_pos.position.x + 100*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    							temp_y[i] = bots[i].curr_pos.position.y - 100*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
+    							temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
+    							temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
     						if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # above and left
-    							temp_x[i] = bots[i].curr_pos.position.x + 100*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    							temp_y[i] = bots[i].curr_pos.position.y + 100*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
+    							temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
+    							temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
     						if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # below and right
-    							temp_x[i] = bots[i].curr_pos.position.x - 100*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    							temp_y[i] = bots[i].curr_pos.position.y - 100*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
+    							temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
+    							temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
     						if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # below and left
-    							temp_x[i] = bots[i].curr_pos.position.x - 100*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    							temp_y[i] = bots[i].curr_pos.position.y + 100*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)	
+    							temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
+    							temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)	
     						BreakJ=True
     					else:
     						print("continue checking bots around: " + bots[i].name)
