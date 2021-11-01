@@ -67,37 +67,34 @@ class Master:
     	# bots[i].curr_pos.position.x/y is most current position, temp_x/y is the most current destination locations, and dest_x/y are the invariable final locations
     	# NEXT: I need to find is the closest robots distance and if that distance is smaller than the threshold, have the robot turn right
     	for i in range(0, len(robots)): # the i robot is the robot we will be manipulating
-    		BreakJ = False	# Reset BreakJ variable
+    		print("next i")
+    		print(i)
     		for j in range(0, len(robots)): # the j robots are the bots around the main i robot we are manipulating
-    			BreakJ = False
+    			BreakJ = False # Reset BreakJ variable
     			if (i != j): # skip self
     				if(abs(bots[i].curr_pos.position.x-x_dest[i]) <= 0.05 and abs(bots[i].curr_pos.position.y-y_dest[i]) <= 0.05):
-    					print(bots[i].curr_pos.position.x)
-    					print(x_dest[i])
-    					print("I'm at my final spot so I'm not moving! " + bot.name)
+    					print("I'm at my final spot so I'm not moving! " + bots[i].name)
     					BreakJ=True
     				if(BreakJ==False): # if robot is still moving towards it's final desination...
-    					
-    					FIX BELOW!
-    				
-    					dist = math.sqrt((bots[i].curr_pos.position.y- bots[j].curr_pos.position.y)**2 + (bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)**2)
+    					dist = math.sqrt((bots[j].curr_pos.position.x- bots[i].curr_pos.position.x)**2 + (bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)**2)
+    					print(dist)
     					if(dist < AVOID_TOL):
+    						print("Too close!")
     						temp_x[i] = 10
     						temp_y[i] = 10
     						BreakJ=True
-    					
-    					if(dist >= AVOID_TOL):
-    						print("Bot below should NOT be going towards 10 10")
-    						print(bots[i].name)
-    						#temp_x[i] = x_dest[i]
-    						#temp_y[i] = y_dest[i]
-    						bots[i].setDestPosition(x_dest[i], y_dest[i])
-    						bots[i].pub.publish(bots[i].dest_pos)
     					else:
-    						print(dist)
-    						BreakJ=True
-    						temp_x[i] = 10
-    						temp_y[i] = 10
+    						print("continue checking")
+    						print("this bot is not too close: " + bots[j].name)
+    						temp_x[i] = x_dest[i]
+    						temp_y[i] = y_dest[i]
+    						#bots[i].setDestPosition(x_dest[i], y_dest[i])
+    						#bots[i].pub.publish(bots[i].dest_pos)
+    					#else:
+    					#	print(dist)
+    					#	BreakJ=True
+    					#	temp_x[i] = 10
+    					#	temp_y[i] = 10
     						
     					#FIX TURNS! They just stop when they get within the tolerance threshold.
 
