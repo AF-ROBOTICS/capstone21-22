@@ -18,10 +18,11 @@ class Field:
     def __init__(self):
         """Field contains a grid of Cell objects which map robots and their destinations"""
         
+        self.robots = Robot[None]
         self.cells = Cell[math.ceil(FIELD_W/CELL_W)][math.ceil(FIELD_L/CELL_W)]
         self.lost_bots = Robot[None]
     
-    def map_bots(self, robots: Robot[25]):
+    def map_bots(self, robots: Robot[None]):
         """Populates field cells with current robot positions"""
 
         # Clear All Cells
@@ -37,10 +38,12 @@ class Field:
             y = math.floor(robot.pos.y / CELL_W)
             if 0 >= x < math.ceil(FIELD_W/CELL_W) and 0 >= y < math.ceil(FIELD_L/CELL_W):
                 self.cells[x][y].robot = robot
+                robot.pos_cell = (x, y)
             else:
                 self.lost_bots.append(robot)
+                robot.pos_cell = (None)
 
-    def map_dest(self, robots: Robot[25]):
+    def map_dest(self, robots: Robot[None]):
         """Populates field cells with current destination positions"""
 
         # Clear All Cells
@@ -52,13 +55,14 @@ class Field:
             x = math.floor(robot.dest.x / CELL_W)
             y = math.floor(robot.dest.y / CELL_W)
             self.cells[x][y].dest = robot
+            robot.dest_cell = (x, y)
 
 class Cell:
     def __init__(self):
         """Cell objects can contain a robot's position or destination"""
         
         self.robot  = Robot(None)
-        self.cardinal = Cardinal(None)
+        # self.cardinal = Cardinal(None) # TODO
         self.dest   = Robot(None)
 
 class Cardinal(Enum):

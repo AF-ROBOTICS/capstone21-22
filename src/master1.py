@@ -20,11 +20,11 @@ x_dest = [1.0, 1.0, 1.0, 1.30, 1.30, 1.60, 2.0, 2.0, 2.0, 2.3, 2.3, 2.6, 3.0, 3.
 y_dest = [3.0, 2.5, 2.0, 2.75, 2.25, 2.5, 3.0, 2.5, 2.0, 3.0, 2.5, 3.0, 3.0, 2.5, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0]
 temp_x = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 temp_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-curr_x = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-curr_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+#curr_x = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+#curr_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 # closest distance tolerance for avoidance
-AVOID_TOL = 0.3 # 0.2 worked
+AVOID_TOL = 0.245 # 0.2 worked
 #COLL_TOL = 0.1
 BreakJ = False
 
@@ -67,37 +67,49 @@ class Master:
     	# bots[i].curr_pos.position.x/y is most current position, temp_x/y is the most current destination locations, and dest_x/y are the invariable final locations
     	# NEXT: I need to find is the closest robots distance and if that distance is smaller than the threshold, have the robot turn right
     	for i in range(0, len(robots)): # the i robot is the robot we will be manipulating
-    		BreakJ = False	# Reset BreakJ variable
+    		print("Now I will check bots around: " + bots[i].name)
     		for j in range(0, len(robots)): # the j robots are the bots around the main i robot we are manipulating
-    			BreakJ = False
+    			BreakJ = False # Reset BreakJ variable
     			if (i != j): # skip self
     				if(abs(bots[i].curr_pos.position.x-x_dest[i]) <= 0.05 and abs(bots[i].curr_pos.position.y-y_dest[i]) <= 0.05):
-    					print(bots[i].curr_pos.position.x)
-    					print(x_dest[i])
-    					print("I'm at my final spot so I'm not moving! " + bot.name)
+    					print("I'm at my final spot so I'm not moving! " + bots[i].name)
     					BreakJ=True
     				if(BreakJ==False): # if robot is still moving towards it's final desination...
-    					
-    					FIX BELOW!
-    				
-    					dist = math.sqrt((bots[i].curr_pos.position.y- bots[j].curr_pos.position.y)**2 + (bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)**2)
+    					dist = math.sqrt((bots[j].curr_pos.position.x- bots[i].curr_pos.position.x)**2 + (bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)**2)
     					if(dist < AVOID_TOL):
-    						temp_x[i] = 10
-    						temp_y[i] = 10
-    						BreakJ=True
-    					
-    					if(dist >= AVOID_TOL):
-    						print("Bot below should NOT be going towards 10 10")
-    						print(bots[i].name)
-    						#temp_x[i] = x_dest[i]
-    						#temp_y[i] = y_dest[i]
-    						bots[i].setDestPosition(x_dest[i], y_dest[i])
-    						bots[i].pub.publish(bots[i].dest_pos)
-    					else:
+    						print("There is a bot too close to: " + bots[i].name)
+    						print("The bot that is too close is: " + bots[j].name)
     						print(dist)
+    						print("Since there is a bot that is too close, I'll go towards 10,10.")
+    						if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # above and right
+    							temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
+    							temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
+    						if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # above and left
+    							temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
+    							temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
+    						if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # below and right
+    							temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
+    							temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
+    						if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # below and left
+    							temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
+    							temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)	
     						BreakJ=True
-    						temp_x[i] = 10
-    						temp_y[i] = 10
+    					else:
+    						print("continue checking bots around: " + bots[i].name)
+    						print("this bot is not too close: " + bots[j].name)
+    						print(dist)
+    						print("Since there is no one near me, I'll go to my final desination of x_dest and y_dest.")
+    						temp_x[i] = x_dest[i]
+    						temp_y[i] = y_dest[i]
+    						print(x_dest[i])
+    						print(y_dest[i])
+    						#bots[i].setDestPosition(x_dest[i], y_dest[i])
+    						#bots[i].pub.publish(bots[i].dest_pos)
+    					#else:
+    					#	print(dist)
+    					#	BreakJ=True
+    					#	temp_x[i] = 10
+    					#	temp_y[i] = 10
     						
     					#FIX TURNS! They just stop when they get within the tolerance threshold.
 
@@ -158,8 +170,8 @@ if __name__ == '__main__':
     #    bot.setDestPosition(coordList[bot.name][0], coordList[bot.name][1])
     #    bot.pub.publish(bot.dest_pos)
  
-    temp_x = x_dest
-    temp_y = y_dest
+    temp_x = x_dest.copy()
+    temp_y = y_dest.copy()
     
     #for k in range(0, len(robots)):
     #	bots[k].setDestPosition(temp_x[k], temp_y[k])
