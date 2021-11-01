@@ -10,7 +10,7 @@ import math
 import numpy as np
 import rospy
 from geometry_msgs.msg import Point, Pose
-from Routing import Action
+from routing import Action
 from enum import Enum
 
 # Global Constants
@@ -28,6 +28,8 @@ class Robot:
         self.pos = Ground_Pose(None)
         self.dest = Ground_Pose(dest)
         self.name = usafabot
+        self.pos_cell = (None, None)
+        self.dest_cell = (None, None)
         
         # Ros Publisher
         self.pub = rospy.Publisher(self.name + '/dest_pos', Point, queue_size = 10)
