@@ -32,12 +32,14 @@ robotDestination = []
 robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
           'usafabot5', 'usafabot6', 'usafabot7', 'usafabot8', 'usafabot9',
           'usafabot10', 'usafabot11', 'usafabot12', 'usafabot13', 'usafabot14',
-          'usafabot15', 'usafabot16', 'usafabot18', 'usafabot19',
+          'usafabot15', 'usafabot16', 'usafabot17', 'usafabot18', 'usafabot19',
           'usafabot20', 'usafabot21', 'usafabot22', 'usafabot23', 'usafabot24']
 # This spells out DFEC, but causes collisions TODO: Redo order to work inside out
 x_dest = [1.0, 1.0, 1.0, 1.30, 1.30, 1.60, 2.0, 2.0, 2.0, 2.3, 2.3, 2.6, 3.0, 3.0, 3.0, 3.3, 3.3, 3.3, 3.6, 3.6, 4.0, 4.0, 4.0, 4.6, 4.6]
 y_dest = [3.0, 2.5, 2.0, 2.75, 2.25, 2.5, 3.0, 2.5, 2.0, 3.0, 2.5, 3.0, 3.0, 2.5, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0]
 
+x_dest = [2.3,2,1.6,1.3,1.3,1,1,1,2,2.3,2.6,3,3.3,3.6,4,4,4,4.6,4.6,3.6,3.3,3.3,3,3,2]
+y_dest = [2.5,2.5,2.5,2.75,2.25,3,2.5,2,3,3,3,3,3,3,3,2,2.5,2,3,2,2.5,2,2.5,2,2]
 
 # Define the Controller class
 class Master:
@@ -235,8 +237,8 @@ if __name__ == '__main__':
 
     # Calculation functions
  #   coordList = wordToPoints(word)
-        print(xrobot)
-        print(yrobot)
+    print(xrobot)
+    print(yrobot)
 
 
     print("x = ", listX)
@@ -266,5 +268,7 @@ if __name__ == '__main__':
                 print(bot.name + " is complete")
                 bot.setGroundDestPosition(0, 0)
                 break
-
+                
+                
+    print("all bots complete")
     rospy.spin()

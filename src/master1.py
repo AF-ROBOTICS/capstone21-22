@@ -89,7 +89,7 @@ class Master:
     						#Make a plane that goes vertically through robot and destination position. Then determine wheter the conflift is to the right or left
     						
     						
-    						FIX BELOW FOR CORRECT TURNING ON ROBOTS RELATIVE LEFT AND RIGHTS INSTEAD OF GRID LEFT AND RIGHT
+    						#FIX BELOW FOR CORRECT TURNING ON ROBOTS RELATIVE LEFT AND RIGHTS INSTEAD OF GRID LEFT AND RIGHT
     						#NEW: Right AND Left turns. Turn left if bot is to the right. Turn right if bot is to the left
     						if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # above/right T:LEFT
     							temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
