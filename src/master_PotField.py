@@ -94,20 +94,20 @@ if __name__ == '__main__':
     #updatePos = potential_field(xrobot, yrobot, coordList)
     
     # Assign final bot destinations
-    
+    i=0
     # Waterfall loop
     for bot in bots:
-        bot.setGroundDestPosition(x_dest[i], y_dest[i])
-        curr_x,curr_y = bot.getCurrentPos()
+        bot.setDestPosition(x_dest[i], y_dest[i])
+        curr_x,curr_y = bot.getCurrPos()
         init_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5        
 
         while True:
-            curr_x,curr_y = bot.getCurrentPos()
+            curr_x,curr_y = bot.getCurrPos()
             curr_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5        
             if (init_dist - curr_dist) > .25:
                 i+=1
-                print(bot.TIBot + " is complete")
-                bot.setGroundDestPosition(0, 0)
+                print(bot.USAFABOT + " is complete")
+                bot.setDestPosition(0, 0)
                 break
     
     while ((round(xrobot[0], 3) != round(coordList['usafabot0'][0], 3)) and ((round(yrobot[0], 3) != round(coordList['usafabot0'][1], 3)))):
