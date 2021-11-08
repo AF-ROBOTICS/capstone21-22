@@ -104,10 +104,6 @@ if __name__ == '__main__':
         tic = time.perf_counter()
         while x == 0 and y == 0:
            x, y = bot.getCurrPos()
-           ct = time.perf_counter()
-           if (ct - tic) > 20
-           	print("Time out: " + bot.name")
-           	break 
         xrobot.append(x)
         yrobot.append(y)
         toc = time.perf_counter()
