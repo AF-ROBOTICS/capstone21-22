@@ -9,7 +9,7 @@ import math
 from robot import Robot
 from enum import Enum
 import util
-import cell
+from cell import Cell
 
 # Global Variables
 FIELD_W = 5.5   # (m) x-axis
