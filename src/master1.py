@@ -23,8 +23,8 @@ y_dest = [3.0, 2.5, 2.0, 2.75, 2.25, 2.5, 3.0, 2.5, 2.0, 3.0, 2.5, 3.0, 3.0, 2.5
 
 # Resize DFEC letters
 for i in range(0,len(x_dest)):
-	x_dest[i]=2*x_dest[i]-1
-	y_dest[i]=2*y_dest[i]
+	x_dest[i]=1.2*x_dest[i]-1
+	y_dest[i]=1.6*y_dest[i]-2
 
 temp_x = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 temp_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
@@ -91,30 +91,36 @@ class Master:
     						print(dist)
     						print("Since there is a bot that is too close, I'll turn.")
     						
-    						
     						#TODO: Right now, we are doing left and rights from the grid but we should really be doing it based on the line from the robot to its dest point.
     						
     						#Make a plane that goes vertically through robot and destination position. Then determine wheter the conflift is to the right or left
+    						# may need to have temp instead of y_dest. Using dest may be a problem when it is turning
+    						#slope_dest = (y_dest[i]-bots[i].curr_pos.position.y)/(x_dest[i]-bots[i].curr_pos.position.x)
+    						#slope_collision = (bots[j].curr_pos.position.y-bots[i].curr_pos.position.y)/(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
     						
     						
-    						#FIX BELOW FOR CORRECT TURNING ON ROBOTS RELATIVE LEFT AND RIGHTS INSTEAD OF GRID LEFT AND RIGHT
-    						#NEW: Right AND Left turns. Turn left if bot is to the right. Turn right if bot is to the left
-    						#if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # above/right T:LEFT
-    						#	temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    						#	temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
-    						#if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # above/left  T:RIGHT
-    						#	temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    						#	temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
-    						#if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # below/right T:LEFT
-    						#	temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    						#	temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
-    						#if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # below/left  T:RIGHT
-    						#	temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    						#	temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)	
+    						#dest_val = 1/((y_dest[i]-bots[i].curr_pos.position.y)/(x_dest[i]-bots[i].curr_pos.position.x))
+    						#collision_val = 1/((bots[j].curr_pos.position.y-bots[i].curr_pos.position.y)/(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x))
+    						
+    						#NEW: LEFT and RIGHT TURNS: In Process (based on slopes) (Make four new cases based on dest position and curr_x/y) (then determine whether j robot is above or below the line including dest and i robot. If the j robot is below, turn right, else turn left)
+    						#if(x_dest[i] >= bots[i].curr_pos.position.x and y_dest[i] >= bots[i].curr_pos.position.y): # above and right
+    						#	if(dest_val > collision_val): # if dest_val > collision_val, turn RIGHT
+    						#	else: # if collision_val > dest_val, turn LEFT
+    						
+    						#if(x_dest[i] <= bots[i].curr_pos.position.x and y_dest[i] >= bots[i].curr_pos.position.y): # above and left
+    						#	if(): # if dest_val > collision_val, turn RIGHT
+    						#	else: # if collision_val > dest_val, turn LEFT
+    						
+    						#if(x_dest[i] >= bots[i].curr_pos.position.x and y_dest[i] <= bots[i].curr_pos.position.y): # below and right
+    						#	if(): # if dest_val > collision_val, turn RIGHT
+    						#	else: # if collision_val > dest_val, turn LEFT
+    						
+    						#if(x_dest[i] <= bots[i].curr_pos.position.x and y_dest[i] <= bots[i].curr_pos.position.y): # below and left
+    						#	if(): # if dest_val > collision_val, turn RIGHT
+    						#	else: # if collision_val > dest_val, turn LEFT
     						
     						
-    						
-    						#OLD: Only turns right:
+    						#OLD: RIGHT turns only:
     						if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # above and right
     							temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
     							temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
@@ -126,7 +132,21 @@ class Master:
     							temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
     						if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # below and left
     							temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    							temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)	
+    							temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
+    							
+    						#OLD: LEFT turns only:
+    						#if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # above and right
+    						#	temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
+    						#	temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
+    						#if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # above and left
+    						#	temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
+    						#	temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
+    						#if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # below and right
+    						#	temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
+    						#	temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
+    						#if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # below and left
+    						#	temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
+    						#	temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)		
     							
     					 							
 	
