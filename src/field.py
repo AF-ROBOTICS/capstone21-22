@@ -115,3 +115,17 @@ class Field:
                 return False
         return True
         
+# Enumerates Actions for use in AI
+# class Action(Enum):
+#     STAY = 0
+#     RIGHT = 1
+#     UP = 2
+#     LEFT = 3
+#     DOWN = 4
+
+# class Sub_Action(Enum):
+#     STAY = 0
+#     FORW_1 = 1
+#     BACK_1 = 2
+#     RIGH_90 = 3
+#     LEFT_90 = 4
