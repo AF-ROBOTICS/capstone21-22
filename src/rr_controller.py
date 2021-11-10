@@ -45,7 +45,7 @@ class Controller:
         self.rate = rospy.Rate(100)
 
         self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=100)
-        rospy.Subscriber('/target_avg', Pose, self.callback_target)
+        rospy.Subscriber('dest_pos', Pose, self.callback_target)
 
         self.tfBuffer = tf2_ros.Buffer()
         self.listener = tf2_ros.TransformListener(self.tfBuffer)
