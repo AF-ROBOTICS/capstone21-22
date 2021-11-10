@@ -37,9 +37,8 @@ def cleanup(field: Field):
 def evaluate_action(field: Field, action: Action):
     return
 
-# a*: A-Star Search Algorithm for Routing
-def aStarSearch(field: Field): # FIXME: This is CS471 A*
-    """CS 471 PEX 1 Question 4"""
+# A*: A-Star Search Algorithm for Routing
+def a_star(field: Field):
 
     # Declare Priority Queue and Populate with Start State
     states = util.PriorityQueue()
