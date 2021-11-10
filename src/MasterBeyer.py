@@ -25,20 +25,21 @@ xrobot = []
 yrobot = []
 robotDestination = []
 DEST_DIST = .25
-# TODO: read  11
+TIMEOUT_THRESH = 10
+
 # TODO: change this list to match number of robots
 # must match number of robots entered by user
 robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
           'usafabot5', 'usafabot6', 'usafabot7', 'usafabot8', 'usafabot9',
-          'usafabot10', 'usafabot12', 'usafabot13', 'usafabot14',
+          'usafabot10', 'usafabot11', 'usafabot12', 'usafabot13', 'usafabot14',
           'usafabot15', 'usafabot16', 'usafabot17', 'usafabot18', 'usafabot19',
           'usafabot20', 'usafabot21', 'usafabot22', 'usafabot23', 'usafabot24']
 
 #x_dest = [1.0, 1.0, 1.0, 1.30, 1.30, 1.60, 2.0, 2.0, 2.0, 2.3, 2.3, 2.6, 3.0, 3.0, 3.0, 3.3, 3.3, 3.3, 3.6, 3.6, 4.0, 4.0, 4.0, 4.6, 4.6]
 #y_dest = [3.0, 2.5, 2.0, 2.75, 2.25, 2.5, 3.0, 2.5, 2.0, 3.0, 2.5, 3.0, 3.0, 2.5, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0]
 
-x_dest = [2.3,2,1.6,1.3,1.3,1,1,1,2,2.3,3,3.3,3.6,4,4,4,4.6,4.6,3.6,3.3,3.3,3,3,2]
-y_dest = [2.5,2.5,2.5,2.75,2.25,3,2.5,2,3,3,3,3,3,3,2,2.5,2,3,2,2.5,2,2.5,2,2]
+x_dest = [2.3,2,1.6,1.3,1.3,1,1,1,2,2.3,2.6,3,3.3,3.6,4,4,4,4.6,4.6,3.6,3.3,3.3,3,3,2]
+y_dest = [2.5,2.5,2.5,2.75,2.25,3,2.5,2,3,3,3,3,3,3,3,2,2.5,2,3,2,2.5,2,2.5,2,2]
 
 # Define the Controller class
 class Master:
@@ -104,6 +105,9 @@ if __name__ == '__main__':
         tic = time.perf_counter()
         while x == 0 and y == 0:
            x, y = bot.getCurrPos()
+           if (time.perf_counter() - tic > TIMEOUT_THRESH):
+           	print("Timeout: " + bot.name)
+           	break; 
         xrobot.append(x)
         yrobot.append(y)
         toc = time.perf_counter()
