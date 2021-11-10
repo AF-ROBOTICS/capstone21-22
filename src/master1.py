@@ -33,7 +33,8 @@ temp_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
 
 # closest distance tolerance for avoidance
 #AVOID_TOL = 0.249 # this is the ideal distance for robots to go in between each other for the original dest points
-AVOID_TOL = 0.295 # increased avoid tolerance for test demo with larger DFEC
+#AVOID_TOL = 0.295 # increased avoid tolerance for test demo with larger DFEC
+AVOID_TOL = 0.35 # increased avoid tolerance for test demo with larger DFEC
 #COLL_TOL = 0.1
 BreakJ = False
 
