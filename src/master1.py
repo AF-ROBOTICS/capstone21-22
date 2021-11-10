@@ -28,14 +28,10 @@ for i in range(0,len(x_dest)):
 
 temp_x = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 temp_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-#curr_x = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-#curr_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
-# closest distance tolerance for avoidance
+# Closest distance tolerance for avoidance
 #AVOID_TOL = 0.249 # this is the ideal distance for robots to go in between each other for the original dest points
-#AVOID_TOL = 0.295 # increased avoid tolerance for test demo with larger DFEC
 AVOID_TOL = 0.35 # increased avoid tolerance for test demo with larger DFEC
-#COLL_TOL = 0.1
 BreakJ = False
 
 # Define the Controller class
@@ -71,11 +67,10 @@ class Master:
         self.dest_pos.y = y      
         
     # Iterates through bots current positions and if they are too close to one another, 
-    # they will temporarly alter their path by making a right turn to avoid collision..
-    # TODO make sure the robots do not keep turning once they get to their final destination.
+    # they will temporarly alter their path by making a right turn to avoid collision.
     def airplane(self):
-    	# bots[i].curr_pos.position.x/y is most current position, temp_x/y is the most current destination locations, and dest_x/y are the invariable final locations
-    	# NEXT: I need to find is the closest robots distance and if that distance is smaller than the threshold, have the robot turn right
+    	# bots[i].curr_pos.position.x/y is most current position, temp_x/y is the most current destination locations, and dest_x/y are the invariable final locations.
+    	# POTENTIAL UPDATE: We stop checking bots if only one is close, and start turning immediatly. An update would be to turn based on the closest robot.
     	for i in range(0, len(robots)): # the i robot is the robot we will be manipulating
     		print("Now I will check bots around: " + bots[i].name)
     		for j in range(0, len(robots)): # the j robots are the bots around the main i robot we are manipulating
@@ -160,12 +155,8 @@ class Master:
     						if (j == 24):
     							temp_x[i] = x_dest[i]
     							temp_y[i] = y_dest[i]
-    						#temp_x[i] = x_dest[i]
-    						#temp_y[i] = y_dest[i]
     						print(x_dest[i])
     						print(y_dest[i])
-    						#bots[i].setDestPosition(x_dest[i], y_dest[i])
-    						#bots[i].pub.publish(bots[i].dest_pos)
 
     			# this needs to be a separate if statement so the correct loop is broken out of. We did not know how to do a double break
     			if (BreakJ == True): # if a j robot is too close to the i robot, we're not even going to keep checking because the i robot needs to get turning ASAP
@@ -184,8 +175,8 @@ if __name__ == '__main__':
         bots.append(Master(k))
     
     # Global Variables
-    xrobot = []	# initial x position for first hungarian assignment
-    yrobot = []	# initial y position for first hungarian assignment
+    xrobot = []
+    yrobot = []
 
     # Get initial bot positions
     for bot in bots:
@@ -198,29 +189,22 @@ if __name__ == '__main__':
         yrobot.append(y)
         print("Completed initial assignment for bot: " + bot.name)
     
-    # Puts initial destination and current coordinates into coordList. coordList gives us back best final locations.
+    # Puts initial destination and current coordinates into coordList. coordList gives us optimized final locations.
     coordList = build_hungarian(xrobot, yrobot, x_dest, y_dest)
  	   
-    # Assign final bot destinations
+    # Assign optimized final bot destinations
     for k in range(0, len(robots)):
     	 x_dest[k] = coordList[bots[k].name][0]
     	 y_dest[k] = coordList[bots[k].name][1]
     	 
-    # Uses setDestPosition to assign initial destination positions in coordList to self.dest_pos.x/y and then publishes to bot.dest_pos 
-    #for bot in bots:
-    #    bot.setDestPosition(coordList[bot.name][0], coordList[bot.name][1])
-    #    bot.pub.publish(bot.dest_pos)
- 
+    # Copy final destination values to temporary desination array. Had to use .copy() because editing temp_x would edit dest_x
     temp_x = x_dest.copy()
     temp_y = y_dest.copy()
-    
-    #for k in range(0, len(robots)):
-    #	bots[k].setDestPosition(temp_x[k], temp_y[k])
-    
-    # Iterate through bots to get current positions and put the positions in the global arrays curr_x and curr_y. Then run airplane function for basic collision avoidance with updated current positions.
+
+    # Publish new temporary desination positions. Then, run airplane function for basic collision avoidance with updated current positions.
     while 1==1:
     
-    	#Current
+    	#Publish current values
     	for k in range(0, len(robots)):
     		bots[k].setDestPosition(temp_x[k], temp_y[k])
     	for bot in bots:
@@ -228,8 +212,8 @@ if __name__ == '__main__':
     	
         # Current positions are bots[i].curr_pos.position.x and bots[i].curr_pos.position.y. We subscribe to this. Run airplane to check for collisions.
     	bot.airplane()
-    	
   	
+  	# Test Outputs
     	#print(bots[0].curr_pos.position.x)
     	#print(bots[0].curr_pos.position.y)
     	#print(bots[23].dest_pos.x)
