@@ -2,7 +2,7 @@
 
 # Field.py - Robotic Teaming Artificial Intelligence
 # Author: Cason Couch
-# Description: Contains the Field and Cell classes
+# Description: Contains the Field class
 
 # Imports
 import math
@@ -20,6 +20,7 @@ class Field:
     """Field contains a grid of Cell objects which map robots and their destinations"""
     
     def __init__(self):
+        """Field objects contain an array of Robot objects, Grid of Cells, and array for lost robots"""
         self.robots = Robot[None]
         self.cells = Cell[math.ceil(FIELD_W/CELL_W)][math.ceil(FIELD_L/CELL_W)]
         self.lost_bots = Robot[None]
@@ -60,16 +61,18 @@ class Field:
             robot.dest_cell = (x, y)
 
     # Cleanup: Centers Robots in Cells and Orients at Right Angles
-    def cleanup(field: Field):
-        for robot in field.robots:
+    def cleanup(self):
+        """Moves bots to cell locations and places lost bots back in field"""
+        for robot in self.robots:
             
         return
 
-    def evaluate_action(field: Field, action: Action):
-        return
+    # def evaluate_action(self, action: Action):
+    #     return
 
     # A*: A-Star Search Algorithm for Routing
     def a_star(field: Field):
+        """A* Search Algorithm for """
 
         # Declare Priority Queue and Populate with Start State
         states = util.PriorityQueue()

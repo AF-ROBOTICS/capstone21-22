@@ -2,7 +2,7 @@
 
 # Robot.py - Robotic Teaming Artificial Intelligence
 # Author: Cason Couch, Anthony Tolbert
-# Description: This file contains the Robot class and constants
+# Description: This file contains the Robot class
 
 # Imports
 import time
