@@ -36,7 +36,11 @@ class Robot:
         
         # Ros Listener
         rospy.Subscriber(self.name + '/curr_pos', Pose, self.callback_currPos)
-        
+
+    # -------------------------------------------------------------------------------
+    # Class Functions
+    # -------------------------------------------------------------------------------
+    
     def callback_currPos(self, data): # Updates current position by listening to rosTopic
         self.pos.x = round(data.position.x, 3)
         self.pos.y = round(data.position.y, 3)
@@ -50,12 +54,9 @@ class Robot:
         # return None # "Running" "Finished" or
         
     def setDest(self, dest_point, dest_theta = 0): # changed from (x,y) to single object, Can change back
-        self.dest.x = dest_point.x
-        self.dest.y = dest_point.y
+        self.dest.x = dest_point[0]
+        self.dest.y = dest_point[1]
         self.dest.theta = dest_theta
-    
-    def getAction(self): # TODO: Get Action
-        return Action(None)
     
 class Ground_Pose:
     def __init__(self, x = -1, y = -1, theta = -1):
