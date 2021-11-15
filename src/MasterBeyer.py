@@ -135,6 +135,8 @@ if __name__ == '__main__':
 
         while True:
             curr_x, curr_y = bot.getCurrPos()
+            bot.setGroundDestPosition(x_dest[i], y_dest[i])
+            bot.pub.publish(bot.dest_pos)
             #print(curr_x, curr_y)
             curr_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
             if curr_dist < DEST_DIST :
