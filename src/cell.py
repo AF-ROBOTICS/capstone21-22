@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+
+# cell.py - Robotic Teaming Artificial Intelligence
+# Author: Cason Couch
+# Description: Contains the Cell class
+
 import robot
 
 class Cell:
