@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+
+  <group ns="usafabot0">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+  
+  <group ns="usafabot1">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot2">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot3">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot4">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot5">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot6">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot7">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot8">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot9">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot10">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot11">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot12">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot13">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot14">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot15">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot16">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot17">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot18">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot19">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot20">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+  
+   <group ns="usafabot21">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot22">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot23">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+    <group ns="usafabot24">
+
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+
+  </group>
+
+  
+
+</launch>
