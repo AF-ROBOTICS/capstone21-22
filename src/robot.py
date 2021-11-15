@@ -58,9 +58,6 @@ class Robot:
         self.dest.y = dest_point[1]
         self.dest.theta = dest_theta
     
-    def getAction(self): # TODO: Get Action
-        return Action(None)
-    
 class Ground_Pose:
     def __init__(self, x = -1, y = -1, theta = -1):
         """Our ground bots need only x, y, and theta for navigation"""
