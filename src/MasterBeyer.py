@@ -25,7 +25,8 @@ xrobot = []
 yrobot = []
 robotDestination = []
 DEST_DIST = .25
-# TODO: read  11
+TIMEOUT_THRESH = 10
+
 # TODO: change this list to match number of robots
 # must match number of robots entered by user
 robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
@@ -104,6 +105,9 @@ if __name__ == '__main__':
         tic = time.perf_counter()
         while x == 0 and y == 0:
            x, y = bot.getCurrPos()
+           if (time.perf_counter() - tic > TIMEOUT_THRESH):
+           	print("Timeout: " + bot.name)
+           	break; 
         xrobot.append(x)
         yrobot.append(y)
         toc = time.perf_counter()
@@ -131,6 +135,8 @@ if __name__ == '__main__':
 
         while True:
             curr_x, curr_y = bot.getCurrPos()
+            bot.setGroundDestPosition(x_dest[i], y_dest[i])
+            bot.pub.publish(bot.dest_pos)
             #print(curr_x, curr_y)
             curr_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
             if curr_dist < DEST_DIST :
