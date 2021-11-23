@@ -25,11 +25,11 @@ from squaternion import Quaternion
 #     Freq: 100 Hz
 class Controller:
     # heading tolerance +/- degrees
-    HDG_TOL = 15
+    HDG_TOL = 20
     # destination tolerance +/- meters
-    DEST_TOL = 0.05
+    DEST_TOL = 0.08
     # roation controller constant
-    K_HDG = 0.1
+    K_HDG = 0.05
     
     def __init__(self):
         # instance variables unique to each instance of class
@@ -109,6 +109,8 @@ class Controller:
             # Convert both current and goal headings to 0 to 360 deg
             currYaw360 = self.headingConvert(self.currYaw)
             goalYaw360 = self.headingConvert(goalYaw)
+            print("CURRENT YAW: ", currYaw360)
+            print("GOAL YAW: ", goalYaw360)
 
             yawErr = goalYaw360 - currYaw360
 
@@ -131,15 +133,15 @@ class Controller:
             if dist > self.DEST_TOL :
                 angular = self.K_HDG * yawErr
                 if abs(yawErr) < self.HDG_TOL :
-                    linear = .5
+                    linear = .2
                 else :
                     linear = 0
 
             # limits bounding
-            if angular > 2 :
-                angular = 2
-            elif (angular < -2) :
-                angular = -2
+            if angular > 1.25 :
+                angular = 1.25
+            elif (angular < -1.25) :
+                angular = -1.25
 
             # TODO: remove this line when moving to real robot; 
             # this is used because the simulated robot moves clockwise with a 
@@ -148,6 +150,7 @@ class Controller:
             
             self.twist.linear.x = linear
             self.twist.angular.z = angular
+            print("Angular Velocity: ", angular)
             self.pub.publish(self.twist)
         
     def shutdownhook(self):

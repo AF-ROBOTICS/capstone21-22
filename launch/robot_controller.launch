@@ -8,6 +8,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
