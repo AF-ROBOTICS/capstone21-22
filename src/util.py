@@ -1,5 +1,31 @@
 import heapq
 
+# Global Variables
+FIELD_W = 5.5   # (m) x-axis
+FIELD_L = 5     # (m) y-axis
+CELL_W  = 0.2   # (m) 
+
+FIELD_X = FIELD_W // CELL_W + 1
+FIELD_Y = FIELD_L // CELL_W + 1
+
+ROBOT_W = 0.1   # (m)
+ROBOT_L = 0.15  # (m)
+DEST_TOLERANCE = (ROBOT_W**2 + ROBOT_L**2)**.5 # (m) temporary until we figure out actual distance
+
+# Enumerates Actions for use in AI
+class Action(Enum):
+    STAY = 0
+    RIGHT = 1
+    UP = 2
+    LEFT = 3
+    DOWN = 4
+
+# Robot Statuses
+class Status(Enum):
+    START = 0
+    RUNNING = 1
+    FINISHED = 2
+
 class PriorityQueue:
     """
       Implements a priority queue data structure. Each inserted item
