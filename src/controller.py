@@ -134,7 +134,7 @@ class Controller:
                     linear = .5
                 else :
                     linear = 0
-
+            # Move this under the other if so the bot stops moving all together???
             # limits bounding
             if angular > 2 :
                 angular = 2
