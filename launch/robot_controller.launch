@@ -12,13 +12,13 @@
 	/>
 
   </group>
-  
   <group ns="usafabot1">
 
 	<node
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -28,6 +28,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -37,6 +38,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -46,6 +48,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -55,6 +58,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -64,6 +68,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -73,6 +78,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -82,6 +88,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -91,6 +98,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -100,6 +108,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -109,6 +118,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -118,6 +128,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -127,6 +138,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -136,6 +148,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -145,6 +158,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -154,6 +168,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -163,6 +178,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -172,6 +188,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -181,6 +198,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -190,6 +208,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -200,6 +219,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -209,6 +229,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -218,6 +239,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>
@@ -227,6 +249,7 @@
 	name="controller"
 	pkg="capstone21-22"
 	type="controller.py"
+	output="screen"
 	/>
 
   </group>

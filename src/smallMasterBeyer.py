@@ -21,14 +21,12 @@ from nav_msgs.msg import Odometry
 # TODO: what if you have more or less robots than needed?
 
 # Global Variables
-xrobot = []
-yrobot = []
-robotDestination = []
+# robotDestination = []
 DEST_DIST = .25
 # TODO: read  11
 # TODO: change this list to match number of robots
 # must match number of robots entered by user
-robots = ['usafabot0', 'usafabot22', 'usafabot23']
+robots = ['usafabot0', 'usafabot1', 'usafabot2']
 #x_dest = [1.0, 1.0, 1.0, 1.30, 1.30, 1.60, 2.0, 2.0, 2.0, 2.3, 2.3, 2.6, 3.0, 3.0, 3.0, 3.3, 3.3, 3.3, 3.6, 3.6, 4.0, 4.0, 4.0, 4.6, 4.6]
 #y_dest = [3.0, 2.5, 2.0, 2.75, 2.25, 2.5, 3.0, 2.5, 2.0, 3.0, 2.5, 3.0, 3.0, 2.5, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0]
 
@@ -89,6 +87,10 @@ if __name__ == '__main__':
     # Assign number of robot masters
     for k in robots:
         bots.append(Master(k))
+        
+    # Global Variables
+    xrobot = []
+    yrobot = []
 
 #    Get initial bot positions
     for bot in bots:
@@ -99,9 +101,9 @@ if __name__ == '__main__':
         tic = time.perf_counter()
         while x == 0 and y == 0:
            x, y = bot.getCurrPos()
-           if (time.perf_counter() - tic) > 5:
-                print("timeout, " + bot.name)
-                break;
+           #if (time.perf_counter() - tic) > 5:
+           #     print("timeout, " + bot.name)
+           #     break;
         xrobot.append(x)
         yrobot.append(y)
         toc = time.perf_counter()
@@ -120,26 +122,27 @@ if __name__ == '__main__':
     i = 0
 
     for bot in bots:
-        bot.setGroundDestPosition(x_dest[i], y_dest[i])
+        bot.setDestPosition(x_dest[i], y_dest[i])
         bot.pub.publish(bot.dest_pos)
         print("Dest set for:" + bot.name)
-        tic = time.perf_counter()
-        curr_x, curr_y = bot.getCurrPos()
-        init_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
+        i+=1
+#        tic = time.perf_counter()
+#        curr_x, curr_y = bot.getCurrPos()
+#        init_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
 
-        while True:
-            bot.setGroundDestPosition(x_dest[i], y_dest[i])
-            bot.pub.publish(bot.dest_pos)
-            curr_x, curr_y = bot.getCurrPos()
-            #print(curr_x, curr_y)
-            curr_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
-            if curr_dist < DEST_DIST :
-                i += 1
-                toc = time.perf_counter()
-                print(bot.name + " is complete")
-                print(toc-tic)
-                bot.setGroundDestPosition(0, 0)
-                break
+#        while True:
+#            bot.setGroundDestPosition(x_dest[i], y_dest[i])
+#            bot.pub.publish(bot.dest_pos)
+#            curr_x, curr_y = bot.getCurrPos()
+#            print(curr_x, curr_y)
+#            curr_dist = ((x_dest[i] - bot.curr_pos.position.x) ** 2 + (y_dest[i] - self.curr_pos.position.y) ** 2) ** 0.5
+#            if curr_dist < DEST_DIST :
+#                i += 1
+#                toc = time.perf_counter()
+#                print(bot.name + " is complete")
+#                print(toc-tic)
+#                bot.setGroundDestPosition(0, 0)
+#                break
                 
                 
     print("all bots complete")

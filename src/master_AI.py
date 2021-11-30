@@ -1,223 +1,76 @@
 #!/usr/bin/env python3
+"""----------------------------------------------------------------------------------
+Ground Robot Teaming Capstone: Ground Controller
+Date: 15 Nov 2021
+----------------------------------------------------------------------------------"""
 
 # Import important libraries
+import roslib
 import rospy
 import time
-import math
-from hungarian import build_hungarian
+import serial
+import array
+from std_msgs.msg import String
+from threading import Thread
 
-from geometry_msgs.msg import Point, Pose
+from geometry_msgs.msg import Point
+from geometry_msgs.msg import Pose
+from nav_msgs.msg import Odometry
 
-#must match number of robots entered by user
-robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
-          'usafabot5', 'usafabot6', 'usafabot7', 'usafabot8', 'usafabot9',
-          'usafabot10', 'usafabot11', 'usafabot12', 'usafabot13', 'usafabot14',
-          'usafabot15', 'usafabot16', 'usafabot17', 'usafabot18', 'usafabot19',
-          'usafabot20', 'usafabot21', 'usafabot22', 'usafabot23', 'usafabot24']
+from robot import Robot
+from field import Field
 
-#Destination Points
+# TODO: take current robot position instead of assigning initial positions - fixed
+# TODO: what if you have more or less robots than needed?
 
-#Original Points:
-x_dest = [1.0, 1.0, 1.0, 1.30, 1.30, 1.60, 2.0, 2.0, 2.0, 2.3, 2.3, 2.6, 3.0, 3.0, 3.0, 3.3, 3.3, 3.3, 3.6, 3.6, 4.0, 4.0, 4.0, 4.6, 4.6, 0.0]
-y_dest = [3.0, 2.5, 2.0, 2.75, 2.25, 2.5, 3.0, 2.5, 2.0, 3.0, 2.5, 3.0, 3.0, 2.5, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0, 0.0]
+# Global Variables
+init_pos = []
+robotDestination = []
+DEST_DIST = .25
 
-# Resize DFEC letters
-for i in range(0,len(x_dest)):
-	x_dest[i]=2*x_dest[i]-1
-	y_dest[i]=2*y_dest[i]
+# TODO: change this list to match number of robots
+# must match number of robots entered by user
+robot_ids = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
+    'usafabot5', 'usafabot6', 'usafabot7', 'usafabot8', 'usafabot9',
+    'usafabot10', 'usafabot11', 'usafabot12', 'usafabot13', 'usafabot14',
+    'usafabot15', 'usafabot16', 'usafabot17', 'usafabot18', 'usafabot19',
+    'usafabot20', 'usafabot21', 'usafabot22', 'usafabot23', 'usafabot24']
 
-temp_x = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-temp_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-#curr_x = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-#curr_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+x_dest = [2.3,2,1.6,1.3,1.3,1,1,1,2,2.3,2.6,3,3.3,3.6,4,4,4,4.6,4.6,3.6,3.3,3.3,3,3,2]
+y_dest = [2.5,2.5,2.5,2.75,2.25,3,2.5,2,3,3,3,3,3,3,3,2,2.5,2,3,2,2.5,2,2.5,2,2]
 
-# closest distance tolerance for avoidance
-#AVOID_TOL = 0.249 # this is the ideal distance for robots to go in between each other for the original dest points
-AVOID_TOL = 0.295 # increased avoid tolerance for test demo with larger DFEC
-#COLL_TOL = 0.1
-BreakJ = False
+# Save the Above Information as an Arrary of Robot Objects
+robots = Robot[None]
+for i in range(robot_ids):
+    robots.append(Robot(robot_ids[i], (x_dest[i], y_dest[i], 0)))
 
-# Define the Controller class
-class Master:
-
-    def __init__(self, USAFABOT):
-        self.curr_pos = Pose()
-        self.dest_pos = Point()
-        self.name = USAFABOT
-
-        # -----------------------------------------------------------------------------
-        # Topics and Timers 
-        # -----------------------------------------------------------------------------      
-        # Publish to the controller
-        self.pub = rospy.Publisher(self.name + '/dest_pos', Point, queue_size = 10)
-        # Listen for the bots' current position to the controller
-        rospy.Subscriber(self.name + '/curr_pos', Pose, self.callback_currPos)
-        #rospy.Subscriber(USAFABOT + '/odom', Odometry, self.callback_groundListener)
-
-    #-------------------------------------------------------------------------------
-    # Class Functions
-    #-------------------------------------------------------------------------------
-    def callback_currPos(self, data):
-        self.curr_pos.position.x = round(data.position.x, 3)
-        self.curr_pos.position.y = round(data.position.y, 3)
-        self.curr_pos.orientation.z = round(data.orientation.z, 3)
-
-    def getCurrPos(self):
-        return self.curr_pos.position.x, self.curr_pos.position.y;
-
-    def setDestPosition(self, x, y):
-        self.dest_pos.x = x
-        self.dest_pos.y = y      
-        
-    # Iterates through bots current positions and if they are too close to one another, 
-    # they will temporarly alter their path by making a right turn to avoid collision..
-    # TODO make sure the robots do not keep turning once they get to their final destination.
-    def airplane(self):
-    	# bots[i].curr_pos.position.x/y is most current position, temp_x/y is the most current destination locations, and dest_x/y are the invariable final locations
-    	# NEXT: I need to find is the closest robots distance and if that distance is smaller than the threshold, have the robot turn right
-    	for i in range(0, len(robots)): # the i robot is the robot we will be manipulating
-    		print("Now I will check bots around: " + bots[i].name)
-    		for j in range(0, len(robots)): # the j robots are the bots around the main i robot we are manipulating
-    			BreakJ = False # Reset BreakJ variable
-    			if (i != j): # skip self
-    				if(abs(bots[i].curr_pos.position.x-x_dest[i]) <= 0.05 and abs(bots[i].curr_pos.position.y-y_dest[i]) <= 0.05):
-    					print("I'm at my final spot so I'm not moving! " + bots[i].name)
-    					BreakJ=True
-    				if(BreakJ==False): # if robot is still moving towards it's final desination...
-    					dist = math.sqrt((bots[j].curr_pos.position.x- bots[i].curr_pos.position.x)**2 + (bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)**2)
-    					if(dist < AVOID_TOL):
-    						print("There is a bot too close to: " + bots[i].name)
-    						print("The bot that is too close is: " + bots[j].name)
-    						print(dist)
-    						print("Since there is a bot that is too close, I'll turn.")
-    						
-    						
-    						#TODO: Right now, we are doing left and rights from the grid but we should really be doing it based on the line from the robot to its dest point.
-    						
-    						#Make a plane that goes vertically through robot and destination position. Then determine wheter the conflift is to the right or left
-    						
-    						
-    						#FIX BELOW FOR CORRECT TURNING ON ROBOTS RELATIVE LEFT AND RIGHTS INSTEAD OF GRID LEFT AND RIGHT
-    						#NEW: Right AND Left turns. Turn left if bot is to the right. Turn right if bot is to the left
-    						#if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # above/right T:LEFT
-    						#	temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    						#	temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
-    						#if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # above/left  T:RIGHT
-    						#	temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    						#	temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
-    						#if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # below/right T:LEFT
-    						#	temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    						#	temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
-    						#if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # below/left  T:RIGHT
-    						#	temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    						#	temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)	
-    						
-    						
-    						
-    						#OLD: Only turns right:
-    						if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # above and right
-    							temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    							temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
-    						if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # above and left
-    							temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    							temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
-    						if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # below and right
-    							temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    							temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
-    						if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y): # below and left
-    							temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    							temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)	
-    							
-    					 							
-	
-    						BreakJ=True
-    					else:
-    						print("continue checking bots around: " + bots[i].name)
-    						print("this bot is not too close: " + bots[j].name)
-    						print(dist)
-    						print("Since there is no one near me, I'll go to my final desination of x_dest and y_dest.")
-    						if (j == 24):
-    							temp_x[i] = x_dest[i]
-    							temp_y[i] = y_dest[i]
-    						#temp_x[i] = x_dest[i]
-    						#temp_y[i] = y_dest[i]
-    						print(x_dest[i])
-    						print(y_dest[i])
-    						#bots[i].setDestPosition(x_dest[i], y_dest[i])
-    						#bots[i].pub.publish(bots[i].dest_pos)
-
-    			# this needs to be a separate if statement so the correct loop is broken out of. We did not know how to do a double break
-    			if (BreakJ == True): # if a j robot is too close to the i robot, we're not even going to keep checking because the i robot needs to get turning ASAP
-    				print('Breaking out of J')
-    				break
-    		print("end J")
-    	print("end I")
-
-# create empty array of bots
-bots = []
-
+# Main
 if __name__ == '__main__':
     rospy.init_node('master', anonymous=True)
-    # Assign number of robot masters
-    for k in robots:
-        bots.append(Master(k))
-    
-    # Global Variables
-    xrobot = []	# initial x position for first hungarian assignment
-    yrobot = []	# initial y position for first hungarian assignment
 
     # Get initial bot positions
-    for bot in bots:
-        x = 0
-        y = 0
-        # block until bot's RR is operational
-        while(x == 0 and y == 0):
-            x,y = bot.getCurrPos()
-        xrobot.append(x)
-        yrobot.append(y)
-        print("Completed initial assignment for bot: " + bot.name)
-    
-    # Puts initial destination and current coordinates into coordList. coordList gives us back best final locations.
-    coordList = build_hungarian(xrobot, yrobot, x_dest, y_dest)
- 	   
-    # Assign final bot destinations
-    for k in range(0, len(robots)):
-    	 x_dest[k] = coordList[bots[k].name][0]
-    	 y_dest[k] = coordList[bots[k].name][1]
-    	 
-    # Uses setDestPosition to assign initial destination positions in coordList to self.dest_pos.x/y and then publishes to bot.dest_pos 
-    #for bot in bots:
-    #    bot.setDestPosition(coordList[bot.name][0], coordList[bot.name][1])
-    #    bot.pub.publish(bot.dest_pos)
- 
-    temp_x = x_dest.copy()
-    temp_y = y_dest.copy()
-    
-    #for k in range(0, len(robots)):
-    #	bots[k].setDestPosition(temp_x[k], temp_y[k])
-    
-    # Iterate through bots to get current positions and put the positions in the global arrays curr_x and curr_y. Then run airplane function for basic collision avoidance with updated current positions.
-    while 1==1:
-    
-    	#Current
-    	for k in range(0, len(robots)):
-    		bots[k].setDestPosition(temp_x[k], temp_y[k])
-    	for bot in bots:
-    		bot.pub.publish(bot.dest_pos)
-    	
-        # Current positions are bots[i].curr_pos.position.x and bots[i].curr_pos.position.y. We subscribe to this. Run airplane to check for collisions.
-    	bot.airplane()
-    	
-  	
-    	#print(bots[0].curr_pos.position.x)
-    	#print(bots[0].curr_pos.position.y)
-    	#print(bots[23].dest_pos.x)
-    	#print(bots[23].dest_pos.y)
-    	#print(temp_x[23])
-    	#print(temp_y[23])
-    	#print(x_dest[23])
-    	#print(y_dest[23])
-    	
+    for robot in robots:
+        
+        # Wait for RR
+        print("Waiting bot: " + robot.name)
+        tic = time.perf_counter()
+        while robot.pos.x == 0 and robot.pos.y == 0:
+           time.sleep(0.01)
 
-	#rospy.spin()
+        init_pos.append((robot.pos.x, robot.pos.y))
+        toc = time.perf_counter()
+        t = toc-tic
+        print("Completed bot: " + robot.name)
+        print(t)
+
+    print("Initial Positions: " + init_pos)
+
+    # Assign final bot destinations
+    for i in range(robots):
+        robots[i].setDest((x_dest[i], y_dest[i]))
+        robots[i].pub.publish(robots[i].dest)
+        print("Dest set for:" + robots[i].name)
     
+    # Finished
+    print("All Bots Assembled")
+    rospy.spin()

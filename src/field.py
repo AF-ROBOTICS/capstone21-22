@@ -21,11 +21,10 @@ class Field:
     
     def __init__(self):
         """Field objects contain an array of Robot objects, Grid of Cells, and array for lost robots"""
-        self.robots = Robot[None]
         self.cells = Cell[math.ceil(FIELD_W/CELL_W)][math.ceil(FIELD_L/CELL_W)]
         self.lost_bots = Robot[None]
     
-    def map_bots(self, robots: Robot[None]):
+    def map_bots(self, robots):
         """Populates field cells with current robot positions"""
 
         # Clear All Cells
@@ -37,16 +36,16 @@ class Field:
 
         # Add All Robots to Respective Cells
         for robot in robots:
-            x = math.floor(robot.pos.x / CELL_W)
-            y = math.floor(robot.pos.y / CELL_W)
-            if 0 >= x < math.ceil(FIELD_W/CELL_W) and 0 >= y < math.ceil(FIELD_L/CELL_W):
+            x = robot.pos.x // CELL_W
+            y = robot.pos.y // CELL_W
+            if 0 >= x < FIELD_W // CELL_W + 1 and 0 >= y < math.ceil(FIELD_L/CELL_W):
                 self.cells[x][y].robot = robot
                 robot.pos_cell = (x, y)
             else:
                 self.lost_bots.append(robot)
                 robot.pos_cell = (None)
 
-    def map_dest(self, robots: Robot[None]):
+    def map_dest(self, robots):
         """Populates field cells with current destination positions"""
 
         # Clear All Cells
@@ -60,23 +59,28 @@ class Field:
             self.cells[x][y].dest = robot
             robot.dest_cell = (x, y)
 
-    # Cleanup: Centers Robots in Cells and Orients at Right Angles
-    def cleanup(self):
-        """Moves bots to cell locations and places lost bots back in field"""
-        for robot in self.robots:
-            
-        return
-
-    # def evaluate_action(self, action: Action):
+    # TODO
+    # # Cleanup: Centers Robots in Cells and Orients at Right Angles
+    # def cleanup(self):
+    #     """Moves bots to cell locations and places lost bots back in field"""
+    #     for robot in self.robots:
+    #         break
     #     return
 
+    # Determines if All Robots are in Destination Positions
+    def final_formation(self):
+        for cell in self.cells.asList():
+            if cell.robot != cell.dest:
+                return False
+        return True
+
     # A*: A-Star Search Algorithm for Routing
-    def a_star(field: Field):
-        """A* Search Algorithm for """
+    def a_star(self):
+        """A* Search Algorithm for routing robots"""
 
         # Declare Priority Queue and Populate with Start State
         states = util.PriorityQueue()
-        states.push((field, [], 1), heuristic(field))
+        states.push((self, [], 1), self.manhattan())
 
         # Create an Empty Visited List
         visited = []
@@ -93,7 +97,7 @@ class Field:
                 visited.append(current[0])
 
                 # Check if Current is a Goal State
-                if final_formation(current[0]):
+                if self.final_formation(current[0]):
                     return current[1]
 
                 # Enqueue Successors to Priority Queue
@@ -106,17 +110,11 @@ class Field:
         # If Goal not Found Return Empty List
         return []
 
-    def heuristic(field: Field):
+    def manhattan(self, robots):
         manhattan = 0
-        for robot in field.robots:
+        for robot in robots:
             manhattan = util.manhattan_distance(robot.pos_cell[0], robot.pos_cell[1], robot.dest_cell[0], robot.dest_cell[1])
         return manhattan
-
-    def final_formation(field: Field):
-        for cell in field.cells.asList():
-            if cell.robot != cell.dest:
-                return False
-        return True
         
 # Enumerates Actions for use in AI
 # class Action(Enum):

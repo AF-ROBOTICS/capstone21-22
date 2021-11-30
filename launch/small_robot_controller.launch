@@ -5,29 +5,30 @@
   <group ns="usafabot0">
 
 	<node
-	name="controller"
+	name="small_controller"
 	pkg="capstone21-22"
-	type="controller.py"
+	type="small_controller.py"
 	output="screen"
 	/>
 
   </group>
-  
   <group ns="usafabot22">
 
 	<node
-	name="controller"
+	name="small_controller"
 	pkg="capstone21-22"
-	type="controller.py"
+	type="small_controller.py"
+	output="screen"
 	/>
 
   </group>
     <group ns="usafabot23">
 
 	<node
-	name="controller"
+	name="small_controller"
 	pkg="capstone21-22"
-	type="controller.py"
+	type="small_controller.py"
+	output="screen"
 	/>
   </group>
 
