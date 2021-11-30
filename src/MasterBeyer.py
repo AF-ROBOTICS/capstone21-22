@@ -127,23 +127,21 @@ if __name__ == '__main__':
 		tic = time.perf_counter()
 		curr_x, curr_y = bot.getCurrPos()
         # init_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
-		try:
-			while True:
-				bot.setGroundDestPosition(x_dest[i], y_dest[i])
-				bot.pub.publish(bot.dest_pos)
-				curr_x, curr_y = bot.getCurrPos()
-				bot.setGroundDestPosition(x_dest[i], y_dest[i])
-				bot.pub.publish(bot.dest_pos)
-            	# print(curr_x, curr_y)
-				curr_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
-				if curr_dist < DEST_DIST :
-					i += 1
-					toc = time.perf_counter()
-					print(bot.name + " is complete. It took " + str(round(toc-tic,4)) + " seconds")
-					bot.setGroundDestPosition(0, 0) # need this?
-					break
-		except KeyboardInterrupt:
-			print("Killed!")
+		while True:
+			bot.setGroundDestPosition(x_dest[i], y_dest[i])
+			bot.pub.publish(bot.dest_pos)
+			curr_x, curr_y = bot.getCurrPos()
+			bot.setGroundDestPosition(x_dest[i], y_dest[i])
+			bot.pub.publish(bot.dest_pos)
+           	# print(curr_x, curr_y)
+			curr_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
+			if curr_dist < DEST_DIST :
+				i += 1
+				toc = time.perf_counter()
+				print(bot.name + " is complete. It took " + str(round(toc-tic,4)) + " seconds")
+				bot.setGroundDestPosition(0, 0) # need this?
+				break
+
                 
 	print("all bots complete")
 	rospy.spin()
