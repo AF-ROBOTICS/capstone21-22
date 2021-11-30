@@ -11,19 +11,14 @@ import numpy as np
 import rospy
 from geometry_msgs.msg import Point, Pose
 from routing import Action
-from enum import Enum
-
-# Global Constants
-ROBOT_W = 0.1   # (m)
-ROBOT_L = 0.15  # (m)
-DEST_TOLERANCE = (ROBOT_W**2 + ROBOT_L**2)**.5 # (m) temporary until we figure out actual distance
+from util import ROBOT_L, ROBOT_W, DEST_TOLERANCE, Status
 
 class Robot:
     """Robot objects have an ID, position, destination, and status"""
 
     def __init__(self, usafabot: str, dest = (0,0,0)):
         self.ID = None
-        self.status = self.getStatus()
+        self.status = Status(0)
         self.action = self.getAction()
         self.pos = Ground_Pose(None)
         self.dest = Ground_Pose(dest)
@@ -57,6 +52,11 @@ class Robot:
         self.dest.x = dest_point[0]
         self.dest.y = dest_point[1]
         self.dest.theta = dest_theta
+
+    def get_successors(self):
+        """Returns array of successor points: [(x,y)]"""
+        successors = []
+        if 
     
 class Ground_Pose:
     def __init__(self, x = -1, y = -1, theta = -1):
@@ -65,8 +65,3 @@ class Ground_Pose:
         self.x = float(x)
         self.y = float(y)
         self.theta = float(theta)
-
-class Status(Enum):
-    START = 0
-    RUNNING = 1
-    FINISHED = 2
