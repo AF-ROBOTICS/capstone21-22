@@ -220,6 +220,7 @@ if __name__ == '__main__':
         x = 0
         y = 0
         # block until bot's RR is operational
+        print("Waiting bot: " + bot.name)
         while(x == 0 and y == 0):
             x,y = bot.getCurrPos()
         xrobot.append(x)

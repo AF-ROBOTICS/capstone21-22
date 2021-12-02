@@ -136,7 +136,7 @@ class Controller:
                     linear = .2
                 else :
                     linear = 0
-            # Move this under the other if so the bot stops moving all together???
+
             # limits bounding
             if angular > 1.25 :
                 angular = 1.25
@@ -146,7 +146,7 @@ class Controller:
             # TODO: remove this line when moving to real robot; 
             # this is used because the simulated robot moves clockwise with a 
             # positive angular vel while real robot moves counterclockwise
-            angular = -angular
+            #angular = -angular
             
             self.twist.linear.x = linear
             self.twist.angular.z = angular
