@@ -189,9 +189,9 @@ class Master:
     						print("this bot is not too close: " + bots[j].name)
     						print(dist)
     						print("Since there is no one near me, I'll go to my final desination of x_dest and y_dest.")
-    						if (j == 24):
+    						if (j == 23):
     							temp_x[i] = x_dest[i]
-    							temp_y[i] = y_dest[i]
+    							temp_y[i] = y_dest[i] 
     						print(x_dest[i])
     						print(y_dest[i])
 

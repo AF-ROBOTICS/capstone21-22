@@ -69,30 +69,30 @@ class Master:
     def turnRight(self, bots, temp_x, temp_y, i, j):
     	if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    		temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
+    		temp_y[i] = bots[i].curr_pos.position.y - 500*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
     	if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    		temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
+    		temp_y[i] = bots[i].curr_pos.position.y + 2000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
     	if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    		temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
+    		temp_y[i] = bots[i].curr_pos.position.y - 2000*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
     	if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    		temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)    
+    		temp_y[i] = bots[i].curr_pos.position.y - 500*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)    
     
     def turnLeft(self, bots, temp_x, temp_y, i, j):
     	if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    		temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
+    		temp_y[i] = bots[i].curr_pos.position.y + 500*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
     	if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    		temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
+    		temp_y[i] = bots[i].curr_pos.position.y - 2000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
     	if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    		temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
+    		temp_y[i] = bots[i].curr_pos.position.y + 2000*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
     	if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    		temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
+    		temp_y[i] = bots[i].curr_pos.position.y - 500*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
   
     # Iterates through bots current positions and if they are too close to one another, 
     # they will temporarly alter their path by making a right turn to avoid collision.
@@ -185,7 +185,7 @@ class Master:
     						print("this bot is not too close: " + bots[j].name)
     						print(dist)
     						print("Since there is no one near me, I'll go to my final desination of x_dest and y_dest.")
-    						if (j == 24):
+    						if (j >= 23):
     							temp_x[i] = x_dest[i]
     							temp_y[i] = y_dest[i]
     						print(x_dest[i])
