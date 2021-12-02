@@ -73,16 +73,16 @@ class Master:
     def turnRight(self, bots, temp_x, temp_y, i, j):
     	if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    		temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
+    		temp_y[i] = bots[i].curr_pos.position.y - 500*(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)
     	if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)
-    		temp_y[i] = bots[i].curr_pos.position.y + 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
+    		temp_y[i] = bots[i].curr_pos.position.y + 2000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
     	if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    		temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
+    		temp_y[i] = bots[i].curr_pos.position.y - 2000*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
     	if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x - 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    		temp_y[i] = bots[i].curr_pos.position.y - 1000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)    
+    		temp_y[i] = bots[i].curr_pos.position.y + 500*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)    
     
     def turnLeft(self, bots, temp_x, temp_y, i, j):
     	if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y):
