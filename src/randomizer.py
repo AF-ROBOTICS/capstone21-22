@@ -4,6 +4,7 @@
 import rospy
 import time
 import math
+import random
 from hungarian import build_hungarian
 
 from geometry_msgs.msg import Point, Pose
@@ -18,15 +19,10 @@ robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
 #Destination Points
 
 #Original Points:
-x_dest = [1.0, 1.0, 1.0, 1.30, 1.30, 1.60, 2.0, 2.0, 2.0, 2.3, 2.3, 2.6, 3.0, 3.0, 3.0, 3.3, 3.3, 3.3, 3.6, 3.6, 4.0, 4.0, 4.0, 4.6, 4.6]
-y_dest = [3.0, 2.5, 2.0, 2.75, 2.25, 2.5, 3.0, 2.5, 2.0, 3.0, 2.5, 3.0, 3.0, 2.5, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0]
-
-# Resize DFEC letters
-for i in range(0,len(x_dest)):
-	x_dest[i]=1.3*x_dest[i]-1.1	# this size works well in grid simulation
-	y_dest[i]=1.5*y_dest[i]-2	# this size works well in grid simulation
-	#x_dest[i]=2*x_dest[i]-1	# Test
-	#y_dest[i]=2*y_dest[i]		# Test
+x_points = [0, 0.22, 0.44, 0.66, 0.88, 1.1, 1.32, 1.54, 1.76, 1.98, 2.2, 2.42, 2.64, 2.86, 3.08, 3.3, 3.52, 3.74, 3.96, 4.18, 4.4, 4.62, 4.84, 5.06, 5.28]
+y_points = [0, 0.21, 0.42, 0.63, 0.84, 1.05, 1.26, 1.47, 1.68, 1.89, 2.1, 2.31, 2.52, 2.73, 2.94, 3.15, 3.36, 3.57, 3.78, 3.99, 4.2, 4.41, 4.62, 4.83, 5.04]
+x_dest = random.sample(x_points, len(x_points))
+y_dest = random.sample(y_points, len(y_points))
 
 temp_x = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 temp_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
