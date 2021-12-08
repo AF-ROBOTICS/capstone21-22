@@ -30,7 +30,7 @@ temp_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
 # Closest distance tolerance for avoidance
 #AVOID_TOL = 0.249 # this is the ideal distance for robots to go in between each other for the original dest points
 #AVOID_TOL = 0.3 # increased avoid tolerance for test demo with smaller DFEC
-AVOID_TOL = 0.35 # increased avoid tolerance for test demo with smaller DFEC
+AVOID_TOL = 0.25 # increased avoid tolerance for test demo with smaller DFEC
 #AVOID_TOL = 0.4 # increased avoid tolerance for test demo with larger DFEC
 BreakJ = False
 
@@ -89,7 +89,7 @@ class Master:
     		temp_y[i] = bots[i].curr_pos.position.y - 500*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
     	if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    		temp_y[i] = bots[i].curr_pos.position.y + 5000*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
+    		temp_y[i] = bots[i].curr_pos.position.y + 500*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
     	if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
     		temp_y[i] = bots[i].curr_pos.position.y - 2000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
@@ -104,10 +104,10 @@ class Master:
     		for j in range(0, len(robots)): # the j robots are the bots around the main i robot we are manipulating
     			BreakJ = False # Reset BreakJ variable
     			if (i != j): # skip self
-    				if(abs(bots[i].curr_pos.position.x-x_dest[i]) <= 0.05 and abs(bots[i].curr_pos.position.y-y_dest[i]) <= 0.05):
+    				if(abs(bots[i].curr_pos.position.x-x_dest[i]) <= 0.1 and abs(bots[i].curr_pos.position.y-y_dest[i]) <= 0.1):
     					print("I'm at my final spot so I'm not moving! " + bots[i].name)
     					BreakJ=True
-    				if(BreakJ==False): # if robot is still moving towards it's final desination...
+    				else: # if robot is still moving towards it's final desination...
     					dist = math.sqrt((bots[j].curr_pos.position.x- bots[i].curr_pos.position.x)**2 + (bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)**2)
     					if(dist < AVOID_TOL):
     						print("There is a bot too close to: " + bots[i].name)
@@ -130,26 +130,39 @@ class Master:
 					
     						#NEW TEST: LEFT and RIGHT TURNS: Made four new cases based on line between dest position and curr_x/y) 
     						#				  (then determine whether j robot is above or below the line that includes the dest and i robot.)
-    						if(x_dest[i] >= bots[i].curr_pos.position.x and y_dest[i] >= bots[i].curr_pos.position.y): # CASE 1: dest is above and right
+    						
+    						if(x_dest[i] >= bots[i].curr_pos.position.x): # CASE 1 (dest is above and right) and CASE 3 (dest is below and right):
     							if(bots[j].curr_pos.position.y > (bots[j].curr_pos.position.x*slope + y_int)): # bot[j] is above line between dest and bot[i], turn RIGHT
     								bot.turnRight(bots, temp_x, temp_y, i, j)
     							else: # bot[j] is below line between dest and bot[i], turn LEFT
     								bot.turnLeft(bots, temp_x, temp_y, i, j)
-    						if(x_dest[i] <= bots[i].curr_pos.position.x and y_dest[i] >= bots[i].curr_pos.position.y): # CASE 2: dest is above and left
+    						else: # CASE 2 (dest is above and left) and CASE 4 (dest is below and left):
     							if(bots[j].curr_pos.position.y < (bots[j].curr_pos.position.x*slope + y_int)): # bot[j] is below line between dest and bot[i], turn RIGHT
     								bot.turnRight(bots, temp_x, temp_y, i, j)
     							else: # bot[j] is above line between dest and bot[i], turn LEFT
     								bot.turnLeft(bots, temp_x, temp_y, i, j)
-    						if(x_dest[i] >= bots[i].curr_pos.position.x and y_dest[i] <= bots[i].curr_pos.position.y): # CASE 3: dest is below and right
-    							if(bots[j].curr_pos.position.y > (bots[j].curr_pos.position.x*slope + y_int)): # bot[j] is above line between dest and bot[i], turn RIGHT
-    								bot.turnRight(bots, temp_x, temp_y, i, j)
-    							else: # bot[j] is below line between dest and bot[i], turn LEFT
-    								bot.turnLeft(bots, temp_x, temp_y, i, j)
-    						if(x_dest[i] <= bots[i].curr_pos.position.x and y_dest[i] <= bots[i].curr_pos.position.y): # CASE 4: dest is below and left
-    							if(bots[j].curr_pos.position.y < (bots[j].curr_pos.position.x*slope + y_int)): # bot[j] is below line between dest and bot[i], turn RIGHT
-    								bot.turnRight(bots, temp_x, temp_y, i, j)
-    							else: # bot[j] is above line between dest and bot[i], turn LEFT
-    								bot.turnLeft(bots, temp_x, temp_y, i, j)
+    						
+    						#OLD:
+    						#if(x_dest[i] >= bots[i].curr_pos.position.x and y_dest[i] >= bots[i].curr_pos.position.y): # CASE 1: dest is above and right
+    						#	if(bots[j].curr_pos.position.y > (bots[j].curr_pos.position.x*slope + y_int)): # bot[j] is above line between dest and bot[i], turn RIGHT
+    						#		bot.turnRight(bots, temp_x, temp_y, i, j)
+    						#	else: # bot[j] is below line between dest and bot[i], turn LEFT
+    						#		bot.turnLeft(bots, temp_x, temp_y, i, j)
+    						#if(x_dest[i] <= bots[i].curr_pos.position.x and y_dest[i] >= bots[i].curr_pos.position.y): # CASE 2: dest is above and left
+    						#	if(bots[j].curr_pos.position.y < (bots[j].curr_pos.position.x*slope + y_int)): # bot[j] is below line between dest and bot[i], turn RIGHT
+    						#		bot.turnRight(bots, temp_x, temp_y, i, j)
+    						#	else: # bot[j] is above line between dest and bot[i], turn LEFT
+    						#		bot.turnLeft(bots, temp_x, temp_y, i, j)
+    						#if(x_dest[i] >= bots[i].curr_pos.position.x and y_dest[i] <= bots[i].curr_pos.position.y): # CASE 3: dest is below and right
+    						#	if(bots[j].curr_pos.position.y > (bots[j].curr_pos.position.x*slope + y_int)): # bot[j] is above line between dest and bot[i], turn RIGHT
+    						#		bot.turnRight(bots, temp_x, temp_y, i, j)
+    						#	else: # bot[j] is below line between dest and bot[i], turn LEFT
+    						#		bot.turnLeft(bots, temp_x, temp_y, i, j)
+    						#if(x_dest[i] <= bots[i].curr_pos.position.x and y_dest[i] <= bots[i].curr_pos.position.y): # CASE 4: dest is below and left
+    						#	if(bots[j].curr_pos.position.y < (bots[j].curr_pos.position.x*slope + y_int)): # bot[j] is below line between dest and bot[i], turn RIGHT
+    						#		bot.turnRight(bots, temp_x, temp_y, i, j)
+    						#	else: # bot[j] is above line between dest and bot[i], turn LEFT
+    						#		bot.turnLeft(bots, temp_x, temp_y, i, j)
     						
     						#OLD (Do not change): RIGHT turns only:
     						#if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y >= bots[i].curr_pos.position.y): # above and right

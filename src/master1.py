@@ -93,7 +93,7 @@ class Master:
     		temp_y[i] = bots[i].curr_pos.position.y - 500*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
     	if(bots[j].curr_pos.position.x >= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
-    		temp_y[i] = bots[i].curr_pos.position.y + 5000*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
+    		temp_y[i] = bots[i].curr_pos.position.y + 500*(bots[j].curr_pos.position.x - bots[i].curr_pos.position.x)
     	if(bots[j].curr_pos.position.x <= bots[i].curr_pos.position.x and bots[j].curr_pos.position.y <= bots[i].curr_pos.position.y):
     		temp_x[i] = bots[i].curr_pos.position.x + 1000*(bots[i].curr_pos.position.y - bots[j].curr_pos.position.y)
     		temp_y[i] = bots[i].curr_pos.position.y - 2000*(bots[i].curr_pos.position.x - bots[j].curr_pos.position.x)
@@ -117,6 +117,11 @@ class Master:
     						print("There is a bot too close to: " + bots[i].name)
     						print("The bot that is too close is: " + bots[j].name)
     						print("Since there is a bot that is too close, I'll turn.")
+    						
+    						
+    						
+    						#TODO: Add another loop here that starts at the conflict j and sees if there are more robots around it. if there are, we have to do somthing so they dont all get locked into a rotation like we are currently seeing.
+    						
 
     						# Create a line that goes through robot and its destination position. Then determine wheter the conflift is to the right or left of that line
     						
@@ -189,7 +194,7 @@ class Master:
     						print("this bot is not too close: " + bots[j].name)
     						print(dist)
     						print("Since there is no one near me, I'll go to my final desination of x_dest and y_dest.")
-    						if (j == 23):
+    						if (j >= 23):
     							temp_x[i] = x_dest[i]
     							temp_y[i] = y_dest[i] 
     						print(x_dest[i])

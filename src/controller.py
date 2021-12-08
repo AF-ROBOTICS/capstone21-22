@@ -29,7 +29,7 @@ class Controller:
     # destination tolerance +/- meters
     DEST_TOL = 0.08
     # roation controller constant
-    K_HDG = 0.05
+    K_HDG = 0.04
     
     def __init__(self):
         # instance variables unique to each instance of class
@@ -146,7 +146,7 @@ class Controller:
             # TODO: remove this line when moving to real robot; 
             # this is used because the simulated robot moves clockwise with a 
             # positive angular vel while real robot moves counterclockwise
-            angular = -angular
+            #angular = -angular
             
             self.twist.linear.x = linear
             self.twist.angular.z = angular
