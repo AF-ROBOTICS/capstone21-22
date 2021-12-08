@@ -23,6 +23,9 @@ from squaternion import Quaternion
 #   Topic: cmd_vel
 #     Msg type: Twist
 #     Freq: 100 Hz
+# Kill state magic number
+KILL_SIG = 22
+
 class Controller:
     # heading tolerance +/- degrees
     HDG_TOL = 20
@@ -39,7 +42,7 @@ class Controller:
         self.nextY = 0
         self.currYaw = 0
         self.twist = Twist()
-        
+        self.kill = False
         self.ctrl_c = False
         
         rospy.on_shutdown(self.shutdownhook)
@@ -70,6 +73,11 @@ class Controller:
     # Topic: usafabot_Dest_Pos
     # Msg type: Point
     def callback_DestPos(self, data):
+        if data.x == KILL_SIG and data.y == KILL_SIG:
+            self.kill = True
+        elif data.x == -KILL_SIG and data.y == -KILL_SIG:
+            self.kill = False
+
         self.nextX = data.x
         self.nextY = data.y
 
@@ -88,7 +96,7 @@ class Controller:
     # to usafabot_Bot using a proportional controller based on the orientation offset
     # Frequency: 100 Hz
     def callback_converter(self, event):  
-        if not self.ctrl_c:
+        if not self.ctrl_c and not self.kill:
             if(self.nextX == 0 and self.nextY ==0):
                 self.twist.linear.x = 0
                 self.twist.angular.z = 0
