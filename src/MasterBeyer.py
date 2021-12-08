@@ -12,6 +12,7 @@ import serial
 import array
 import signal
 import csv
+import copy
 from std_msgs.msg import String
 from threading import Thread
 
@@ -59,31 +60,31 @@ def handler(signum, frame):
 
 def measure_error(num_samples, sample_period):
     print("Collecting ", num_samples, " taken every ", sample_period, " seconds")
-    for Cycle in range(1, NUM_AVG_CYCLES):
+    for Cycle in range(0, NUM_AVG_CYCLES):
         for robot in bots:
             # Add sample to array
             robot.x_avg.append(robot.curr_pos.position.x)
             robot.y_avg.append(robot.curr_pos.position.y)
         # Wait specified number of seconds before taking another sample
         time.sleep(sample_period)
-        print("Finished cycle: ", Cycle)
+        print("Finished cycle: ", Cycle+1)
 
     with open(filename, 'w') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(fields)
         for robot in bots:
             robot.pos_err = ((mean(robot.x_avg) - robot.dest_pos.x) ** 2 + (
-                    mean(robot.y_avg) - robot.dest_pos.y) ** 2) ** .5
-            row = robot.name + str(mean(robot.x_avg)) + str(mean(robot.y_avg)) + str(robot.pos_err) + str(robot.time)
-            print(row)
-            csvwriter.writerow([row])
+                    mean(robot.y_avg) - robot.dest_pos.y) ** 2) ** .5        
+            csvwriter.writerow([robot.name, str(mean(robot.x_avg)), str(mean(robot.y_avg)), str(robot.pos_err), str(robot.time)])
     print("CSV created with filename: ", filename)
 
 
 def stop_bots():
     for robot in bots:
+        temp = copy.copy(robot.dest_pos)
         robot.setGroundDestPosition(KILL_SIG, KILL_SIG)
         robot.pub.publish(bot.dest_pos)
+        robot.dest_pos = temp
         print("Stopping bot: ", robot.name)
 
 
@@ -188,7 +189,7 @@ if __name__ == '__main__':
                     toc = time.perf_counter()
                     bot.time = round(toc - tic, 4)
                     print(bot.name + " is complete. It took " + str(bot.time) + " seconds")
-                    bot.setGroundDestPosition(0, 0)  # need this?
+                    # bot.setGroundDestPosition(0, 0)  # need this?
                     break
         else:
             print("Skipping bot", bot.name)

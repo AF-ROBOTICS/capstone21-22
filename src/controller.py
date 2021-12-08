@@ -23,7 +23,9 @@ from squaternion import Quaternion
 #   Topic: cmd_vel
 #     Msg type: Twist
 #     Freq: 100 Hz
+
 # Kill state magic number
+# Robot will not move unti next_pos =-KILL_SIG
 KILL_SIG = 22
 
 class Controller:
