@@ -48,7 +48,7 @@ y_dest = [2.5, 2.5, 2.5, 2.75, 2.25, 3, 2.5, 2, 3, 3, 3, 3, 3, 3, 3, 2, 2.5, 2, 
 # CSV filename for error measurement
 filename = datetime.now().strftime("%d%b%Y-%H:%M:%S") + ".csv"
 # CSV Headers
-fields = ['bot', 'x_avg_pos', 'y_avg_pos', 'pos_err']
+fields = ['bot', 'x_avg_pos', 'y_avg_pos', 'pos_err', 'time']
 
 
 def handler(signum, frame):
@@ -62,8 +62,8 @@ def measure_error(num_samples, sample_period):
     for Cycle in range(1, NUM_AVG_CYCLES):
         for robot in bots:
             # Add sample to array
-            robot.x_avg.append(robot.curr_pos.x)
-            robot.y_avg.append(robot.curr_pos.y)
+            robot.x_avg.append(robot.curr_pos.position.x)
+            robot.y_avg.append(robot.curr_pos.position.y)
         # Wait specified number of seconds before taking another sample
         time.sleep(sample_period)
         print("Finished cycle: ", Cycle)
@@ -74,8 +74,9 @@ def measure_error(num_samples, sample_period):
         for robot in bots:
             robot.pos_err = ((mean(robot.x_avg) - robot.dest_pos.x) ** 2 + (
                     mean(robot.y_avg) - robot.dest_pos.y) ** 2) ** .5
-            row = robot.name + str(mean(robot.x_avg)) + str(mean(robot.y_avg)) + str(robot.pos_err)
-            csvwriter.writerow(row)
+            row = robot.name + str(mean(robot.x_avg)) + str(mean(robot.y_avg)) + str(robot.pos_err) + str(robot.time)
+            print(row)
+            csvwriter.writerow([row])
     print("CSV created with filename: ", filename)
 
 
@@ -97,6 +98,7 @@ class Master:
         self.x_avg = []
         self.y_avg = []
         self.timeout = False
+        self.time = 0
         # -----------------------------------------------------------------------------
         # Topics and Timers
         # -----------------------------------------------------------------------------
@@ -183,13 +185,14 @@ if __name__ == '__main__':
                 # print(curr_x, curr_y)
                 curr_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
                 if curr_dist < DEST_DIST:
-                    i += 1
                     toc = time.perf_counter()
-                    print(bot.name + " is complete. It took " + str(round(toc - tic, 4)) + " seconds")
+                    bot.time = round(toc - tic, 4)
+                    print(bot.name + " is complete. It took " + str(bot.time) + " seconds")
                     bot.setGroundDestPosition(0, 0)  # need this?
                     break
-            else:
-                print("Skipping bot", bot.name)
+        else:
+            print("Skipping bot", bot.name)
+        i+=1
 
     print("all bots complete")
     stop_bots()
