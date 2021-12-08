@@ -73,7 +73,7 @@ def measure_error(num_samples, sample_period):
         csvwriter.writerow(fields)
         for robot in bots:
             robot.pos_err = ((mean(robot.x_avg) - robot.dest_pos.x) ** 2 + (
-                        mean(robot.y_avg) - robot.dest_pos.y) ** 2) ** .5
+                    mean(robot.y_avg) - robot.dest_pos.y) ** 2) ** .5
             row = robot.name + str(mean(robot.x_avg)) + str(mean(robot.y_avg)) + str(robot.pos_err)
             csvwriter.writerow(row)
     print("CSV created with filename: ", filename)
@@ -147,9 +147,9 @@ if __name__ == '__main__':
         while x == 0 and y == 0:
             x, y = bot.getCurrPos()
             if time.perf_counter() - tic > TIMEOUT_THRESH:
-            	bot.timeout = True
+                bot.timeout = True
                 print("Timeout: " + bot.name)
-                break;
+                break
             elif x != 0 or y != 0:
                 xrobot.append(x)
                 yrobot.append(y)
@@ -167,27 +167,29 @@ if __name__ == '__main__':
     i = 0
 
     for bot in bots:
-    	if not bot.timeout:
-        bot.setGroundDestPosition(x_dest[i], y_dest[i])
-        bot.pub.publish(bot.dest_pos)
-        print("Dest set for:" + bot.name)
-        tic = time.perf_counter()
-        curr_x, curr_y = bot.getCurrPos()
-        # init_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
-        while True:
+        if not bot.timeout:
             bot.setGroundDestPosition(x_dest[i], y_dest[i])
             bot.pub.publish(bot.dest_pos)
+            print("Dest set for:" + bot.name)
+            tic = time.perf_counter()
             curr_x, curr_y = bot.getCurrPos()
-            bot.setGroundDestPosition(x_dest[i], y_dest[i])
-            bot.pub.publish(bot.dest_pos)
-            # print(curr_x, curr_y)
-            curr_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
-            if curr_dist < DEST_DIST:
-                i += 1
-                toc = time.perf_counter()
-                print(bot.name + " is complete. It took " + str(round(toc - tic, 4)) + " seconds")
-                bot.setGroundDestPosition(0, 0)  # need this?
-                break
+            # init_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
+            while True:
+                bot.setGroundDestPosition(x_dest[i], y_dest[i])
+                bot.pub.publish(bot.dest_pos)
+                curr_x, curr_y = bot.getCurrPos()
+                bot.setGroundDestPosition(x_dest[i], y_dest[i])
+                bot.pub.publish(bot.dest_pos)
+                # print(curr_x, curr_y)
+                curr_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
+                if curr_dist < DEST_DIST:
+                    i += 1
+                    toc = time.perf_counter()
+                    print(bot.name + " is complete. It took " + str(round(toc - tic, 4)) + " seconds")
+                    bot.setGroundDestPosition(0, 0)  # need this?
+                    break
+            else:
+                print("Skipping bot", bot.name)
 
     print("all bots complete")
     stop_bots()
