@@ -23,7 +23,9 @@ from squaternion import Quaternion
 #   Topic: cmd_vel
 #     Msg type: Twist
 #     Freq: 100 Hz
+
 # Kill state magic number
+# Robot will not move unti next_pos =-KILL_SIG
 KILL_SIG = 22
 
 class Controller:
@@ -154,7 +156,7 @@ class Controller:
             # TODO: remove this line when moving to real robot; 
             # this is used because the simulated robot moves clockwise with a 
             # positive angular vel while real robot moves counterclockwise
-            angular = -angular
+            # angular = -angular
             
             self.twist.linear.x = linear
             self.twist.angular.z = angular

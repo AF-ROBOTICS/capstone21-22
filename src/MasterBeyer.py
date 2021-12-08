@@ -12,6 +12,8 @@ import serial
 import array
 import signal
 import csv
+import copy
+import os
 from std_msgs.msg import String
 from threading import Thread
 
@@ -45,13 +47,17 @@ robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
 x_dest = [2.3, 2, 1.6, 1.3, 1.3, 1, 1, 1, 2, 2.3, 2.6, 3, 3.3, 3.6, 4, 4, 4, 4.6, 4.6, 3.6, 3.3, 3.3, 3, 3, 2]
 y_dest = [2.5, 2.5, 2.5, 2.75, 2.25, 3, 2.5, 2, 3, 3, 3, 3, 3, 3, 3, 2, 2.5, 2, 3, 2, 2.5, 2, 2.5, 2, 2]
 
-# CSV filename for error measurement
+# CSV filepath
+path = "/home/" + os.getlogin() + "/robotics_ws/src/capstone21-22/measurement_files/"
+# CSV filename for error measurement ex: 08Dec2022-14:40:43.csv
 filename = datetime.now().strftime("%d%b%Y-%H:%M:%S") + ".csv"
+outfile = path + filename
 # CSV Headers
-fields = ['bot', 'x_avg_pos', 'y_avg_pos', 'pos_err']
+fields = ['bot', 'x_avg_pos', 'y_avg_pos', 'pos_err', 'time']
 
 
 def handler(signum, frame):
+    print('\n')
     stop_bots()
     print("KILLED with CTRL_C")
     exit(1)
@@ -59,32 +65,40 @@ def handler(signum, frame):
 
 def measure_error(num_samples, sample_period):
     print("Collecting ", num_samples, " taken every ", sample_period, " seconds")
-    for Cycle in range(1, NUM_AVG_CYCLES):
+    for Cycle in range(0, NUM_AVG_CYCLES):
         for robot in bots:
             # Add sample to array
-            robot.x_avg.append(robot.curr_pos.x)
-            robot.y_avg.append(robot.curr_pos.y)
+            robot.x_avg.append(robot.curr_pos.position.x)
+            robot.y_avg.append(robot.curr_pos.position.y)
         # Wait specified number of seconds before taking another sample
         time.sleep(sample_period)
-        print("Finished cycle: ", Cycle)
+        print("Finished cycle: ", Cycle+1)
 
-    with open(filename, 'w') as csvfile:
+    with open(outfile, 'w') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(fields)
         for robot in bots:
             robot.pos_err = ((mean(robot.x_avg) - robot.dest_pos.x) ** 2 + (
-                    mean(robot.y_avg) - robot.dest_pos.y) ** 2) ** .5
-            row = robot.name + str(mean(robot.x_avg)) + str(mean(robot.y_avg)) + str(robot.pos_err)
-            csvwriter.writerow(row)
+                    mean(robot.y_avg) - robot.dest_pos.y) ** 2) ** .5        
+            csvwriter.writerow([robot.name, str(mean(robot.x_avg)), str(mean(robot.y_avg)), str(robot.pos_err), str(robot.time)])
     print("CSV created with filename: ", filename)
 
 
 def stop_bots():
     for robot in bots:
+        temp = copy.copy(robot.dest_pos)
         robot.setGroundDestPosition(KILL_SIG, KILL_SIG)
         robot.pub.publish(bot.dest_pos)
-        print("Stopping bot: ", robot.name)
-
+        robot.dest_pos = temp
+    print("locking all bots")
+        
+def start_bots():
+    for robot in bots:
+        temp = copy.copy(robot.dest_pos)
+        robot.setGroundDestPosition(-KILL_SIG, -KILL_SIG)
+        robot.pub.publish(bot.dest_pos)
+        robot.dest_pos = temp    
+    print("UNlocking all bots")
 
 # Define the Controller class
 class Master:
@@ -97,6 +111,7 @@ class Master:
         self.x_avg = []
         self.y_avg = []
         self.timeout = False
+        self.time = 0
         # -----------------------------------------------------------------------------
         # Topics and Timers
         # -----------------------------------------------------------------------------
@@ -142,7 +157,7 @@ if __name__ == '__main__':
         x = 0
         y = 0
         # block until bot's RR is operational
-        print("Waiting bot: " + bot.name)
+        # print("Waiting bot: " + bot.name)
         tic = time.perf_counter()
         while x == 0 and y == 0:
             x, y = bot.getCurrPos()
@@ -155,22 +170,21 @@ if __name__ == '__main__':
                 yrobot.append(y)
                 toc = time.perf_counter()
                 t = toc - tic
-                print("Completed bot: " + bot.name)
-                print(t)
+                print("Found", bot.name, 'in', round(t,4), '(s)')
 
-    print(xrobot)
-    print(yrobot)
+    # print(xrobot)
+    # print(yrobot)
 
     #    print("Combined RobotDestination = ", x_dest, y_dest)
 
     # Assign final bot destinations
     i = 0
-
+    start_bots()
     for bot in bots:
         if not bot.timeout:
             bot.setGroundDestPosition(x_dest[i], y_dest[i])
             bot.pub.publish(bot.dest_pos)
-            print("Dest set for:" + bot.name)
+            # print("Dest set for:" + bot.name)
             tic = time.perf_counter()
             curr_x, curr_y = bot.getCurrPos()
             # init_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
@@ -183,15 +197,16 @@ if __name__ == '__main__':
                 # print(curr_x, curr_y)
                 curr_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
                 if curr_dist < DEST_DIST:
-                    i += 1
                     toc = time.perf_counter()
-                    print(bot.name + " is complete. It took " + str(round(toc - tic, 4)) + " seconds")
-                    bot.setGroundDestPosition(0, 0)  # need this?
+                    bot.time = toc - tic
+                    print(bot.name, "complete in", round(bot.time,4), "(s)")
                     break
-            else:
-                print("Skipping bot", bot.name)
+        else:
+            print("Skipping", bot.name)
+        i+=1
 
     print("all bots complete")
     stop_bots()
     measure_error(NUM_AVG_CYCLES, AVG_WAIT_TIME)
+    # TODO: Ask to end when done? while loop? press key to exit?
     rospy.spin()
