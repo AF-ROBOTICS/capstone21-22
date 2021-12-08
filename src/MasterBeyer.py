@@ -96,6 +96,7 @@ class Master:
         self.pos_err = 0
         self.x_avg = []
         self.y_avg = []
+        self.timeout = False
         # -----------------------------------------------------------------------------
         # Topics and Timers
         # -----------------------------------------------------------------------------
@@ -146,6 +147,7 @@ if __name__ == '__main__':
         while x == 0 and y == 0:
             x, y = bot.getCurrPos()
             if time.perf_counter() - tic > TIMEOUT_THRESH:
+            	bot.timeout = True
                 print("Timeout: " + bot.name)
                 break;
             elif x != 0 or y != 0:
@@ -165,6 +167,7 @@ if __name__ == '__main__':
     i = 0
 
     for bot in bots:
+    	if not bot.timeout:
         bot.setGroundDestPosition(x_dest[i], y_dest[i])
         bot.pub.publish(bot.dest_pos)
         print("Dest set for:" + bot.name)
