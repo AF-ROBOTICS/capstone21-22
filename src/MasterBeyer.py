@@ -50,7 +50,7 @@ y_dest = [2.5, 2.5, 2.5, 2.75, 2.25, 3, 2.5, 2, 3, 3, 3, 3, 3, 3, 3, 2, 2.5, 2, 
 # CSV filepath
 path = "/home/" + os.getlogin() + "/robotics_ws/src/capstone21-22/measurement_files/"
 # CSV filename for error measurement ex: 08Dec2022-14:40:43.csv
-filename = datetime.now().strftime("%d%b%Y-%H:%M:%S") + ".csv"
+filename = datetime.now().strftime("%d%b%Y_%H-%M-%S") + ".csv"
 outfile = path + filename
 # CSV Headers
 fields = ['bot', 'x_avg_pos', 'y_avg_pos', 'pos_err', 'time']
