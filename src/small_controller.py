@@ -23,18 +23,13 @@ from squaternion import Quaternion
 #   Topic: cmd_vel
 #     Msg type: Twist
 #     Freq: 100 Hz
-
-# Kill state magic number
-# Robot will not move unti next_pos =-KILL_SIG
-KILL_SIG = 22
-
 class Controller:
     # heading tolerance +/- degrees
     HDG_TOL = 20
     # destination tolerance +/- meters
     DEST_TOL = 0.08
     # roation controller constant
-    K_HDG = 0.04
+    K_HDG = 0.05
     
     def __init__(self):
         # instance variables unique to each instance of class
@@ -44,7 +39,7 @@ class Controller:
         self.nextY = 0
         self.currYaw = 0
         self.twist = Twist()
-        self.kill = False
+        
         self.ctrl_c = False
         
         rospy.on_shutdown(self.shutdownhook)
@@ -75,11 +70,6 @@ class Controller:
     # Topic: usafabot_Dest_Pos
     # Msg type: Point
     def callback_DestPos(self, data):
-        if data.x == KILL_SIG and data.y == KILL_SIG:
-            self.kill = True
-        elif data.x == -KILL_SIG and data.y == -KILL_SIG:
-            self.kill = False
-
         self.nextX = data.x
         self.nextY = data.y
 
@@ -98,7 +88,7 @@ class Controller:
     # to usafabot_Bot using a proportional controller based on the orientation offset
     # Frequency: 100 Hz
     def callback_converter(self, event):  
-        if not self.ctrl_c and not self.kill:
+        if not self.ctrl_c:
             if(self.nextX == 0 and self.nextY ==0):
                 self.twist.linear.x = 0
                 self.twist.angular.z = 0
@@ -146,7 +136,7 @@ class Controller:
                     linear = .2
                 else :
                     linear = 0
-            # Move this under the other if so the bot stops moving all together???
+
             # limits bounding
             if angular > 1.25 :
                 angular = 1.25
@@ -156,7 +146,7 @@ class Controller:
             # TODO: remove this line when moving to real robot; 
             # this is used because the simulated robot moves clockwise with a 
             # positive angular vel while real robot moves counterclockwise
-            # angular = -angular
+            #angular = -angular
             
             self.twist.linear.x = linear
             self.twist.angular.z = angular
