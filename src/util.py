@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+
+# routing.py - Robotic Teaming Artificial Intelligence
+# Author: Cason Couch
+# Description: This file contains the Robot class
+
 import heapq
 
 # Global Variables
@@ -5,7 +11,7 @@ FIELD_W = 5.5   # (m) x-axis
 FIELD_L = 5     # (m) y-axis
 CELL_W  = 0.2   # (m) 
 
-FIELD_X = FIELD_W // CELL_W + 1
+FIELD_X = FIELD_W // CELL_W + 1 # Discrete Indices
 FIELD_Y = FIELD_L // CELL_W + 1
 
 ROBOT_W = 0.1   # (m)
@@ -14,14 +20,32 @@ DEST_TOLERANCE = (ROBOT_W**2 + ROBOT_L**2)**.5 # (m) temporary until we figure o
 
 # Enumerates Actions for use in AI
 class Action(Enum):
+    """Actions for robots to take"""
     STAY = 0
     RIGHT = 1
     UP = 2
     LEFT = 3
     DOWN = 4
 
-# Robot Statuses
+# Cells in Field
+class Cell:
+    """Cell objects can contain a robot's position or destination"""
+    def __init__(self):
+        self.robot  = None
+        # self.cardinal = Cardinal(None) # TODO
+        self.dest   = None
+
+# class Sub_Action(Enum):
+#     """Sub-actions for robot movemnts"""
+#     STAY = 0
+#     FORW_1 = 1
+#     BACK_1 = 2
+#     RIGH_90 = 3
+#     LEFT_90 = 4
+
+# Robot Status
 class Status(Enum):
+    """Status indicates the task completion status of a robot"""
     START = 0
     RUNNING = 1
     FINISHED = 2

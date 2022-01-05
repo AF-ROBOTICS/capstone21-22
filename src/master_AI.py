@@ -5,21 +5,21 @@ Date: 15 Nov 2021
 ----------------------------------------------------------------------------------"""
 
 # Import important libraries
-import roslib
 import rospy
 import time
-import serial
 import array
 from std_msgs.msg import String
 from threading import Thread
-
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
 from nav_msgs.msg import Odometry
 
-from robot import Robot
-from field import Field, single_greedy
+# Import from Other Project Files
 from util import CELL_W, Status
+from robot import Robot
+from field import Field
+from routing import single_greedy
+
 
 # TODO: take current robot position instead of assigning initial positions - fixed
 # TODO: what if you have more or less robots than needed?
@@ -60,8 +60,9 @@ if __name__ == '__main__':
         while robot.pos.x == 0 and robot.pos.y == 0:
            time.sleep(0.01)
 
-        #
         init_pos.append((robot.pos.x, robot.pos.y))
+
+        # Time Performance
         toc = time.perf_counter()
         t = toc-tic
         print("Completed bot: " + robot.name)
@@ -81,24 +82,36 @@ if __name__ == '__main__':
     # TODO: while not final formation
     while 1:
         
+        # Update Current Field
+        field.map_bots
+
         # Reset Next Field
         field_next = Field()
         
         # For Every Robot
         for robot in robots:
 
-            # Make Sure Bot isn't Finished
+            # If Robot not Finished
             if not robot.status is Status(2):
 
                 # Get Discrete Dest
-                x_discrete, y_discrete = single_greedy(field)
+                robot.step_cell = single_greedy(field, field_next, robot)
 
                 # Convert to Analog
-                x = (x_discrete + 0.5) * CELL_W
-                y = (y_discrete + 0.5) * CELL_W
+                x = (robot.step_cell[0] + 0.5) * CELL_W
+                y = (robot.step_cell[1] + 0.5) * CELL_W
 
                 # Publish Position
                 robot.pub.publish(Point(x, y))
+
+            # If Robot Finished
+            else:
+
+                # Map Bot to Next Field
+                field_next.cells[robot.step_cell[0]][robot.step_cell[1]].robot = robot
+        
+        # Wait for Robots to Move to New Dest
+        time.sleep(2)
 
     # Finished
     print("All Bots Assembled")

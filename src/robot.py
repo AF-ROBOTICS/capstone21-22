@@ -11,7 +11,7 @@ import numpy as np
 import rospy
 from geometry_msgs.msg import Point, Pose
 from routing import Action
-from util import ROBOT_L, ROBOT_W, DEST_TOLERANCE, Status
+from util import DEST_TOLERANCE, Status
 
 class Robot:
     """Robot objects have an ID, position, destination, and status"""
@@ -25,6 +25,7 @@ class Robot:
         self.name = usafabot
         self.pos_cell = (None, None)
         self.dest_cell = (None, None)
+        self.step_cell = (None, None)
         
         # Ros Publisher
         self.pub = rospy.Publisher(self.name + '/dest_pos', Point, queue_size = 10)
@@ -53,10 +54,10 @@ class Robot:
         self.dest.y = dest_point[1]
         self.dest.theta = dest_theta
 
-    def get_successors(self):
-        """Returns array of successor points: [(x,y)]"""
-        successors = []
-        if 
+    # def get_successors(self):
+    #     """Returns array of successor points: [(x,y)]"""
+    #     successors = []
+    #     if 
     
 class Ground_Pose:
     def __init__(self, x = -1, y = -1, theta = -1):
