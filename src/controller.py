@@ -79,7 +79,7 @@ class Controller:
             self.kill = True
         elif data.x == -KILL_SIG and data.y == -KILL_SIG:
             self.kill = False
-        else
+        else:
             self.nextX = data.x
             self.nextY = data.y
 
@@ -99,7 +99,7 @@ class Controller:
     # Frequency: 100 Hz
     def callback_converter(self, event):  
         if not self.ctrl_c and not self.kill:
-            if((self.nextX == 0 and self.nextY == 0) or self.kill = True):
+            if((self.nextX == 0 and self.nextY == 0) or self.kill == True):
                 self.twist.linear.x = 0
                 self.twist.angular.z = 0
                 self.pub.publish(self.twist)

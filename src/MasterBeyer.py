@@ -87,18 +87,18 @@ def measure_error(num_samples, sample_period):
 def stop_bots():
     for robot in bots:
         tic = time.perf_counter()
-        while(time.perf_counter()-tic < .05): # Publish for .05 seconds
-            robot.setGroundDestPosition(KILL_SIG, KILL_SIG)
-            robot.pub.publish(bot.dest_pos)
+        robot.setGroundDestPosition(KILL_SIG, KILL_SIG)        
+        while(time.perf_counter()-tic < .05): # Publish for .05 seconds        
+            robot.pub.publish(robot.dest_pos)
     print("locked all bots")
 
 
 def start_bots():
     for robot in bots:
         tic = time.perf_counter()
+        robot.setGroundDestPosition(-KILL_SIG, -KILL_SIG)        
         while(time.perf_counter()-tic < .05): # Publish for .05 seconds
-            robot.setGroundDestPosition(-KILL_SIG, -KILL_SIG)
-            robot.pub.publish(bot.dest_pos)
+            robot.pub.publish(robot.dest_pos)
     print("UNlocked all bots")
 
 
@@ -132,6 +132,7 @@ class Master:
         # Data based on drone position
         self.dest_pos.x = x
         self.dest_pos.y = y
+
 
     def callback_currPos(self, data):
         self.curr_pos.position.x = round(data.position.x, 3)
