@@ -87,18 +87,22 @@ def measure_error(num_samples, sample_period):
 def stop_bots():
     for robot in bots:
         temp = copy.copy(robot.dest_pos)
-        robot.setGroundDestPosition(KILL_SIG, KILL_SIG)
-        robot.pub.publish(bot.dest_pos)
-        robot.dest_pos = temp
+        tic = time.perf_counter()
+        while(time.perf_counter()-tic < .250): # Publish for a quarter second
+	        robot.setGroundDestPosition(KILL_SIG, KILL_SIG)
+    	    robot.pub.publish(bot.dest_pos)
+    	    robot.dest_pos = temp
     print("locking all bots")
 
 
 def start_bots():
     for robot in bots:
         temp = copy.copy(robot.dest_pos)
-        robot.setGroundDestPosition(-KILL_SIG, -KILL_SIG)
-        robot.pub.publish(bot.dest_pos)
-        robot.dest_pos = temp
+        tic = time.perf_counter()
+        	while(time.perf_counter()-tic < .250): # Publish for a quarter second
+        	robot.setGroundDestPosition(-KILL_SIG, -KILL_SIG)
+        	robot.pub.publish(bot.dest_pos)
+        	robot.dest_pos = temp
     print("UNlocking all bots")
 
 
