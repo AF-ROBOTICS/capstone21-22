@@ -5,6 +5,7 @@
 # Description: This file contains the Robot class
 
 import heapq
+from enum import Enum
 
 # Global Variables
 FIELD_W = 5.5   # (m) x-axis

@@ -15,19 +15,19 @@ from geometry_msgs.msg import Pose
 from nav_msgs.msg import Odometry
 
 # Import from Other Project Files
-from util import CELL_W, Status
+from util import CELL_W, Status, Cell
 from robot import Robot
 from field import Field
 from routing import single_greedy
 
 
-# TODO: take current robot position instead of assigning initial positions - fixed
-# TODO: what if you have more or less robots than needed?
+# TODO: Dynamic Destinations
+# TODO: Dynamic Bot Quantity
 
 # Global Variables
 init_pos = []
 robotDestination = []
-DEST_DIST = .25
+DEST_DIST = 0.25
 field = Field
 
 
@@ -43,9 +43,11 @@ x_dest = [2.3,2,1.6,1.3,1.3,1,1,1,2,2.3,2.6,3,3.3,3.6,4,4,4,4.6,4.6,3.6,3.3,3.3,
 y_dest = [2.5,2.5,2.5,2.75,2.25,3,2.5,2,3,3,3,3,3,3,3,2,2.5,2,3,2,2.5,2,2.5,2,2]
 
 # Save the Above Information as an Arrary of Robot Objects
-robots = Robot[None]
+robots = []
 for i in range(robot_ids):
     robots.append(Robot(robot_ids[i], (x_dest[i], y_dest[i], 0)))
+
+print(robots)
 
 # Main
 if __name__ == '__main__':

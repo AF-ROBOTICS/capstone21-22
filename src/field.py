@@ -14,7 +14,7 @@ class Field:
     
     def __init__(self):
         """Field objects contain an array of Robot objects, Grid of Cells, and array for lost robots"""
-        self.cells = Cell[math.ceil(FIELD_W/CELL_W)][math.ceil(FIELD_L/CELL_W)]
+        self.cells = [math.ceil(FIELD_W/CELL_W)][math.ceil(FIELD_L/CELL_W)]
         self.lost_bots = Robot[None]
     
     def map_bots(self, robots):
@@ -71,7 +71,7 @@ class Field:
         """Returns total manhattan distance of all robots to destination positions"""
         manhattan = 0
         for robot in robots:
-            manhattan = util.manhattan_distance(robot.pos_cell[0], robot.pos_cell[1], robot.dest_cell[0], robot.dest_cell[1])
+            manhattan = manhattan_distance(robot.pos_cell[0], robot.pos_cell[1], robot.dest_cell[0], robot.dest_cell[1])
         return manhattan
 
 
