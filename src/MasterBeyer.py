@@ -8,8 +8,6 @@ Date: 29 Nov 2021
 import roslib
 import rospy
 import time
-import serial
-import array
 import signal
 import csv
 import copy
@@ -45,15 +43,15 @@ robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
           'usafabot20', 'usafabot21', 'usafabot22', 'usafabot23', 'usafabot24']
 # DFEC from inside to outside
 x_dest = [2.3, 2, 1.6, 1.3, 1.3, 1, 1, 1, 2, 2.3, 2.6, 3, 3.3, 3.6, 4, 4, 4, 4.6, 4.6, 3.6, 3.3, 3.3, 3, 3, 2]
-y_dest = [2.5, 2.5, 2.5, 2.75, 2.25, 3, 2.5, 2, 3, 3, 3, 3, 3, 3, 3, 2, 2.5, 2, 3, 2, 2.5, 2, 2.5, 2, 2]
+y_dest = [2.5, 2.5, 2.5, 2.75, 2.25, 2, 2.5, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2.5, 2, 3, 2, 2.5, 2, 2.5, 2, 2]
 
 # CSV filepath
 path = "/home/" + os.getlogin() + "/robotics_ws/src/capstone21-22/measurement_files/"
-# CSV filename for error measurement ex: 08Dec2022-14:40:43.csv
+# CSV filename for error measurement ex: 08Dec2022_14-40-43.csv
 filename = datetime.now().strftime("%d%b%Y_%H-%M-%S") + ".csv"
 outfile = path + filename
 # CSV Headers
-fields = ['bot', 'x_avg_pos', 'y_avg_pos', 'pos_err', 'time']
+fields = ['bot', 'x_dest', 'x_avg_pos', 'y_dest', 'y_avg_pos', 'pos_err', 'time']
 
 
 def handler(signum, frame):
@@ -72,33 +70,41 @@ def measure_error(num_samples, sample_period):
             robot.y_avg.append(robot.curr_pos.position.y)
         # Wait specified number of seconds before taking another sample
         time.sleep(sample_period)
-        print("Finished cycle: ", Cycle+1)
+        print("Finished cycle: ", Cycle + 1)
 
     with open(outfile, 'w') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(fields)
         for robot in bots:
             robot.pos_err = ((mean(robot.x_avg) - robot.dest_pos.x) ** 2 + (
-                    mean(robot.y_avg) - robot.dest_pos.y) ** 2) ** .5        
-            csvwriter.writerow([robot.name, str(mean(robot.x_avg)), str(mean(robot.y_avg)), str(robot.pos_err), str(robot.time)])
+                    mean(robot.y_avg) - robot.dest_pos.y) ** 2) ** .5
+            csvwriter.writerow(
+                [robot.name, str(robot.dest_pos.x), (mean(robot.x_avg)), str(robot.dest_pos.y), str(mean(robot.y_avg)),
+                 str(robot.pos_err), str(robot.time)])
     print("CSV created with filename: ", filename)
 
 
 def stop_bots():
     for robot in bots:
         temp = copy.copy(robot.dest_pos)
-        robot.setGroundDestPosition(KILL_SIG, KILL_SIG)
-        robot.pub.publish(bot.dest_pos)
-        robot.dest_pos = temp
+        tic = time.perf_counter()
+        while(time.perf_counter()-tic < .250): # Publish for a quarter second
+	        robot.setGroundDestPosition(KILL_SIG, KILL_SIG)
+    	    robot.pub.publish(bot.dest_pos)
+    	    robot.dest_pos = temp
     print("locking all bots")
-        
+
+
 def start_bots():
     for robot in bots:
         temp = copy.copy(robot.dest_pos)
-        robot.setGroundDestPosition(-KILL_SIG, -KILL_SIG)
-        robot.pub.publish(bot.dest_pos)
-        robot.dest_pos = temp    
+        tic = time.perf_counter()
+        	while(time.perf_counter()-tic < .250): # Publish for a quarter second
+        	robot.setGroundDestPosition(-KILL_SIG, -KILL_SIG)
+        	robot.pub.publish(bot.dest_pos)
+        	robot.dest_pos = temp
     print("UNlocking all bots")
+
 
 # Define the Controller class
 class Master:
@@ -170,7 +176,7 @@ if __name__ == '__main__':
                 yrobot.append(y)
                 toc = time.perf_counter()
                 t = toc - tic
-                print("Found", bot.name, 'in', round(t,4), '(s)')
+                print("Found", bot.name, 'in', round(t, 4), '(s)')
 
     # print(xrobot)
     # print(yrobot)
@@ -199,11 +205,11 @@ if __name__ == '__main__':
                 if curr_dist < DEST_DIST:
                     toc = time.perf_counter()
                     bot.time = toc - tic
-                    print(bot.name, "complete in", round(bot.time,4), "(s)")
+                    print(bot.name, "complete in", round(bot.time, 4), "(s)")
                     break
         else:
             print("Skipping", bot.name)
-        i+=1
+        i += 1
 
     print("all bots complete")
     stop_bots()
