@@ -80,7 +80,7 @@ class Controller:
         elif data.x == -KILL_SIG and data.y == -KILL_SIG:
             self.kill = False
         else
-        	self.nextX = data.x
+            self.nextX = data.x
             self.nextY = data.y
 
     # The Roadrunner provides the orientation from 0 to 180 deg and 
