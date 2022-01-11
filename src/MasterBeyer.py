@@ -89,9 +89,9 @@ def stop_bots():
         temp = copy.copy(robot.dest_pos)
         tic = time.perf_counter()
         while(time.perf_counter()-tic < .250): # Publish for a quarter second
-	        robot.setGroundDestPosition(KILL_SIG, KILL_SIG)
-    	    robot.pub.publish(bot.dest_pos)
-    	    robot.dest_pos = temp
+            robot.setGroundDestPosition(KILL_SIG, KILL_SIG)
+            robot.pub.publish(bot.dest_pos)
+            robot.dest_pos = temp
     print("locking all bots")
 
 
@@ -99,10 +99,10 @@ def start_bots():
     for robot in bots:
         temp = copy.copy(robot.dest_pos)
         tic = time.perf_counter()
-        	while(time.perf_counter()-tic < .250): # Publish for a quarter second
-        	robot.setGroundDestPosition(-KILL_SIG, -KILL_SIG)
-        	robot.pub.publish(bot.dest_pos)
-        	robot.dest_pos = temp
+            while(time.perf_counter()-tic < .250): # Publish for a quarter second
+            robot.setGroundDestPosition(-KILL_SIG, -KILL_SIG)
+            robot.pub.publish(bot.dest_pos)
+            robot.dest_pos = temp
     print("UNlocking all bots")
 
 
