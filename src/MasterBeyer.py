@@ -86,24 +86,20 @@ def measure_error(num_samples, sample_period):
 
 def stop_bots():
     for robot in bots:
-        temp = copy.copy(robot.dest_pos)
         tic = time.perf_counter()
-        while(time.perf_counter()-tic < .250): # Publish for a quarter second
+        while(time.perf_counter()-tic < .05): # Publish for .05 seconds
             robot.setGroundDestPosition(KILL_SIG, KILL_SIG)
             robot.pub.publish(bot.dest_pos)
-            robot.dest_pos = temp
-    print("locking all bots")
+    print("locked all bots")
 
 
 def start_bots():
     for robot in bots:
-        temp = copy.copy(robot.dest_pos)
         tic = time.perf_counter()
-        while(time.perf_counter()-tic < .250): # Publish for a quarter second
+        while(time.perf_counter()-tic < .05): # Publish for .05 seconds
             robot.setGroundDestPosition(-KILL_SIG, -KILL_SIG)
             robot.pub.publish(bot.dest_pos)
-            robot.dest_pos = temp
-    print("UNlocking all bots")
+    print("UNlocked all bots")
 
 
 # Define the Controller class
@@ -145,9 +141,6 @@ class Master:
     def getCurrPos(self):
         return self.curr_pos.position.x, self.curr_pos.position.y
 
-    def setDestPosition(self, x, y):
-        self.dest_pos.x = x
-        self.dest_pos.y = y
 
 
 bots = []
@@ -198,8 +191,6 @@ if __name__ == '__main__':
                 bot.setGroundDestPosition(x_dest[i], y_dest[i])
                 bot.pub.publish(bot.dest_pos)
                 curr_x, curr_y = bot.getCurrPos()
-                bot.setGroundDestPosition(x_dest[i], y_dest[i])
-                bot.pub.publish(bot.dest_pos)
                 # print(curr_x, curr_y)
                 curr_dist = ((x_dest[i] - curr_x) ** 2 + (y_dest[i] - curr_y) ** 2) ** 0.5
                 if curr_dist < DEST_DIST:
