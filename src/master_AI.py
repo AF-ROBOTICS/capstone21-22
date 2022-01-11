@@ -44,7 +44,7 @@ y_dest = [2.5,2.5,2.5,2.75,2.25,3,2.5,2,3,3,3,3,3,3,3,2,2.5,2,3,2,2.5,2,2.5,2,2]
 
 # Save the Above Information as an Arrary of Robot Objects
 robots = []
-for i in range(robot_ids):
+for i in range(0, len(robot_ids)):
     robots.append(Robot(robot_ids[i], (x_dest[i], y_dest[i], 0)))
 
 print(robots)

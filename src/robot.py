@@ -53,6 +53,9 @@ class Robot:
         self.dest.x = dest_point[0]
         self.dest.y = dest_point[1]
         self.dest.theta = dest_theta
+        
+    def getAction(self):
+        return None
 
     # def get_successors(self):
     #     """Returns array of successor points: [(x,y)]"""
