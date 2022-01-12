@@ -29,7 +29,7 @@ class Master:
         self.y_avg = []
         self.timeout = False
         self.time = 0
-        self.dist = ((self.dest_pos.x - self.curr_pos.x) ** 2 + (self.dest_pos.y - self.curr_pos.y) ** 2) ** 0.5
+        self.dist = ((self.dest_pos.x - self.curr_pos.position.x) ** 2 + (self.dest_pos.y - self.curr_pos.position.y) ** 2) ** 0.5
         self.done = self.dist < DONE_DIST
         self.close = self.dist < DEST_DIST
         # -----------------------------------------------------------------------------
