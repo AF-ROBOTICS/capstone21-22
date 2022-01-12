@@ -77,8 +77,8 @@ class Master:
     def start(self):
         self.setGroundDestPosition(-KILL_SIG, -KILL_SIG)
         self.time = time.perf_counter()
-        logger.debug("starting timer for", self.name)
-        logger.debug(self.name, "stopped")
+        logger.debug(f"starting timer for f{self.name}")
+        logger.debug(f"f{self.name} stopped")
 
 
 def stop_bots(bots: list):
@@ -98,5 +98,5 @@ def start_bots(bots: list):
 def assign_bots(bots: list, xdest=x_dest, ydest=y_dest):
     for bot, xdest, ydest in zip(bots, x_dest, y_dest):
         assert isinstance(bot, Master)
-        logger.debug("Dest set for:" + bot.name)
+        logger.debug(f"Dest set for: f{bot.name}")
         bot.setGroundDestPosition(xdest, ydest)
