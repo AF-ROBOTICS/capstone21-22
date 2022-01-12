@@ -59,7 +59,7 @@ class Master:
         logger.debug(f"Waiting bot: {self.name}")
         tic = time.perf_counter()
         while data.position.x == 0 and data.position.y == 0:
-            if time.perf_counter() - ticc > TIMEOUT_THRESH:
+            if time.perf_counter() - tic > TIMEOUT_THRESH:
                 self.timeout = True
                 logger.warning(f"Timeout: {self.name}")
                 break
