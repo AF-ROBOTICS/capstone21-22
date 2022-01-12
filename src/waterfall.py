@@ -37,7 +37,7 @@ if __name__ == '__main__':
             while not bot.close:  # TODO: How to not busy wait here
                 pass
         else:
-            logger.info(f"Skipping f{bot.name}")
+            logger.info(f"Skipping {bot.name}")
 
     logger.info("all bots complete")
     stop_bots(bots)

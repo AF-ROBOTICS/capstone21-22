@@ -37,7 +37,7 @@ class Master:
         # -----------------------------------------------------------------------------
         # Publish to the controller
         self.pub = rospy.Publisher(self.name + '/dest_pos', Point, queue_size=10)
-        rospy.Timer(rospy.Duration(.1), self.pub.publish(self.dest_pos))  # Automatically publish dest pos
+#        rospy.Timer(rospy.Duration(.1), self.callbackPublisher)  # Automatically publish dest pos
 
         # Listen for the bots' current position to the controller
         rospy.Subscriber(self.name + '/curr_pos', Pose, self.callback_currPos)
@@ -50,35 +50,39 @@ class Master:
         # Data based on drone position
         self.dest_pos.x = x
         self.dest_pos.y = y
-        logger.debug(self.name, "dest_pos set to", self.dest_pos)
+        logger.debug(f"{self.name} dest_pos set to {self.dest_pos}")
 
     def callback_currPos(self, data):
         self.curr_pos.position.x = round(data.position.x, 3)
         self.curr_pos.position.y = round(data.position.y, 3)
         self.curr_pos.orientation.z = round(data.orientation.z, 3)
-        logger.debug("Waiting bot: " + self.name)
+        logger.debug(f"Waiting bot: {self.name}")
         tic = time.perf_counter()
         while data.position.x == 0 and data.position.y == 0:
             if time.perf_counter() - ticc > TIMEOUT_THRESH:
                 self.timeout = True
-                logger.warning("Timeout: " + self.name)
+                logger.warning(f"Timeout: {self.name}")
                 break
             elif data.position.x or data.position.y:
                 toc = time.perf_counter()
                 t = toc - tic
-                logger.info("Found", self.name, 'in', round(t, 4), '(s)')
+                logger.info(f"Found {self.name} in {round(t, 4)} (s)")
 
     def stop(self):
         self.setGroundDestPosition(KILL_SIG, KILL_SIG)
-        self.time = time.perf_counter() - self.time
-        logger.info(self.name, "complete in", round(self.time, 4), "(s)")
-        logger.debug(self.name, "stopped")
+        if self.close:
+            self.time = time.perf_counter() - self.time
+            logger.info(f"{self.name} complete in {round(self.time, 4)} (s)")
+        logger.debug(f"{self.name} stopped")
 
     def start(self):
         self.setGroundDestPosition(-KILL_SIG, -KILL_SIG)
         self.time = time.perf_counter()
-        logger.debug(f"starting timer for f{self.name}")
-        logger.debug(f"f{self.name} stopped")
+        logger.debug(f"starting timer for {self.name}")
+        logger.debug(f"{self.name} started")
+        
+    def callbackPublisher(self, event):
+        self.pub.publish(self.dest_pos)
 
 
 def stop_bots(bots: list):
@@ -98,5 +102,5 @@ def start_bots(bots: list):
 def assign_bots(bots: list, xdest=x_dest, ydest=y_dest):
     for bot, xdest, ydest in zip(bots, x_dest, y_dest):
         assert isinstance(bot, Master)
-        logger.debug(f"Dest set for: f{bot.name}")
+        logger.debug(f"Dest set for: {bot.name}")
         bot.setGroundDestPosition(xdest, ydest)

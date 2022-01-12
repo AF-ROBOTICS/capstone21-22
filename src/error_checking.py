@@ -14,7 +14,7 @@ fields = ['bot', 'x_dest', 'x_avg_pos', 'y_dest', 'y_avg_pos', 'pos_err', 'time'
 
 
 def measure_error(bots: list, num_samples=5, sample_period=10):
-    logger.info(f"Collecting  f{num_samples} taken every  f{sample_period}  seconds")
+    logger.info(f"Collecting  {num_samples} taken every  {sample_period}  seconds")
     for Cycle in range(0, num_samples):
         for bot in bots:
             assert isinstance(bot, Master)
@@ -23,7 +23,7 @@ def measure_error(bots: list, num_samples=5, sample_period=10):
             bot.y_avg.append(bot.curr_pos.position.y)
         # Wait specified number of seconds before taking another sample
         time.sleep(sample_period)
-        logger.debug(f"Finished sample:  f{Cycle + 1}")
+        logger.debug(f"Finished sample:  {Cycle + 1}")
 
     with open(outfile, 'w') as csvfile:
         csvwriter = csv.writer(csvfile)
@@ -34,4 +34,4 @@ def measure_error(bots: list, num_samples=5, sample_period=10):
             csvwriter.writerow(
                 [bot.name, str(bot.dest_pos.x), (mean(bot.x_avg)), str(bot.dest_pos.y), str(mean(bot.y_avg)),
                  str(bot.pos_err), str(bot.time)])
-    logger.info(f"CSV created with filename:  f{filename}")
+    logger.info(f"CSV created with filename:  {filename}")
