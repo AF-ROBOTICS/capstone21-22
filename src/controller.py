@@ -79,9 +79,9 @@ class Controller:
             self.kill = True
         elif data.x == -KILL_SIG and data.y == -KILL_SIG:
             self.kill = False
-
-        self.nextX = data.x
-        self.nextY = data.y
+        else:
+            self.nextX = data.x
+            self.nextY = data.y
 
     # The Roadrunner provides the orientation from 0 to 180 deg and 
     # 0 to -180 deg
@@ -99,7 +99,7 @@ class Controller:
     # Frequency: 100 Hz
     def callback_converter(self, event):  
         if not self.ctrl_c and not self.kill:
-            if(self.nextX == 0 and self.nextY ==0):
+            if((self.nextX == 0 and self.nextY == 0) or self.kill == True):
                 self.twist.linear.x = 0
                 self.twist.angular.z = 0
                 self.pub.publish(self.twist)
@@ -156,7 +156,7 @@ class Controller:
             # TODO: remove this line when moving to real robot; 
             # this is used because the simulated robot moves clockwise with a 
             # positive angular vel while real robot moves counterclockwise
-            # angular = -angular
+            angular = -angular
             
             self.twist.linear.x = linear
             self.twist.angular.z = angular
