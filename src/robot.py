@@ -20,7 +20,7 @@ class Robot:
         self.ID = None
         self.status = Status(0)
         self.action = self.getAction()
-        self.pos = Ground_Pose(None)
+        self.pos = Ground_Pose()
         self.dest = Ground_Pose(dest)
         self.name = usafabot
         self.pos_cell = (None, None)
