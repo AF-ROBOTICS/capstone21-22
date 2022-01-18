@@ -1,0 +1,38 @@
+127.0.0.1 localhost
+
+# The following lines are desirable for IPv6 capable hosts
+::1 ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts
+
+192.168.1.201	robotics1
+192.168.1.202	robotics2
+192.168.1.203	robotics3
+192.168.1.100	usafabot0
+192.168.1.101	usafabot1
+192.168.1.102	usafabot2
+192.168.1.103	usafabot3
+192.168.1.104	usafabot4
+192.168.1.105	usafabot5
+192.168.1.106	usafabot6
+192.168.1.107	usafabot7
+192.168.1.108	usafabot8
+192.168.1.109	usafabot9
+192.168.1.110	usafabot10
+192.168.1.111	usafabot11
+192.168.1.112	usafabot12
+192.168.1.113	usafabot13
+192.168.1.114	usafabot14
+192.168.1.115	usafabot15
+192.168.1.116	usafabot16
+192.168.1.117	usafabot17
+192.168.1.118	usafabot18
+192.168.1.119	usafabot19
+192.168.1.120	usafabot20
+192.168.1.121	usafabot21
+192.168.1.122	usafabot22
+192.168.1.123	usafabot23
+192.168.1.124	usafabot24
