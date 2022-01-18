@@ -59,7 +59,8 @@ class Master:
         self.dist = ((self.dest_pos.x - self.curr_pos.position.x) ** 2 + (self.dest_pos.y - self.curr_pos.position.y) ** 2) ** 0.5
         self.done = self.dist < DONE_DIST
         self.close = self.dist < DEST_DIST
-        logger.info(f"{self.name} D:{self.done} C:{self.close}")
+        # logger.info(f"{self.name} D:{self.done} C:{self.close}")
+        logger.info(f"{self.dist}")
         tic = time.perf_counter()
         while data.position.x == 0 and data.position.y == 0:
             if time.perf_counter() - tic > TIMEOUT_THRESH:
