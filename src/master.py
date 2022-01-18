@@ -29,9 +29,9 @@ class Master:
         self.y_avg = []
         self.timeout = False
         self.time = 0
-        self.dist = ((self.dest_pos.x - self.curr_pos.position.x) ** 2 + (self.dest_pos.y - self.curr_pos.position.y) ** 2) ** 0.5
-        self.done = self.dist < DONE_DIST
-        self.close = self.dist < DEST_DIST
+        self.dist = 999999999.015
+        self.done = False
+        self.close = False
         # -----------------------------------------------------------------------------
         # Topics and Timers
         # -----------------------------------------------------------------------------
@@ -56,7 +56,9 @@ class Master:
         self.curr_pos.position.x = round(data.position.x, 3)
         self.curr_pos.position.y = round(data.position.y, 3)
         self.curr_pos.orientation.z = round(data.orientation.z, 3)
-        logger.debug(f"Waiting bot: {self.name}")
+        self.dist = ((self.dest_pos.x - self.curr_pos.position.x) ** 2 + (self.dest_pos.y - self.curr_pos.position.y) ** 2) ** 0.5
+        self.done = self.dist < DONE_DIST
+        self.close = self.dist < DEST_DIST
         tic = time.perf_counter()
         while data.position.x == 0 and data.position.y == 0:
             if time.perf_counter() - tic > TIMEOUT_THRESH:
@@ -82,6 +84,7 @@ class Master:
         logger.debug(f"{self.name} started")
         
     def callbackPublisher(self, event):
+        logger.info(f"Publishing {self.name}")
         self.pub.publish(self.dest_pos)
 
 
