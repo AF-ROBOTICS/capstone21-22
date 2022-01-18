@@ -5,11 +5,13 @@ Date: 11 Jan 2022
 ----------------------------------------------------------------------------------"""
 
 import signal
+
 import rospy
 
 from error_checking import *
 from master import *
 
+logger = CreateLogger(__name__)
 # TODO: what if you have more or less robots than needed?
 NUM_BOTS = 25
 BASENAME = 'usafabot'
