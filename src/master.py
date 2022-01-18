@@ -1,11 +1,11 @@
 import time
-
+import copy
 import rospy
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
 
 from usafalog import *
-
+logger = CreateLogger(__name__)
 # Global Variables
 DEST_DIST = .25  # meters
 DONE_DIST = .10  # meters
@@ -37,7 +37,7 @@ class Master:
         # -----------------------------------------------------------------------------
         # Publish to the controller
         self.pub = rospy.Publisher(self.name + '/dest_pos', Point, queue_size=10)
-#        rospy.Timer(rospy.Duration(.1), self.callbackPublisher)  # Automatically publish dest pos
+        rospy.Timer(rospy.Duration(.1), self.callbackPublisher)  # Automatically publish dest pos
 
         # Listen for the bots' current position to the controller
         rospy.Subscriber(self.name + '/curr_pos', Pose, self.callback_currPos)
@@ -71,20 +71,26 @@ class Master:
                 logger.info(f"Found {self.name} in {round(t, 4)} (s)")
 
     def stop(self):
+        temp = copy.copy(self.dest_pos)
         self.setGroundDestPosition(KILL_SIG, KILL_SIG)
         if self.close:
             self.time = time.perf_counter() - self.time
             logger.info(f"{self.name} complete in {round(self.time, 4)} (s)")
+        time.sleep(.2)
+        self.dest_pos = temp
         logger.debug(f"{self.name} stopped")
 
     def start(self):
+        temp = copy.copy(self.dest_pos)
         self.setGroundDestPosition(-KILL_SIG, -KILL_SIG)
+        time.sleep(.2)
+        self.dest_pos = temp
         self.time = time.perf_counter()
         logger.debug(f"starting timer for {self.name}")
-        logger.debug(f"{self.name} started")
+        logger.info(f"{self.name} started")
         
     def callbackPublisher(self, event):
-        logger.info(f"Publishing {self.name}")
+        # logger.debug(f"Publishing {self.name}")
         self.pub.publish(self.dest_pos)
 
 
@@ -92,14 +98,14 @@ def stop_bots(bots: list):
     for bot in bots:
         assert isinstance(bot, Master)
         bot.stop()
-    logger.debug('locked all bots')
+    logger.info('locked all bots')
 
 
 def start_bots(bots: list):
     for bot in bots:
         assert isinstance(bot, Master)
         bot.start()
-    logger.debug("UNlocked all bots")
+    logger.info("UNlocked all bots")
 
 
 def assign_bots(bots: list, xdest=x_dest, ydest=y_dest):

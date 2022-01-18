@@ -4,6 +4,9 @@ from datetime import datetime
 from statistics import mean
 from usafalog import *
 
+
+logger = CreateLogger(__name__)
+logger.debug("Entering error")
 # CSV filepath
 path = "/home/" + os.getlogin() + "/robotics_ws/src/capstone21-22/measurement_files/"
 # CSV filename for error measurement ex: 08Dec2022_14-40-43.csv
