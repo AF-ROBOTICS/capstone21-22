@@ -6,6 +6,7 @@ from geometry_msgs.msg import Pose
 
 from usafalog import *
 
+logger = CreateLogger(__name__)
 # Global Variables
 DEST_DIST = .25  # meters
 DONE_DIST = .10  # meters
@@ -82,6 +83,7 @@ class Master:
         logger.debug(f"{self.name} started")
         
     def callbackPublisher(self, event):
+        logger.debug(f"publishing {self.name}")
         self.pub.publish(self.dest_pos)
 
 
