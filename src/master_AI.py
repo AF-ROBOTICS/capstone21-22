@@ -70,7 +70,7 @@ if __name__ == '__main__':
         print("Completed bot: " + robot.name)
         print(t)
 
-    print("Initial Positions: " + init_pos)
+    # print("Initial Positions: " + init_pos)
 
     # Assign final bot destinations
     for i in range(robots):
