@@ -75,7 +75,7 @@ if __name__ == '__main__':
     # Assign final bot destinations
     for i in range(0, len(robots)):
         robots[i].setDest((x_dest[i], y_dest[i]))
-        robots[i].pub.publish(robots[i].dest)
+        robots[i].pub.publish(Point(robots[i].dest.x, robots[i].dest.y))
         print("Dest set for:" + robots[i].name)
     
     # Map Destinations in Field
