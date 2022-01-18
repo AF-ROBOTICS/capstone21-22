@@ -73,7 +73,7 @@ if __name__ == '__main__':
     # print("Initial Positions: " + init_pos)
 
     # Assign final bot destinations
-    for i in range(robots):
+    for i in range(0, len(robots)):
         robots[i].setDest((x_dest[i], y_dest[i]))
         robots[i].pub.publish(robots[i].dest)
         print("Dest set for:" + robots[i].name)
