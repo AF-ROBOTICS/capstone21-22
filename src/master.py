@@ -6,6 +6,7 @@ from geometry_msgs.msg import Pose
 
 from usafalog import *
 
+logger = CreateLogger(__name__)
 # Global Variables
 DEST_DIST = .25  # meters
 DONE_DIST = .10  # meters
@@ -29,7 +30,8 @@ class Master:
         self.y_avg = []
         self.timeout = False
         self.time = 0
-        self.dist = ((self.dest_pos.x - self.curr_pos.position.x) ** 2 + (self.dest_pos.y - self.curr_pos.position.y) ** 2) ** 0.5
+        self.dist = ((self.dest_pos.x - self.curr_pos.position.x) ** 2 + (
+                    self.dest_pos.y - self.curr_pos.position.y) ** 2) ** 0.5
         self.done = self.dist < DONE_DIST
         self.close = self.dist < DEST_DIST
         # -----------------------------------------------------------------------------
@@ -37,7 +39,7 @@ class Master:
         # -----------------------------------------------------------------------------
         # Publish to the controller
         self.pub = rospy.Publisher(self.name + '/dest_pos', Point, queue_size=10)
-#        rospy.Timer(rospy.Duration(.1), self.callbackPublisher)  # Automatically publish dest pos
+        rospy.Timer(rospy.Duration(.1), self.callbackPublisher)  # Automatically publish dest pos
 
         # Listen for the bots' current position to the controller
         rospy.Subscriber(self.name + '/curr_pos', Pose, self.callback_currPos)
@@ -80,8 +82,9 @@ class Master:
         self.time = time.perf_counter()
         logger.debug(f"starting timer for {self.name}")
         logger.debug(f"{self.name} started")
-        
+
     def callbackPublisher(self, event):
+        logger.debug(f"publishing {self.name}")
         self.pub.publish(self.dest_pos)
 
 
@@ -99,7 +102,11 @@ def start_bots(bots: list):
     logger.debug("UNlocked all bots")
 
 
-def assign_bots(bots: list, xdest=x_dest, ydest=y_dest):
+def assign_bots(bots: list, xdest=None, ydest=None):
+    if ydest is None:
+        ydest = y_dest
+    if xdest is None:
+        xdest = x_dest
     for bot, xdest, ydest in zip(bots, x_dest, y_dest):
         assert isinstance(bot, Master)
         logger.debug(f"Dest set for: {bot.name}")
