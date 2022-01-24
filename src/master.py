@@ -1,11 +1,10 @@
 import time
-
+import copy
 import rospy
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
 
 from usafalog import *
-
 logger = CreateLogger(__name__)
 # Global Variables
 DEST_DIST = .25  # meters
@@ -30,10 +29,9 @@ class Master:
         self.y_avg = []
         self.timeout = False
         self.time = 0
-        self.dist = ((self.dest_pos.x - self.curr_pos.position.x) ** 2 + (
-                    self.dest_pos.y - self.curr_pos.position.y) ** 2) ** 0.5
-        self.done = self.dist < DONE_DIST
-        self.close = self.dist < DEST_DIST
+        self.dist = 999999999.015
+        self.done = False
+        self.close = False
         # -----------------------------------------------------------------------------
         # Topics and Timers
         # -----------------------------------------------------------------------------
@@ -58,7 +56,9 @@ class Master:
         self.curr_pos.position.x = round(data.position.x, 3)
         self.curr_pos.position.y = round(data.position.y, 3)
         self.curr_pos.orientation.z = round(data.orientation.z, 3)
-        logger.debug(f"Waiting bot: {self.name}")
+        self.dist = ((self.dest_pos.x - self.curr_pos.position.x) ** 2 + (self.dest_pos.y - self.curr_pos.position.y) ** 2) ** 0.5
+        self.done = self.dist < DONE_DIST
+        self.close = self.dist < DEST_DIST
         tic = time.perf_counter()
         while data.position.x == 0 and data.position.y == 0:
             if time.perf_counter() - tic > TIMEOUT_THRESH:
@@ -71,20 +71,26 @@ class Master:
                 logger.info(f"Found {self.name} in {round(t, 4)} (s)")
 
     def stop(self):
+        temp = copy.copy(self.dest_pos)
         self.setGroundDestPosition(KILL_SIG, KILL_SIG)
         if self.close:
             self.time = time.perf_counter() - self.time
             logger.info(f"{self.name} complete in {round(self.time, 4)} (s)")
+        time.sleep(.2)
+        self.dest_pos = temp
         logger.debug(f"{self.name} stopped")
 
     def start(self):
+        temp = copy.copy(self.dest_pos)
         self.setGroundDestPosition(-KILL_SIG, -KILL_SIG)
+        time.sleep(.2)
+        self.dest_pos = temp
         self.time = time.perf_counter()
         logger.debug(f"starting timer for {self.name}")
-        logger.debug(f"{self.name} started")
-
+        logger.info(f"{self.name} started")
+        
     def callbackPublisher(self, event):
-        logger.debug(f"publishing {self.name}")
+        # logger.debug(f"Publishing {self.name}")
         self.pub.publish(self.dest_pos)
 
 
@@ -92,21 +98,17 @@ def stop_bots(bots: list):
     for bot in bots:
         assert isinstance(bot, Master)
         bot.stop()
-    logger.debug('locked all bots')
+    logger.info('locked all bots')
 
 
 def start_bots(bots: list):
     for bot in bots:
         assert isinstance(bot, Master)
         bot.start()
-    logger.debug("UNlocked all bots")
+    logger.info("UNlocked all bots")
 
 
-def assign_bots(bots: list, xdest=None, ydest=None):
-    if ydest is None:
-        ydest = y_dest
-    if xdest is None:
-        xdest = x_dest
+def assign_bots(bots: list, xdest=x_dest, ydest=y_dest):
     for bot, xdest, ydest in zip(bots, x_dest, y_dest):
         assert isinstance(bot, Master)
         logger.debug(f"Dest set for: {bot.name}")
