@@ -28,7 +28,7 @@ from routing import single_greedy
 init_pos = []
 robotDestination = []
 DEST_DIST = 0.25
-field = Field
+field = Field()
 
 
 # TODO: change this list to match number of robots
