@@ -36,8 +36,8 @@ if __name__ == '__main__':
     for bot in bots:
         if not bot.timeout:
             bot.start()
-            while not bot.close:  # TODO: How to not busy wait here
-                pass
+            while not bot.state == CLOSE or bot.state == DONE:
+                pass # TODO: How to not busy wait here
         else:
             logger.info(f"Skipping {bot.name}")
 
