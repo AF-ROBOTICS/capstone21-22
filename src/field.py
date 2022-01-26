@@ -15,7 +15,7 @@ class Field:
     def __init__(self):
         """Field objects contain an array of Robot objects, Grid of Cells, and array for lost robots"""
         self.cells = [[0 for x in range(math.ceil(FIELD_W/CELL_W))] for y in range(math.ceil(FIELD_L/CELL_W))]
-        self.lost_bots = Robot[None]
+        self.lost_bots = []
     
     def map_bots(self, robots):
         """Populates field cells with current robot positions"""
