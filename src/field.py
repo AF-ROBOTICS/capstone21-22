@@ -21,8 +21,9 @@ class Field:
         """Populates field cells with current robot positions"""
 
         # Clear All Cells
-        for cell in self.cells.asList():
-            cell.robot = Robot(None)
+        for cell_row in self.cells:
+            for cell in cell_row:
+                cell.robot = Robot(None)
 
         # Reset Lost Bot List
         self.lost_bots = []
@@ -42,8 +43,9 @@ class Field:
         """Populates field cells with current destination positions"""
 
         # Clear All Cells
-        for cell in self.cells.asList():
-            cell.dest = Robot(None)
+        for cell_row in self.cells:
+            for cell in cell_row:
+                cell.robot = Robot(None)
 
         # Add All Robots to Respective Cells
         for robot in robots:
