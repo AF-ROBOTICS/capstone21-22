@@ -25,7 +25,7 @@ class Field:
             cell.robot = Robot(None)
 
         # Reset Lost Bot List
-        self.lost_bots = Robot[None]
+        self.lost_bots = []
 
         # Add All Robots to Respective Cells
         for robot in robots:
