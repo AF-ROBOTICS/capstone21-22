@@ -23,7 +23,7 @@ class Field:
         # Clear All Cells
         for cell_row in self.cells:
             for cell in cell_row:
-                cell.robot = Robot(None)
+                cell.robot = None
 
         # Reset Lost Bot List
         self.lost_bots = []
@@ -45,7 +45,7 @@ class Field:
         # Clear All Cells
         for cell_row in self.cells:
             for cell in cell_row:
-                cell.robot = Robot(None)
+                cell.robot = None
 
         # Add All Robots to Respective Cells
         for robot in robots:
