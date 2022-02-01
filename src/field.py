@@ -16,8 +16,10 @@ class Field:
         """Field objects contain an array of Robot objects, Grid of Cells, and array for lost robots"""
         self.cells = []
         for x in range(math.ceil(FIELD_W/CELL_W)):
+            cell_row = []
             for y in range(math.ceil(FIELD_L/CELL_W)):
-                self.cells[x,y] = Cell()
+                cell_row.append(Cell())
+            self.cells.append(cell_row)
         self.lost_bots = []
     
     def map_bots(self, robots):
