@@ -31,8 +31,8 @@ if __name__ == '__main__':
     # fill list of Master class bots
     for i in range(0, NUM_BOTS):
         bots.append(Master(BASENAME + str(i)))
-    assign_bots(bots)
     stop_bots(bots)
+    assign_bots(bots)
     for bot in bots:
         if not bot.timeout:
             bot.start()
