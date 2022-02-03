@@ -21,7 +21,7 @@ class Field:
                 cell_row.append(Cell())
             self.cells.append(cell_row)
         self.lost_bots = []
-    
+
     def map_bots(self, robots):
         """Populates field cells with current robot positions"""
 
