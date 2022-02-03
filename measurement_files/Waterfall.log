@@ -1,1 +1,206 @@
-2022-01-26 11:49:55,176-__main__-INFO:23:KILLED with CTRL_C
+2022-02-03 09:06:35,481-master-DEBUG:121:Dest set for: usafabot0
+2022-02-03 09:06:35,481-master-DEBUG:57:usafabot0 dest_pos set to x: 2.3
+y: 2.5
+z: 0.0
+2022-02-03 09:06:35,481-master-DEBUG:121:Dest set for: usafabot1
+2022-02-03 09:06:35,482-master-DEBUG:57:usafabot1 dest_pos set to x: 2
+y: 2.5
+z: 0.0
+2022-02-03 09:06:35,482-master-DEBUG:121:Dest set for: usafabot2
+2022-02-03 09:06:35,482-master-DEBUG:57:usafabot2 dest_pos set to x: 1.6
+y: 2.5
+z: 0.0
+2022-02-03 09:06:35,482-master-DEBUG:121:Dest set for: usafabot3
+2022-02-03 09:06:35,482-master-DEBUG:57:usafabot3 dest_pos set to x: 1.3
+y: 2.75
+z: 0.0
+2022-02-03 09:06:35,482-master-DEBUG:121:Dest set for: usafabot4
+2022-02-03 09:06:35,482-master-DEBUG:57:usafabot4 dest_pos set to x: 1.3
+y: 2.25
+z: 0.0
+2022-02-03 09:06:35,482-master-DEBUG:121:Dest set for: usafabot5
+2022-02-03 09:06:35,483-master-DEBUG:57:usafabot5 dest_pos set to x: 1
+y: 2
+z: 0.0
+2022-02-03 09:06:35,484-master-DEBUG:121:Dest set for: usafabot6
+2022-02-03 09:06:35,484-master-DEBUG:57:usafabot6 dest_pos set to x: 1
+y: 2.5
+z: 0.0
+2022-02-03 09:06:35,484-master-DEBUG:121:Dest set for: usafabot7
+2022-02-03 09:06:35,484-master-DEBUG:57:usafabot7 dest_pos set to x: 1
+y: 3
+z: 0.0
+2022-02-03 09:06:35,484-master-DEBUG:121:Dest set for: usafabot8
+2022-02-03 09:06:35,485-master-DEBUG:57:usafabot8 dest_pos set to x: 2
+y: 3
+z: 0.0
+2022-02-03 09:06:35,485-master-DEBUG:121:Dest set for: usafabot9
+2022-02-03 09:06:35,485-master-DEBUG:57:usafabot9 dest_pos set to x: 2.3
+y: 3
+z: 0.0
+2022-02-03 09:06:35,485-master-DEBUG:121:Dest set for: usafabot10
+2022-02-03 09:06:35,485-master-DEBUG:57:usafabot10 dest_pos set to x: 2.6
+y: 3
+z: 0.0
+2022-02-03 09:06:35,485-master-DEBUG:121:Dest set for: usafabot11
+2022-02-03 09:06:35,485-master-DEBUG:57:usafabot11 dest_pos set to x: 3
+y: 3
+z: 0.0
+2022-02-03 09:06:35,485-master-DEBUG:121:Dest set for: usafabot12
+2022-02-03 09:06:35,486-master-DEBUG:57:usafabot12 dest_pos set to x: 3.3
+y: 3
+z: 0.0
+2022-02-03 09:06:35,486-master-DEBUG:121:Dest set for: usafabot13
+2022-02-03 09:06:35,486-master-DEBUG:57:usafabot13 dest_pos set to x: 3.6
+y: 3
+z: 0.0
+2022-02-03 09:06:35,486-master-DEBUG:121:Dest set for: usafabot14
+2022-02-03 09:06:35,486-master-DEBUG:57:usafabot14 dest_pos set to x: 4
+y: 3
+z: 0.0
+2022-02-03 09:06:35,487-master-DEBUG:121:Dest set for: usafabot15
+2022-02-03 09:06:35,487-master-DEBUG:57:usafabot15 dest_pos set to x: 4
+y: 2
+z: 0.0
+2022-02-03 09:06:35,488-master-DEBUG:121:Dest set for: usafabot16
+2022-02-03 09:06:35,488-master-DEBUG:57:usafabot16 dest_pos set to x: 4
+y: 2.5
+z: 0.0
+2022-02-03 09:06:35,488-master-DEBUG:121:Dest set for: usafabot17
+2022-02-03 09:06:35,488-master-DEBUG:57:usafabot17 dest_pos set to x: 4.6
+y: 2
+z: 0.0
+2022-02-03 09:06:35,488-master-DEBUG:121:Dest set for: usafabot18
+2022-02-03 09:06:35,489-master-DEBUG:57:usafabot18 dest_pos set to x: 4.6
+y: 3
+z: 0.0
+2022-02-03 09:06:35,489-master-DEBUG:121:Dest set for: usafabot19
+2022-02-03 09:06:35,489-master-DEBUG:57:usafabot19 dest_pos set to x: 3.6
+y: 2
+z: 0.0
+2022-02-03 09:06:35,490-master-DEBUG:121:Dest set for: usafabot20
+2022-02-03 09:06:35,490-master-DEBUG:57:usafabot20 dest_pos set to x: 3.3
+y: 2.5
+z: 0.0
+2022-02-03 09:06:35,490-master-DEBUG:121:Dest set for: usafabot21
+2022-02-03 09:06:35,490-master-DEBUG:57:usafabot21 dest_pos set to x: 3.3
+y: 2
+z: 0.0
+2022-02-03 09:06:35,490-master-DEBUG:121:Dest set for: usafabot22
+2022-02-03 09:06:35,491-master-DEBUG:57:usafabot22 dest_pos set to x: 3
+y: 2.5
+z: 0.0
+2022-02-03 09:06:35,491-master-DEBUG:121:Dest set for: usafabot23
+2022-02-03 09:06:35,491-master-DEBUG:57:usafabot23 dest_pos set to x: 3
+y: 2
+z: 0.0
+2022-02-03 09:06:35,491-master-DEBUG:121:Dest set for: usafabot24
+2022-02-03 09:06:35,491-master-DEBUG:57:usafabot24 dest_pos set to x: 2
+y: 2
+z: 0.0
+2022-02-03 09:06:35,491-master-DEBUG:57:usafabot0 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:35,691-master-DEBUG:88:usafabot0 stopped
+2022-02-03 09:06:35,691-master-DEBUG:57:usafabot1 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:35,893-master-DEBUG:88:usafabot1 stopped
+2022-02-03 09:06:35,893-master-DEBUG:57:usafabot2 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:36,094-master-DEBUG:88:usafabot2 stopped
+2022-02-03 09:06:36,094-master-DEBUG:57:usafabot3 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:36,296-master-DEBUG:88:usafabot3 stopped
+2022-02-03 09:06:36,296-master-DEBUG:57:usafabot4 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:36,497-master-DEBUG:88:usafabot4 stopped
+2022-02-03 09:06:36,497-master-DEBUG:57:usafabot5 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:36,698-master-DEBUG:88:usafabot5 stopped
+2022-02-03 09:06:36,698-master-DEBUG:57:usafabot6 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:36,898-master-DEBUG:88:usafabot6 stopped
+2022-02-03 09:06:36,899-master-DEBUG:57:usafabot7 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:37,099-master-DEBUG:88:usafabot7 stopped
+2022-02-03 09:06:37,101-master-DEBUG:57:usafabot8 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:37,301-master-DEBUG:88:usafabot8 stopped
+2022-02-03 09:06:37,302-master-DEBUG:57:usafabot9 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:37,502-master-DEBUG:88:usafabot9 stopped
+2022-02-03 09:06:37,502-master-DEBUG:57:usafabot10 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:37,703-master-DEBUG:88:usafabot10 stopped
+2022-02-03 09:06:37,703-master-DEBUG:57:usafabot11 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:37,904-master-DEBUG:88:usafabot11 stopped
+2022-02-03 09:06:37,905-master-DEBUG:57:usafabot12 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:38,105-master-DEBUG:88:usafabot12 stopped
+2022-02-03 09:06:38,106-master-DEBUG:57:usafabot13 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:38,308-master-DEBUG:88:usafabot13 stopped
+2022-02-03 09:06:38,308-master-DEBUG:57:usafabot14 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:38,508-master-DEBUG:88:usafabot14 stopped
+2022-02-03 09:06:38,508-master-DEBUG:57:usafabot15 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:38,709-master-DEBUG:88:usafabot15 stopped
+2022-02-03 09:06:38,710-master-DEBUG:57:usafabot16 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:38,910-master-DEBUG:88:usafabot16 stopped
+2022-02-03 09:06:38,911-master-DEBUG:57:usafabot17 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:39,113-master-DEBUG:88:usafabot17 stopped
+2022-02-03 09:06:39,113-master-DEBUG:57:usafabot18 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:39,313-master-DEBUG:88:usafabot18 stopped
+2022-02-03 09:06:39,314-master-DEBUG:57:usafabot19 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:39,514-master-DEBUG:88:usafabot19 stopped
+2022-02-03 09:06:39,514-master-DEBUG:57:usafabot20 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:39,714-master-DEBUG:88:usafabot20 stopped
+2022-02-03 09:06:39,715-master-DEBUG:57:usafabot21 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:39,915-master-DEBUG:88:usafabot21 stopped
+2022-02-03 09:06:39,916-master-DEBUG:57:usafabot22 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:40,117-master-DEBUG:88:usafabot22 stopped
+2022-02-03 09:06:40,117-master-DEBUG:57:usafabot23 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:40,318-master-DEBUG:88:usafabot23 stopped
+2022-02-03 09:06:40,318-master-DEBUG:57:usafabot24 dest_pos set to x: 22
+y: 22
+z: 0.0
+2022-02-03 09:06:40,518-master-DEBUG:88:usafabot24 stopped
+2022-02-03 09:06:40,519-master-INFO:108:locked all bots
+2022-02-03 09:06:40,519-master-DEBUG:57:usafabot0 dest_pos set to x: -22
+y: -22
+z: 0.0
+2022-02-03 09:06:40,719-master-DEBUG:96:starting timer for usafabot0
+2022-02-03 09:06:40,721-master-INFO:97:usafabot0 started
