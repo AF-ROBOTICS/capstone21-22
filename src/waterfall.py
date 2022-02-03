@@ -31,8 +31,10 @@ if __name__ == '__main__':
     # fill list of Master class bots
     for i in range(0, NUM_BOTS):
         bots.append(Master(BASENAME + str(i)))
+    init_time = time.perf_counter()
     stop_bots(bots)
     assign_bots(bots)
+    while time.perf_counter() - init_time < 15: pass
     for bot in bots:
         if not bot.timeout:
             bot.start()
@@ -40,8 +42,7 @@ if __name__ == '__main__':
                 pass # TODO: How to not busy wait here
         else:
             logger.info(f"Skipping {bot.name}")
-
     logger.info("all bots complete")
-    stop_bots(bots)
+    # stop_bots(bots)
     measure_error(bots)
-    exit(0)
+    rospy.spin()

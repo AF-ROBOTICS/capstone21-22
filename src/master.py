@@ -14,9 +14,10 @@ TIMEOUT_THRESH = 10  # seconds
 KILL_SIG = 22
 # Manual enumeration of states
 BOOT = 0 # The robot has turned on but not found by RR or timed-out
-WORKING = 1 # The robot is trying to get to its dest
-CLOSE = 2 # The robot is close enough to release the next bot
-DONE  = 3 # The robot is at its destination
+WAITING = 1 # It is not the robot's time yet
+WORKING = 2 # The robot is trying to get to its dest
+CLOSE = 3 # The robot is close enough to release the next bot
+DONE  = 4 # The robot is at its destination
 
 # DFEC from inside to outside
 x_dest = [2.3, 2, 1.6, 1.3, 1.3, 1, 1, 1, 2, 2.3, 2.6, 3, 3.3, 3.6, 4, 4, 4, 4.6, 4.6, 3.6, 3.3, 3.3, 3, 3, 2]
@@ -36,6 +37,7 @@ class Master:
         self.time = 0
         self.dist = 999999999.015
         self.state = BOOT
+        self.lock = True
         # -----------------------------------------------------------------------------
         # Topics and Timers
         # -----------------------------------------------------------------------------
@@ -63,7 +65,10 @@ class Master:
         self.dist = ((self.dest_pos.x - self.curr_pos.position.x) ** 2 + (self.dest_pos.y - self.curr_pos.position.y) ** 2) ** 0.5
         if self.dist < DEST_DIST: self.state = CLOSE
         if self.dist < DONE_DIST: self.state = DONE
-        # logger.info(f"{self.name} D:{self.done} C:{self.close}")
+        if self.state == DONE:
+            self.lock = True
+            self.time = time.perf_counter() - self.time
+            logger.info(f"{self.name} complete in {round(self.time, 4)} (s)")
         # logger.info(f"{self.dist}")
         tic = time.perf_counter()
         while data.position.x == 0 and data.position.y == 0:
@@ -75,30 +80,25 @@ class Master:
                 toc = time.perf_counter()
                 t = toc - tic
                 logger.info(f"Found {self.name} in {round(t, 4)} (s)")
-                self.state = WORKING
+                self.state = WAITING
 
     def stop(self):
-        temp = copy.copy(self.dest_pos)
-        self.setGroundDestPosition(KILL_SIG, KILL_SIG)
-        if self.state == CLOSE:
-            self.time = time.perf_counter() - self.time
-            logger.info(f"{self.name} complete in {round(self.time, 4)} (s)")
-        time.sleep(.2)
-        self.dest_pos = temp
+        # self.setGroundDestPosition(KILL_SIG, KILL_SIG)
+        self.lock = True
         logger.debug(f"{self.name} stopped")
 
     def start(self):
-        temp = copy.copy(self.dest_pos)
-        self.setGroundDestPosition(-KILL_SIG, -KILL_SIG)
-        time.sleep(.2)
-        self.dest_pos = temp
         self.time = time.perf_counter()
+        self.lock = False
         logger.debug(f"starting timer for {self.name}")
         logger.info(f"{self.name} started")
         
     def callbackPublisher(self, event):
         # logger.debug(f"Publishing {self.name}")
-        self.pub.publish(self.dest_pos)
+        if self.lock:
+            self.pub.publish(0,0,0)
+        else:
+            self.pub.publish(self.dest_pos)
 
 
 def stop_bots(bots: list):
