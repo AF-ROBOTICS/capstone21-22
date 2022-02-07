@@ -6,6 +6,7 @@ Date: 11 Jan 2022
 
 import rospy
 import signal
+import PathBuild
 
 from error_checking import *
 from master import *
@@ -32,7 +33,9 @@ if __name__ == '__main__':
         bots.append(Master(BASENAME + str(i)))
     init_time = time.perf_counter()
     # stop_bots(bots)
-    assign_bots(bots)
+    start_points, end_points = PathBuild.pack_to_points(x_dest, y_dest)
+    x, y = PathBuild.buildPath(start_points, end_points)
+    assign_bots(bots, x, y)
     while time.perf_counter() - init_time < 15: pass
     for bot in bots:
         if not bot.timeout:

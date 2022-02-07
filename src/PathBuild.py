@@ -1,7 +1,9 @@
 import random
 import time
 import matplotlib.pyplot as plt
+from usafalog import *
 
+logger = CreateLogger(__name__)
 
 class Point:
     def __init__(self, x=0, y=0):
@@ -102,7 +104,7 @@ def animate(line, plot_interval):
         pass
 
 
-def isValidLine(line):
+def is_valid_line(line):
     for point in end_points:  # Check does not cross any set points
         if line_close_to_point(line, point):
             return False
@@ -118,7 +120,7 @@ def solve(origins, destinations):
         for i, dest in enumerate(destinations):  # loop through all of the remaining positions
             test_line = Line(start, dest)  # draw a line between the start and end
             # animate(test_line, .2)
-            if isValidLine(test_line):  # if the line isn't too close to other established end points
+            if is_valid_line(test_line):  # if the line isn't too close to other established end points
                 end_points.append(dest)
                 destinations.pop(i)  # remove the end point from the list of possible end points
                 if solve(origins, destinations):  # if the levels below work, return True
@@ -136,26 +138,31 @@ def buildPath(starts, ends):
     return_x = []
     return_y = []
     if solve(starts, ends):
-        print(f"{NUM_TRIES} combinations were tried, but this is the one for you:")
-        print("Destinations:")
+        logger.debug(f"{NUM_TRIES} paths were tried")
+        logger.debug("Destinations:")
         for point in end_points:
             return_x.append(point.x)
             return_y.append(point.y)
-            print(point.__str__())
-        # plot successful result
-        for i in range(0, len(x_robot)):
-            plt.plot([x_robot[i], return_x[i]], [y_robot[i], return_y[i]])
-        plt.show()
+            logger.info(point.__str__())
+        # plot_result(return_x, return_y)
     else:
-        print(f"unable to solve (tried {NUM_TRIES} times)")
-    # print any remaining points
-    print('start:', starts)
-    print('dest:', ends)
+        logger.warning(f"unable to solve (tried {NUM_TRIES} times)")
+    # log any remaining points
+    if starts:
+        logger.info(f"Remaining starting positions {starts}")
+    if ends:
+        logger.info(f"Remaining destination positions {ends}")
 
     return return_x, return_y
 
 
-def pack_to_points(x_start, y_start, x_end, y_end):
+def plot_result(xpoints, ypoints):
+    for i in range(0, len(x_robot)):
+        plt.plot([x_robot[i], xpoints[i]], [y_robot[i], ypoints[i]])
+    plt.show()
+
+
+def pack_to_points(x_end, y_end, x_start=x_robot, y_start=y_robot):
     # pack into list of tuples
     start_list = list(zip(x_start, y_start))
     dest_list = list(zip(x_end, y_end))
@@ -172,7 +179,7 @@ def pack_to_points(x_start, y_start, x_end, y_end):
 if __name__ == '__main__':
     # try multiple times/shuffles
     plt.close('all')
-    robot_starts, robot_ends = pack_to_points(x_robot, y_robot, x_dest, y_dest)
+    robot_starts, robot_ends = pack_to_points(x_dest, y_dest, x_robot, y_robot)
     # For testing
     # random.shuffle(starts)
     random.shuffle(robot_ends)
