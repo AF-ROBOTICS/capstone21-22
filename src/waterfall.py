@@ -4,15 +4,14 @@ Ground and Air Robot Teaming Capstone
 Date: 11 Jan 2022
 ----------------------------------------------------------------------------------"""
 
-import signal
-
 import rospy
+import signal
 
 from error_checking import *
 from master import *
 
 logger = CreateLogger(__name__)
-# TODO: what if you have more or less robots than needed?
+
 NUM_BOTS = 25
 BASENAME = 'usafabot'
 
@@ -31,17 +30,18 @@ if __name__ == '__main__':
     # fill list of Master class bots
     for i in range(0, NUM_BOTS):
         bots.append(Master(BASENAME + str(i)))
+    init_time = time.perf_counter()
+    # stop_bots(bots)
     assign_bots(bots)
-    stop_bots(bots)
+    while time.perf_counter() - init_time < 15: pass
     for bot in bots:
         if not bot.timeout:
             bot.start()
-            while not bot.close:  # TODO: How to not busy wait here
-                pass
+            while not bot.state == CLOSE or bot.state == DONE:
+                pass  # TODO: How to not busy wait here
         else:
             logger.info(f"Skipping {bot.name}")
-
     logger.info("all bots complete")
-    stop_bots(bots)
+    # stop_bots(bots)
     measure_error(bots)
-    exit(0)
+    rospy.spin()
