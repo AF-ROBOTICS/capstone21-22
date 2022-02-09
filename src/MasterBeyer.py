@@ -86,10 +86,12 @@ def measure_error(num_samples, sample_period):
 
 def stop_bots():
     for robot in bots:
+        temp = copy.copy(robot.dest_pos)
         tic = time.perf_counter()
         robot.setGroundDestPosition(KILL_SIG, KILL_SIG)        
         while(time.perf_counter()-tic < .05): # Publish for .05 seconds        
             robot.pub.publish(robot.dest_pos)
+        robot.dest_pos = temp
     print("locked all bots")
 
 
