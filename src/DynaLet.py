@@ -13,7 +13,7 @@ from geometry_msgs.msg import Pose
 from nav_msgs.msg import Odometry
 
 word_position = np.zeros((2,25))
-posX= []
+posX = []
 posY = []
 
 def split(word):
@@ -101,20 +101,95 @@ def switch_position(letter):
         'Z': ([0.0, 0.0, 0.3, 0.3, 0.3, 0.6, 0.6],
               [0.0, 1.0, 0.0, 0.5, 1.0, 0.0, 1.0])
     }
-    return position.get(letter)
+    return position.get(letter, "Not a Letter")
 
 def custom_word():
-    word=input("Enter word for robots to spell: ")
-    word_parse = split(word)
-    
-    word_sum = 0
-    for letter in word_parse:
-        word_sum = word_sum + len(switch_position(letter)[0])
-        for letter in switch_position(letter)[0]:
-            posX.append(letter)
-    print(posX)   
+    goodRobot = 0
+    while (goodRobot == 0):
+        word=input("Enter word for robots to spell: ")
+        word_parse = split(word)
+        word_sum = 0
 
+        for letter in word_parse:
+            word_sum = word_sum + len(switch_position(letter)[0])
+        
+        if len(word_parse) == 0:
+            print("Please Type a Different Word, You used too many Robots")
+
+            
+        if (word_sum <= 25 and word_sum !=0):
+            goodRobot = 1
+                
+            if len(word_parse) == 1:
+                for letter in word_parse:
+                    x = switch_position(letter)[0]
+                    y = switch_position(letter)[1]
+                    for letter in x:
+                        posX.append(letter + 2)
+
+                    for letter in y:
+                        posY.append(letter+2)
+            
+            if len(word_parse) == 2:
+                offset = 0
+                
+                for letter in word_parse:
+                    x = switch_position(letter)[0]
+                    y = switch_position(letter)[1]
+                    for letter in x:
+                        posX.append(letter + 2 + offset)
+
+                    for letter in y:
+                        posY.append(letter+2)
+                        
+                    offset += 1
+                    
+            if len(word_parse) == 3:
+                offset = 0
+                
+                for letter in word_parse:
+                    x = switch_position(letter)[0]
+                    y = switch_position(letter)[1]
+                    for letter in x:
+                        posX.append(letter + 1 + offset)
+
+                    for letter in y:
+                        posY.append(letter+2)
+                        
+                    offset += 1
+
+            if len(word_parse) == 4:
+                offset = 0
+                
+                for letter in word_parse:
+                    x = switch_position(letter)[0]
+                    y = switch_position(letter)[1]
+                    for letter in x:
+                        posX.append(letter + 1 + offset)
+
+                    for letter in y:
+                        posY.append(letter+2)
+                        
+                    offset += 1
+                    
+            if len(word_parse) == 5:
+                offset = 0
+                
+                for letter in word_parse:
+                    x = switch_position(letter)[0]
+                    y = switch_position(letter)[1]
+                    for letter in x:
+                        posX.append(letter + offset)
+
+                    for letter in y:
+                        posY.append(letter+2)
+                        
+                    offset += 1
+                    
+    positionArray = [posX, posY]
+    return positionArray
     
 if __name__ == '__main__':
     start_time = time.time()
     custom_word()
+    
