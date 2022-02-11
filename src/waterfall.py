@@ -8,10 +8,12 @@ import rospy
 import signal
 import PathBuild
 import DynaLet
-from error_checking import *
-from master import *
+import time
+import error_checking
+import usafalog
+import master
 
-logger = CreateLogger(__name__)
+logger = usafalog.CreateLogger(__name__)
 
 NUM_BOTS = 25
 BASENAME = 'usafabot'
@@ -19,7 +21,7 @@ BASENAME = 'usafabot'
 
 def ctrl_c_handler(signum, frame):
     print('\n')
-    stop_bots(bots)
+    master.stop_bots(bots)
     logger.info("KILLED with CTRL_C")
     exit(1)
 
@@ -30,22 +32,22 @@ if __name__ == '__main__':
     rospy.init_node('master', anonymous=True)
     # fill list of Master class bots
     for i in range(0, NUM_BOTS):
-        bots.append(Master(BASENAME + str(i)))
+        bots.append(master.Master(BASENAME + str(i)))
     init_time = time.perf_counter()
     # stop_bots(bots)
     x_dyna, y_dyna = DynaLet.custom_word()
     start_points, end_points = PathBuild.pack_to_points(x_dyna, y_dyna)
     x, y = PathBuild.buildPath(start_points, end_points)
-    assign_bots(bots, x, y)
+    master.assign_bots(bots, x, y)
     while time.perf_counter() - init_time < 15: pass
     for bot in bots:
         if bot.dest_set and not bot.timeout:
             bot.start()
-            while not bot.state == CLOSE or bot.state == DONE:
+            while not bot.state == master.CLOSE or bot.state == master.DONE:
                 pass  # TODO: How to not busy wait here
         else:
             logger.info(f"Skipping {bot.name}")
     logger.info("all bots complete")
     # stop_bots(bots)
-    measure_error(bots)
+    error_checking.measure_error(bots)
     rospy.spin()

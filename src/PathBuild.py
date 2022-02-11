@@ -1,9 +1,9 @@
 import random
 import time
 import matplotlib.pyplot as plt
-from usafalog import *
+import usafalog
 
-logger = CreateLogger(__name__)
+logger = usafalog.CreateLogger(__name__)
 
 
 class Point:
@@ -166,8 +166,12 @@ def plot_result(xpoints, ypoints):
     plt.show()
 
 
-def pack_to_points(x_end, y_end, x_start=x_robot, y_start=y_robot):
+def pack_to_points(x_end, y_end, x_start=None, y_start=None):
     # pack into list of tuples
+    if y_start is None:
+        y_start = y_robot
+    if x_start is None:
+        x_start = x_robot
     start_list = list(zip(x_start, y_start))
     dest_list = list(zip(x_end, y_end))
     # convert to list of points
@@ -179,6 +183,7 @@ def pack_to_points(x_end, y_end, x_start=x_robot, y_start=y_robot):
         ending_points.append(Point(dest_list[i][0], dest_list[i][1]))
 
     return starting_points, ending_points
+
 
 # TODO: Add Cache dictionary
 if __name__ == '__main__':
