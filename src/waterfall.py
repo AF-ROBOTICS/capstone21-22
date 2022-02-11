@@ -7,7 +7,7 @@ Date: 11 Jan 2022
 import rospy
 import signal
 import PathBuild
-
+import DynaLet
 from error_checking import *
 from master import *
 
@@ -33,12 +33,13 @@ if __name__ == '__main__':
         bots.append(Master(BASENAME + str(i)))
     init_time = time.perf_counter()
     # stop_bots(bots)
-    start_points, end_points = PathBuild.pack_to_points(x_dest, y_dest)
+    x_dyna, y_dyna = DynaLet.custom_word()
+    start_points, end_points = PathBuild.pack_to_points(x_dyna, y_dyna)
     x, y = PathBuild.buildPath(start_points, end_points)
     assign_bots(bots, x, y)
     while time.perf_counter() - init_time < 15: pass
     for bot in bots:
-        if not bot.timeout:
+        if bot.dest_set and not bot.timeout:
             bot.start()
             while not bot.state == CLOSE or bot.state == DONE:
                 pass  # TODO: How to not busy wait here
