@@ -1,4 +1,5 @@
 from statistics import mean
+import PathBuild
 
 MAX_BOTS = 25
 letter_library = {
@@ -82,9 +83,9 @@ letter_library = {
 }
 
 
-def split(word):
-    word = word.upper()
-    return [char for char in word]
+def split(string):
+    string = string.upper()
+    return [char for char in string]
 
 
 def custom_word():
@@ -93,18 +94,19 @@ def custom_word():
     word_sum = 0
     # Get user input. Only letters in dictionary allowed and cannot use more bots than there are
     while not 0 < word_sum <= MAX_BOTS:
-        word = input("Enter word for robots to spell: ")
-        word_parsed = split(word)
+        word_sum = 0
+        usr_word = input("Enter word for robots to spell: ")
+        word_parsed = split(usr_word)
         for letter in word_parsed:
             word_sum = word_sum + len(letter_library.get(letter, [[], []])[0])
 
     # Separate each letter by 1 meter (box)
     for position, letter in enumerate(word_parsed):
-        x = letter_library.get(letter, [[], []])[0]
-        y = letter_library.get(letter, [[], []])[1]
-        for x_cord in x:
+        x_cords = letter_library.get(letter, [[], []])[0]
+        y_cords = letter_library.get(letter, [[], []])[1]
+        for x_cord in x_cords:
             x_destinations.append(x_cord + position)
-        for y_cord in y:
+        for y_cord in y_cords:
             y_destinations.append(y_cord)
 
     # Shift phrase to center of map
@@ -112,9 +114,14 @@ def custom_word():
     for each in range(len(x_destinations)):
         x_destinations[each] = x_destinations[each] + center_offset
 
-    return x_destinations, y_destinations
+    return x_destinations, y_destinations, usr_word
 
 
 if __name__ == '__main__':
     while True:
-        custom_word()
+        x, y, word = custom_word()
+        if PathBuild.check_cache(word):
+            x, y = PathBuild.check_cache(word)
+        start, end = PathBuild.pack_to_points(x, y)
+        x_dest, y_dest = PathBuild.buildPath(start, end)
+        PathBuild.add_to_cache(word, x_dest, y_dest)

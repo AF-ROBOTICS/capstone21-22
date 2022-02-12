@@ -2,10 +2,11 @@ import random
 import time
 import matplotlib.pyplot as plt
 import usafalog
+import json
 
 logger = usafalog.CreateLogger(__name__)
 
-
+cache_filename = '../measurement_files/PathCache.json'
 class Point:
     def __init__(self, x=0, y=0):
         self.x = x
@@ -136,6 +137,8 @@ def solve(origins, destinations):
 
 def buildPath(starts, ends):
     global NUM_TRIES
+    global end_points
+    end_points = []
     NUM_TRIES = 0
     return_x = []
     return_y = []
@@ -186,6 +189,30 @@ def pack_to_points(x_end, y_end, x_start=None, y_start=None):
 
 
 # TODO: Add Cache dictionary
+def add_to_cache(phrase, x, y):
+    cache_dict = {}
+
+    try:
+        f = open(cache_filename)
+        cache_dict = json.load(f)
+        f.close()
+    except OSError:
+        pass
+
+    f = open(cache_filename, 'w')
+    cache_dict[phrase] = [x, y]
+    json.dump(cache_dict, f, indent=4)
+
+def check_cache(phrase):
+    cache_dict = {}
+    try:
+        f = open(cache_filename)
+        cache_dict = json.load(f)
+        f.close()
+    except OSError:
+        pass
+
+    return cache_dict.get(phrase, None)
 if __name__ == '__main__':
     # try multiple times/shuffles
     plt.close('all')

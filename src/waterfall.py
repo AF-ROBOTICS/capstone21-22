@@ -35,7 +35,9 @@ if __name__ == '__main__':
         bots.append(master.Master(BASENAME + str(i)))
     init_time = time.perf_counter()
     # stop_bots(bots)
-    x_dyna, y_dyna = DynaLet.custom_word()
+    x_dyna, y_dyna, word = DynaLet.custom_word()
+    if PathBuild.check_cache(word):
+        x_dyna, y_dyna = PathBuild.check_cache(word)
     start_points, end_points = PathBuild.pack_to_points(x_dyna, y_dyna)
     x, y = PathBuild.buildPath(start_points, end_points)
     master.assign_bots(bots, x, y)
