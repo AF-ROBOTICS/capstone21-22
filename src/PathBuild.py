@@ -33,7 +33,7 @@ class Line:
 
 
 # Minimum clearance between line and robot
-BUFFER_DIST = .17  # meters
+BUFFER_DIST = .2  # meters
 
 # Default starting Points
 x_robot = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.4, 2.6, 2.8, 3.2, 3.4, 3.6, 3.8, 6.0, 6.0, 6.0, 6.0, 3.6, 3.4, 3.2,
@@ -202,6 +202,7 @@ def add_to_cache(phrase, x, y):
     f = open(cache_filename, 'w')
     cache_dict[phrase] = [x, y]
     json.dump(cache_dict, f, indent=4)
+    f.close()
 
 def check_cache(phrase):
     cache_dict = {}
