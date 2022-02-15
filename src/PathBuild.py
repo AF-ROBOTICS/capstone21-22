@@ -1,12 +1,16 @@
+import json
+import matplotlib.pyplot as plt
+import os
 import random
 import time
-import matplotlib.pyplot as plt
+
 import usafalog
-import json
 
 logger = usafalog.CreateLogger(__name__)
 
-cache_filename = '../measurement_files/PathCache.json'
+cache_filename = "/home/" + os.getlogin() + "/robotics_ws/src/capstone21-22/measurement_files/PathCache.json"
+
+
 class Point:
     def __init__(self, x=0, y=0):
         self.x = x
@@ -154,9 +158,9 @@ def buildPath(starts, ends):
         logger.warning(f"unable to solve (tried {NUM_TRIES} times)")
     # log any remaining points
     if starts:
-        logger.info(f"Remaining starting positions {starts}")
+        logger.info(f"{len(starts)} remaining starting positions")
     if ends:
-        logger.info(f"Remaining destination positions {ends}")
+        logger.info(f"{len(ends)} remaining destination positions")
 
     return return_x, return_y
 
@@ -164,6 +168,7 @@ def buildPath(starts, ends):
 def plot_result(xpoints, ypoints):
     for i in range(0, len(xpoints)):
         plt.plot([x_robot[i], xpoints[i]], [y_robot[i], ypoints[i]])
+    plt.axes([0, 6, 0, 6])
     plt.show()
     plt.plot(xpoints, ypoints, 'r*')
     plt.show()
@@ -204,6 +209,7 @@ def add_to_cache(phrase, x, y):
     json.dump(cache_dict, f, indent=4)
     f.close()
 
+
 def check_cache(phrase):
     cache_dict = {}
     try:
@@ -214,12 +220,12 @@ def check_cache(phrase):
         pass
 
     return cache_dict.get(phrase, None)
+
+
 if __name__ == '__main__':
     # try multiple times/shuffles
     plt.close('all')
     robot_starts, robot_ends = pack_to_points(x_dest, y_dest, x_robot, y_robot)
     # For testing
-    # random.shuffle(starts)
     random.shuffle(robot_ends)
-    ##
     buildPath(robot_starts, robot_ends)

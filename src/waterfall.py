@@ -40,6 +40,7 @@ if __name__ == '__main__':
         x_dyna, y_dyna = PathBuild.check_cache(word)
     start_points, end_points = PathBuild.pack_to_points(x_dyna, y_dyna)
     x, y = PathBuild.buildPath(start_points, end_points)
+    PathBuild.add_to_cache(word, x, y)
     master.assign_bots(bots, x, y)
     while time.perf_counter() - init_time < 15: pass
     for bot in bots:
