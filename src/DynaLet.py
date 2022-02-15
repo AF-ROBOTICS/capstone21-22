@@ -187,7 +187,7 @@ def custom_word():
                     offset += 1
                     
     positionArray = [posX, posY]
-    return positionArray
+    print(positionArray)
     
 if __name__ == '__main__':
     start_time = time.time()
