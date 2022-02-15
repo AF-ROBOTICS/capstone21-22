@@ -2,10 +2,9 @@ import rospy
 import time
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
+import usafalog
 
-from usafalog import *
-
-logger = CreateLogger(__name__)
+logger = usafalog.CreateLogger(__name__)
 # Global Variables
 DEST_DIST = .25  # meters
 DONE_DIST = .10  # meters
@@ -13,7 +12,7 @@ TIMEOUT_THRESH = 10  # seconds
 # Kill state magic number
 KILL_SIG = 22
 # Manual enumeration of states
-UNAVIL = -1  # The robot was not able to be found in time
+UNAVAIL = -1  # The robot was not able to be found in time
 BOOT = 0  # The robot has turned on but not found by RR or timed-out
 WAITING = 1  # It is not the robot's time yet
 WORKING = 2  # The robot is trying to get to its dest
@@ -38,6 +37,7 @@ class Master:
         self.time = 0
         self.dist = 999999999.015
         self.state = BOOT
+        self.dest_set = False
         self.lock = True
         # -----------------------------------------------------------------------------
         # Topics and Timers
@@ -57,6 +57,7 @@ class Master:
         # Data based on drone position
         self.dest_pos.x = x
         self.dest_pos.y = y
+        self.dest_set = True
         logger.debug(f"{self.name} dest_pos set to {self.dest_pos}")
 
     def callback_currPos(self, data):
@@ -118,8 +119,12 @@ def start_bots(bots: list):
     logger.info("UNlocked all bots")
 
 
-def assign_bots(bots: list, xdest=x_dest, ydest=y_dest):
-    for bot, xdest, ydest in zip(bots, x_dest, y_dest):
+def assign_bots(bots: list, xdest=None, ydest=None):
+    if xdest is None:
+        xdest = x_dest
+    if ydest is None:
+        ydest = y_dest
+    for bot, xdestintations, ydestinations in zip(bots, xdest, ydest):
         assert isinstance(bot, Master)
         logger.debug(f"Dest set for: {bot.name}")
-        bot.setGroundDestPosition(xdest, ydest)
+        bot.setGroundDestPosition(xdestintations, ydestinations)
