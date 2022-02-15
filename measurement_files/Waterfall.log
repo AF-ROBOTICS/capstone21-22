@@ -1,0 +1,125 @@
+2022-02-15 09:52:21,119-master-DEBUG:129:Dest set for: usafabot0
+2022-02-15 09:52:21,119-master-DEBUG:61:usafabot0 dest_pos set to x: 1.095
+y: 2.0
+z: 0.0
+2022-02-15 09:52:21,120-master-DEBUG:129:Dest set for: usafabot1
+2022-02-15 09:52:21,120-master-DEBUG:61:usafabot1 dest_pos set to x: 1.095
+y: 2.5
+z: 0.0
+2022-02-15 09:52:21,120-master-DEBUG:129:Dest set for: usafabot2
+2022-02-15 09:52:21,120-master-DEBUG:61:usafabot2 dest_pos set to x: 1.095
+y: 3.0
+z: 0.0
+2022-02-15 09:52:21,120-master-DEBUG:129:Dest set for: usafabot3
+2022-02-15 09:52:21,120-master-DEBUG:61:usafabot3 dest_pos set to x: 3.3949999999999996
+y: 2.5
+z: 0.0
+2022-02-15 09:52:21,121-master-DEBUG:129:Dest set for: usafabot4
+2022-02-15 09:52:21,121-master-DEBUG:61:usafabot4 dest_pos set to x: 3.0949999999999998
+y: 2.0
+z: 0.0
+2022-02-15 09:52:21,121-master-DEBUG:129:Dest set for: usafabot5
+2022-02-15 09:52:21,121-master-DEBUG:61:usafabot5 dest_pos set to x: 2.395
+y: 2.0
+z: 0.0
+2022-02-15 09:52:21,122-master-DEBUG:129:Dest set for: usafabot6
+2022-02-15 09:52:21,122-master-DEBUG:61:usafabot6 dest_pos set to x: 2.6950000000000003
+y: 3.0
+z: 0.0
+2022-02-15 09:52:21,122-master-DEBUG:129:Dest set for: usafabot7
+2022-02-15 09:52:21,123-master-DEBUG:61:usafabot7 dest_pos set to x: 2.0949999999999998
+y: 3.0
+z: 0.0
+2022-02-15 09:52:21,123-master-DEBUG:129:Dest set for: usafabot8
+2022-02-15 09:52:21,123-master-DEBUG:61:usafabot8 dest_pos set to x: 1.6949999999999998
+y: 2.0
+z: 0.0
+2022-02-15 09:52:21,123-master-DEBUG:129:Dest set for: usafabot9
+2022-02-15 09:52:21,124-master-DEBUG:61:usafabot9 dest_pos set to x: 1.395
+y: 2.0
+z: 0.0
+2022-02-15 09:52:21,124-master-DEBUG:129:Dest set for: usafabot10
+2022-02-15 09:52:21,124-master-DEBUG:61:usafabot10 dest_pos set to x: 2.395
+y: 2.5
+z: 0.0
+2022-02-15 09:52:21,125-master-DEBUG:129:Dest set for: usafabot11
+2022-02-15 09:52:21,125-master-DEBUG:61:usafabot11 dest_pos set to x: 2.395
+y: 3.0
+z: 0.0
+2022-02-15 09:52:21,125-master-DEBUG:129:Dest set for: usafabot12
+2022-02-15 09:52:21,126-master-DEBUG:61:usafabot12 dest_pos set to x: 3.0949999999999998
+y: 2.5
+z: 0.0
+2022-02-15 09:52:21,126-master-DEBUG:129:Dest set for: usafabot13
+2022-02-15 09:52:21,126-master-DEBUG:61:usafabot13 dest_pos set to x: 2.6950000000000003
+y: 2.0
+z: 0.0
+2022-02-15 09:52:21,126-master-DEBUG:129:Dest set for: usafabot14
+2022-02-15 09:52:21,126-master-DEBUG:61:usafabot14 dest_pos set to x: 3.0949999999999998
+y: 3.0
+z: 0.0
+2022-02-15 09:52:21,127-master-DEBUG:129:Dest set for: usafabot15
+2022-02-15 09:52:21,127-master-DEBUG:61:usafabot15 dest_pos set to x: 3.3949999999999996
+y: 2.0
+z: 0.0
+2022-02-15 09:52:21,127-master-DEBUG:129:Dest set for: usafabot16
+2022-02-15 09:52:21,127-master-DEBUG:61:usafabot16 dest_pos set to x: 3.3949999999999996
+y: 3.0
+z: 0.0
+2022-02-15 09:52:21,128-master-DEBUG:129:Dest set for: usafabot17
+2022-02-15 09:52:21,129-master-DEBUG:61:usafabot17 dest_pos set to x: 3.6950000000000003
+y: 2.0
+z: 0.0
+2022-02-15 09:52:21,129-master-DEBUG:129:Dest set for: usafabot18
+2022-02-15 09:52:21,129-master-DEBUG:61:usafabot18 dest_pos set to x: 3.6950000000000003
+y: 3.0
+z: 0.0
+2022-02-15 09:52:21,130-master-DEBUG:129:Dest set for: usafabot19
+2022-02-15 09:52:21,131-master-DEBUG:61:usafabot19 dest_pos set to x: 2.0949999999999998
+y: 2.0
+z: 0.0
+2022-02-15 09:52:21,132-master-DEBUG:97:starting timer for usafabot0
+2022-02-15 09:52:21,132-master-INFO:98:usafabot0 started
+2022-02-15 09:52:49,357-master-INFO:86:Found usafabot5 in 0.0 (s)
+2022-02-15 09:52:49,366-master-INFO:86:Found usafabot21 in 0.0 (s)
+2022-02-15 09:52:49,372-master-INFO:86:Found usafabot2 in 0.0 (s)
+2022-02-15 09:52:49,373-master-INFO:86:Found usafabot3 in 0.0 (s)
+2022-02-15 09:52:49,373-master-INFO:86:Found usafabot0 in 0.0 (s)
+2022-02-15 09:52:49,374-master-INFO:86:Found usafabot4 in 0.0 (s)
+2022-02-15 09:52:49,375-master-INFO:86:Found usafabot16 in 0.0 (s)
+2022-02-15 09:52:49,432-master-INFO:86:Found usafabot10 in 0.0 (s)
+2022-02-15 09:52:49,439-master-INFO:86:Found usafabot17 in 0.0 (s)
+2022-02-15 09:52:49,447-master-INFO:86:Found usafabot23 in 0.0 (s)
+2022-02-15 09:52:49,466-master-INFO:86:Found usafabot24 in 0.0 (s)
+2022-02-15 09:52:49,467-master-INFO:86:Found usafabot15 in 0.0 (s)
+2022-02-15 09:52:49,467-master-INFO:86:Found usafabot8 in 0.0 (s)
+2022-02-15 09:52:49,470-master-INFO:86:Found usafabot14 in 0.0 (s)
+2022-02-15 09:52:49,477-master-INFO:86:Found usafabot19 in 0.0 (s)
+2022-02-15 09:52:49,488-master-INFO:86:Found usafabot9 in 0.0 (s)
+2022-02-15 09:52:49,494-master-INFO:86:Found usafabot1 in 0.0 (s)
+2022-02-15 09:52:49,501-master-INFO:86:Found usafabot6 in 0.0 (s)
+2022-02-15 09:52:49,501-master-INFO:86:Found usafabot11 in 0.0 (s)
+2022-02-15 09:52:49,501-master-INFO:86:Found usafabot12 in 0.0 (s)
+2022-02-15 09:52:49,511-master-INFO:86:Found usafabot7 in 0.0 (s)
+2022-02-15 09:52:49,531-master-INFO:86:Found usafabot18 in 0.0 (s)
+2022-02-15 09:52:49,533-master-INFO:86:Found usafabot20 in 0.0 (s)
+2022-02-15 09:52:49,540-master-INFO:86:Found usafabot13 in 0.0 (s)
+2022-02-15 09:52:49,547-master-INFO:86:Found usafabot22 in 0.0 (s)
+2022-02-15 09:53:02,529-master-DEBUG:97:starting timer for usafabot1
+2022-02-15 09:53:02,535-master-INFO:98:usafabot1 started
+2022-02-15 09:53:04,185-master-INFO:74:usafabot0 complete in 43.0532 (s)
+2022-02-15 09:53:14,489-master-DEBUG:97:starting timer for usafabot2
+2022-02-15 09:53:14,494-master-INFO:98:usafabot2 started
+2022-02-15 09:53:16,179-master-INFO:74:usafabot1 complete in 13.6499 (s)
+2022-02-15 09:53:28,322-master-DEBUG:97:starting timer for usafabot3
+2022-02-15 09:53:28,330-master-INFO:98:usafabot3 started
+2022-02-15 09:53:29,978-master-INFO:74:usafabot2 complete in 15.4891 (s)
+2022-02-15 09:54:06,870-master-DEBUG:97:starting timer for usafabot4
+2022-02-15 09:54:06,871-master-INFO:98:usafabot4 started
+2022-02-15 09:54:08,565-master-INFO:74:usafabot3 complete in 40.243 (s)
+2022-02-15 09:54:47,421-master-DEBUG:97:starting timer for usafabot5
+2022-02-15 09:54:47,424-master-INFO:98:usafabot5 started
+2022-02-15 09:54:49,135-master-INFO:74:usafabot4 complete in 42.265 (s)
+2022-02-15 09:55:19,660-master-DEBUG:97:starting timer for usafabot6
+2022-02-15 09:55:19,661-master-INFO:98:usafabot6 started
+2022-02-15 09:55:21,302-master-INFO:74:usafabot5 complete in 33.8804 (s)

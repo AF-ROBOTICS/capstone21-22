@@ -107,7 +107,7 @@ def custom_word():
         for x_cord in x_cords:
             x_destinations.append(x_cord + position)
         for y_cord in y_cords:
-            y_destinations.append(y_cord)
+            y_destinations.append(y_cord + 2)
 
     # Shift phrase to center of map
     center_offset = 2.5 - mean(x_destinations)
