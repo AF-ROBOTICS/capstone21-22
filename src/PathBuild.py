@@ -139,7 +139,7 @@ def solve(origins, destinations):
     return True  # all starting positions have been assigned, so it worked
 
 
-def buildPath(starts, ends):
+def build_path(starts, ends):
     global NUM_TRIES
     global end_points
     end_points = []
@@ -170,6 +170,7 @@ def plot_result(xpoints, ypoints):
         plt.plot([x_robot[i], xpoints[i]], [y_robot[i], ypoints[i]])
     plt.axes([0, 6, 0, 6])
     plt.show()
+    plt.axes([0, 6, 0, 6])
     plt.plot(xpoints, ypoints, 'r*')
     plt.show()
 
@@ -193,7 +194,6 @@ def pack_to_points(x_end, y_end, x_start=None, y_start=None):
     return starting_points, ending_points
 
 
-# TODO: Add Cache dictionary
 def add_to_cache(phrase, x, y):
     cache_dict = {}
 
@@ -228,4 +228,4 @@ if __name__ == '__main__':
     robot_starts, robot_ends = pack_to_points(x_dest, y_dest, x_robot, y_robot)
     # For testing
     random.shuffle(robot_ends)
-    buildPath(robot_starts, robot_ends)
+    build_path(robot_starts, robot_ends)
