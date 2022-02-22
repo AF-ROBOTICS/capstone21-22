@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import os
 import random
 import time
-
+import copy
 import usafalog
 
 logger = usafalog.CreateLogger(__name__)
@@ -37,7 +37,7 @@ class Line:
 
 
 # Minimum clearance between line and robot
-BUFFER_DIST = .2  # meters
+BUFFER_DIST = .5  # meters
 
 # Default starting Points
 x_robot = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.4, 2.6, 2.8, 3.2, 3.4, 3.6, 3.8, 6.0, 6.0, 6.0, 6.0, 3.6, 3.4, 3.2,
@@ -146,6 +146,7 @@ def build_path(starts, ends):
     NUM_TRIES = 0
     return_x = []
     return_y = []
+    plot_copy = copy.copy(starts)
     if solve(starts, ends):
         logger.debug(f"{NUM_TRIES} paths were tried")
         logger.debug("Destinations:")
@@ -153,7 +154,7 @@ def build_path(starts, ends):
             return_x.append(point.x)
             return_y.append(point.y)
             logger.info(point.__str__())
-        plot_result(return_x, return_y)
+        plot_result(plot_copy, return_x, return_y)
     else:
         logger.warning(f"unable to solve (tried {NUM_TRIES} times)")
     # log any remaining points
@@ -165,13 +166,13 @@ def build_path(starts, ends):
     return return_x, return_y
 
 
-def plot_result(xpoints, ypoints):
+def plot_result(starts, xpoints, ypoints):
     for i in range(0, len(xpoints)):
-        plt.plot([x_robot[i], xpoints[i]], [y_robot[i], ypoints[i]])
+        plt.plot([starts[i].x, xpoints[i]], [starts[i].y, ypoints[i]])
     plt.axes([0, 6, 0, 6])
     plt.show()
-    plt.axes([0, 6, 0, 6])
     plt.plot(xpoints, ypoints, 'r*')
+    plt.axes([0, 6, 0, 6])
     plt.show()
 
 

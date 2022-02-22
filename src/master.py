@@ -146,7 +146,8 @@ def start_positions(bots: list):
     x = []
     y = []
     for bot in bots:
-        x.append(bot.curr_pos.position.x)
-        y.append(bot.curr_pos.position.y)
+        if not bot.timeout:  # Only include found bots
+            x.append(bot.curr_pos.position.x)
+            y.append(bot.curr_pos.position.y)
     logger.info(f"found {len(x)} positions")
     return x, y
