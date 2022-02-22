@@ -39,11 +39,13 @@ if __name__ == '__main__':
     if PathBuild.check_cache(word):
         x_dyna, y_dyna = PathBuild.check_cache(word)
         logger.info("Using cached points")
-    start_points, end_points = PathBuild.pack_to_points(x_dyna, y_dyna)
+    while not master.all_bots_found(bots): pass  # Find all robot starting positions
+    x_start, y_start = master.start_positions(bots)
+    start_points, end_points = PathBuild.pack_to_points(x_dyna, y_dyna, x_start, y_start)
     x, y = PathBuild.build_path(start_points, end_points)
-    PathBuild.add_to_cache(word, x, y)
-    master.assign_bots(bots, x, y)
-    while time.perf_counter() - init_time < 15: pass
+    if len(x):  # only do this if it worked
+        PathBuild.add_to_cache(word, x, y)
+        master.assign_bots(bots, x, y)
     for bot in bots:
         if bot.dest_set and not bot.timeout:
             bot.start()

@@ -190,7 +190,6 @@ def pack_to_points(x_end, y_end, x_start=None, y_start=None):
         starting_points.append(Point(start_list[i][0], start_list[i][1]))
     for i in range(0, len(dest_list)):
         ending_points.append(Point(dest_list[i][0], dest_list[i][1]))
-
     return starting_points, ending_points
 
 
