@@ -1,12 +1,16 @@
+import json
+import matplotlib.pyplot as plt
+import os
 import random
 import time
-import matplotlib.pyplot as plt
+import copy
 import usafalog
-import json
 
 logger = usafalog.CreateLogger(__name__)
 
-cache_filename = '../measurement_files/PathCache.json'
+cache_filename = "/home/" + os.getlogin() + "/robotics_ws/src/capstone21-22/measurement_files/PathCache.json"
+
+
 class Point:
     def __init__(self, x=0, y=0):
         self.x = x
@@ -33,7 +37,7 @@ class Line:
 
 
 # Minimum clearance between line and robot
-BUFFER_DIST = .2  # meters
+BUFFER_DIST = .5  # meters
 
 # Default starting Points
 x_robot = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.4, 2.6, 2.8, 3.2, 3.4, 3.6, 3.8, 6.0, 6.0, 6.0, 6.0, 3.6, 3.4, 3.2,
@@ -135,13 +139,14 @@ def solve(origins, destinations):
     return True  # all starting positions have been assigned, so it worked
 
 
-def buildPath(starts, ends):
+def build_path(starts, ends):
     global NUM_TRIES
     global end_points
     end_points = []
     NUM_TRIES = 0
     return_x = []
     return_y = []
+    plot_copy = copy.copy(starts)
     if solve(starts, ends):
         logger.debug(f"{NUM_TRIES} paths were tried")
         logger.debug("Destinations:")
@@ -149,23 +154,25 @@ def buildPath(starts, ends):
             return_x.append(point.x)
             return_y.append(point.y)
             logger.info(point.__str__())
-        plot_result(return_x, return_y)
+        plot_result(plot_copy, return_x, return_y)
     else:
         logger.warning(f"unable to solve (tried {NUM_TRIES} times)")
     # log any remaining points
     if starts:
-        logger.info(f"Remaining starting positions {starts}")
+        logger.info(f"{len(starts)} remaining starting positions")
     if ends:
-        logger.info(f"Remaining destination positions {ends}")
+        logger.info(f"{len(ends)} remaining destination positions")
 
     return return_x, return_y
 
 
-def plot_result(xpoints, ypoints):
+def plot_result(starts, xpoints, ypoints):
     for i in range(0, len(xpoints)):
-        plt.plot([x_robot[i], xpoints[i]], [y_robot[i], ypoints[i]])
+        plt.plot([starts[i].x, xpoints[i]], [starts[i].y, ypoints[i]])
+    plt.axes([0, 6, 0, 6])
     plt.show()
     plt.plot(xpoints, ypoints, 'r*')
+    plt.axes([0, 6, 0, 6])
     plt.show()
 
 
@@ -184,11 +191,9 @@ def pack_to_points(x_end, y_end, x_start=None, y_start=None):
         starting_points.append(Point(start_list[i][0], start_list[i][1]))
     for i in range(0, len(dest_list)):
         ending_points.append(Point(dest_list[i][0], dest_list[i][1]))
-
     return starting_points, ending_points
 
 
-# TODO: Add Cache dictionary
 def add_to_cache(phrase, x, y):
     cache_dict = {}
 
@@ -204,6 +209,7 @@ def add_to_cache(phrase, x, y):
     json.dump(cache_dict, f, indent=4)
     f.close()
 
+
 def check_cache(phrase):
     cache_dict = {}
     try:
@@ -214,12 +220,12 @@ def check_cache(phrase):
         pass
 
     return cache_dict.get(phrase, None)
+
+
 if __name__ == '__main__':
     # try multiple times/shuffles
     plt.close('all')
     robot_starts, robot_ends = pack_to_points(x_dest, y_dest, x_robot, y_robot)
     # For testing
-    # random.shuffle(starts)
     random.shuffle(robot_ends)
-    ##
-    buildPath(robot_starts, robot_ends)
+    build_path(robot_starts, robot_ends)

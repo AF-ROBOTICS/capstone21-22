@@ -119,9 +119,9 @@ def custom_word():
 
 if __name__ == '__main__':
     while True:
-        x, y, word = custom_word()
+        x_dyna, y_dyna, word = custom_word()
         if PathBuild.check_cache(word):
-            x, y = PathBuild.check_cache(word)
-        start, end = PathBuild.pack_to_points(x, y)
-        x_dest, y_dest = PathBuild.buildPath(start, end)
-        PathBuild.add_to_cache(word, x_dest, y_dest)
+            x_dyna, y_dyna = PathBuild.check_cache(word)
+        start_points, end_points = PathBuild.pack_to_points(x_dyna, y_dyna)
+        x, y = PathBuild.build_path(start_points, end_points)
+        PathBuild.add_to_cache(word, x, y)

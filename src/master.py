@@ -1,7 +1,9 @@
-import rospy
 import time
+
+import rospy
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
+
 import usafalog
 
 logger = usafalog.CreateLogger(__name__)
@@ -128,3 +130,24 @@ def assign_bots(bots: list, xdest=None, ydest=None):
         assert isinstance(bot, Master)
         logger.debug(f"Dest set for: {bot.name}")
         bot.setGroundDestPosition(xdestintations, ydestinations)
+
+
+def all_bots_found(bots: list):
+    not_found = 0
+    for bot in bots:
+        if bot.state == BOOT:
+            not_found += 1
+    if not_found > 0:
+        return False
+    return True
+
+
+def start_positions(bots: list):
+    x = []
+    y = []
+    for bot in bots:
+        if not bot.timeout:  # Only include found bots
+            x.append(bot.curr_pos.position.x)
+            y.append(bot.curr_pos.position.y)
+    logger.info(f"found {len(x)} positions")
+    return x, y
