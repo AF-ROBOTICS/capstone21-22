@@ -46,5 +46,5 @@ def measure_error(bots: list, num_samples=5, sample_period=10):
 def visualize(bots):
     for bot in bots:
         plt.plot(bot.dest_pos.x, bot.dest_pos.y, 'g8', bot.x_avg, bot.y_avg, 'b*')
-    plt.axes([0, 6, 0, 6])
+    plt.axis([0, 6, 0, 6])
     plt.savefig(path+filename+".png")

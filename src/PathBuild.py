@@ -169,10 +169,10 @@ def build_path(starts, ends):
 def plot_result(starts, xpoints, ypoints):
     for i in range(0, len(xpoints)):
         plt.plot([starts[i].x, xpoints[i]], [starts[i].y, ypoints[i]])
-    plt.axes([0, 6, 0, 6])
+    plt.axis([0, 6, 0, 6])
     plt.show()
     plt.plot(xpoints, ypoints, 'r*')
-    plt.axes([0, 6, 0, 6])
+    plt.axis([0, 6, 0, 6])
     plt.show()
 
 

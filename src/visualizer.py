@@ -10,7 +10,7 @@ csv_name = path + "22Feb2022_20-26-39.csv"
 def visualize(x_pos, y_pos, x_dest, y_dest):
     for i in range(len(x_pos)):
         plt.plot(x_dest[i], y_dest[i], 'g8', x_pos[i], y_pos[i], 'b*')
-    plt.axes([0, 6, 0, 6])
+    plt.axis([0, 6, 0, 6])
     plt.show()
     plt.savefig(path + filename + ".png")
 
