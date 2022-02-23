@@ -5,12 +5,12 @@ import matplotlib.pyplot as plt
 from statistics import mean
 path = "/home/" + os.getlogin() + "/robotics_ws/src/capstone21-22/measurement_files/"
 filename = datetime.now().strftime("%d%b%Y_%H-%M-%S")
-csv_name = path + "22Feb2022_20-26-39.csv"
+csv_name = path + "23Feb2022_15-49-02.csv"
 
 def visualize(x_pos, y_pos, x_dest, y_dest):
     for i in range(len(x_pos)):
         plt.plot(x_dest[i], y_dest[i], 'g8', x_pos[i], y_pos[i], 'b*')
-    plt.axes([0, 6, 0, 6])
+    plt.axis([0, 6, 0, 6])
     # plt.show()
     plt.savefig(path + filename + ".png")
 
