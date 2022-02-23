@@ -1,5 +1,5 @@
 import json
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import os
 import random
 import time
@@ -154,7 +154,7 @@ def build_path(starts, ends):
             return_x.append(point.x)
             return_y.append(point.y)
             logger.info(point.__str__())
-        plot_result(plot_copy, return_x, return_y)
+        # plot_result(plot_copy, return_x, return_y)
     else:
         logger.warning(f"unable to solve (tried {NUM_TRIES} times)")
     # log any remaining points
@@ -224,7 +224,7 @@ def check_cache(phrase):
 
 if __name__ == '__main__':
     # try multiple times/shuffles
-    plt.close('all')
+    # plt.close('all')
     robot_starts, robot_ends = pack_to_points(x_dest, y_dest, x_robot, y_robot)
     # For testing
     random.shuffle(robot_ends)

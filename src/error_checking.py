@@ -2,7 +2,7 @@ import csv
 from datetime import datetime
 from statistics import mean
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 from master import *
 from usafalog import *
@@ -40,7 +40,7 @@ def measure_error(bots: list, num_samples=5, sample_period=10):
                 [bot.name, str(bot.dest_pos.x), (mean(bot.x_avg)), str(bot.dest_pos.y), str(mean(bot.y_avg)),
                  str(bot.pos_err), str(bot.time)])
     logger.info(f"CSV created with filename:  {filename}")
-    visualize(bots)
+    # visualize(bots)
 
 
 def visualize(bots):
