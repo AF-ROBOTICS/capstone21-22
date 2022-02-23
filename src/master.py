@@ -11,8 +11,6 @@ logger = usafalog.CreateLogger(__name__)
 DEST_DIST = .25  # meters
 DONE_DIST = .10  # meters
 TIMEOUT_THRESH = 10  # seconds
-# Kill state magic number
-KILL_SIG = 22
 # Manual enumeration of states
 UNAVAIL = -1  # The robot was not able to be found in time
 BOOT = 0  # The robot has turned on but not found by RR or timed-out
@@ -89,7 +87,6 @@ class Master:
                 self.state = WAITING
 
     def stop(self):
-        # self.setGroundDestPosition(KILL_SIG, KILL_SIG)
         self.lock = True
         logger.debug(f"{self.name} stopped")
 
