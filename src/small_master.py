@@ -4,13 +4,16 @@
 import rospy
 import time
 import math
-import random
 import numpy as np
 from hungarian import build_hungarian
 
 from geometry_msgs.msg import Point, Pose
 
 # Must match number of robots entered by user
+#robots = ['usafabot0', 'usafabot1']
+#robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4', 'usafabot5', 'usafabot6', 'usafabot7']
+
+#must match number of robots entered by user
 robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
           'usafabot5', 'usafabot6', 'usafabot7', 'usafabot8', 'usafabot9',
           'usafabot10', 'usafabot11', 'usafabot12', 'usafabot13', 'usafabot14',
@@ -18,11 +21,13 @@ robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
           'usafabot20', 'usafabot21', 'usafabot22', 'usafabot23', 'usafabot24']
 
 #Destination Points
-x_points = [0, 0.22, 0.44, 0.66, 0.88, 1.1, 1.32, 1.54, 1.76, 1.98, 2.2, 2.42, 2.64, 2.86, 3.08, 3.3, 3.52, 3.74, 3.96, 4.18, 4.4, 4.62, 4.84, 5.06, 5.28]
-y_points = [0, 0.21, 0.42, 0.63, 0.84, 1.05, 1.26, 1.47, 1.68, 1.89, 2.1, 2.31, 2.52, 2.73, 2.94, 3.15, 3.36, 3.57, 3.78, 3.99, 4.2, 4.41, 4.62, 4.83, 5.04]
-x_dest = random.sample(x_points, len(x_points))
-y_dest = random.sample(y_points, len(y_points))
+x_dest = [1.0, 1.0, 1.0, 1.30, 1.30, 1.60, 2.0, 2.0, 2.0, 2.3, 2.3, 2.6, 3.0, 3.0, 3.0, 3.3, 3.3, 3.3, 3.6, 3.6, 4.0, 4.0, 4.0, 4.6, 4.6]
+y_dest = [3.0, 2.5, 2.0, 2.75, 2.25, 2.5, 3.0, 2.5, 2.0, 3.0, 2.5, 3.0, 3.0, 2.5, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0]
 
+# Resize DFEC letters
+for i in range(0,len(x_dest)):
+	x_dest[i]=2*x_dest[i]-1.1	# this size works well in grid simulation
+	y_dest[i]=2*y_dest[i]-2	# this size works well in grid simulation
 
 # Destination Points Case 1
 #x_dest = [3, 1, 3, 1, 3, 1, 2, 2]
@@ -114,56 +119,45 @@ class Master:
     		y_temp[i] = bots[i].curr_pos.position.y - 1750*(bots[i].curr_pos.position.x - closest_x)
        		
     def airplane(self):
-    	
-    	#NEW CONFIG: This config solves the problem cases because it turns off the closest robot. A problem may be the computational load when we move to more robots because all the distances are calculated for each robot. TODO: Solve with a live array that doesnt have to be calculated in the airplane function.
-    	for i in range(0, len(robots)):
+        #NEW CONFIG: This config solves the problem cases because it turns off the closest robot.
+        for i in range(0, len(robots)):
     	    min_dist = 10
-    	    e_turn = 0
     	    for j in range(0, len(robots)):
-    	    	if(abs(bots[i].curr_pos.position.x-x_dest[i]) <= 0.05 and abs(bots[i].curr_pos.position.y-y_dest[i]) <= 0.05):
+    	    	if((abs(bots[i].curr_pos.position.x-x_dest[i]) <= 0.05) and (abs(bots[i].curr_pos.position.y-y_dest[i]) <= 0.05)):
     	    	    break
     	    	if (i != j):
     	            dist = math.sqrt((bots[j].curr_pos.position.x- bots[i].curr_pos.position.x)**2 + (bots[j].curr_pos.position.y - bots[i].curr_pos.position.y)**2)
-    	            if(dist<=0.35):
-    	                print("emergency turn!")
-    	                closest_x = bots[j].curr_pos.position.x
-    	                closest_y = bots[j].curr_pos.position.y
-    	                e_turn=1
-    	                bot.turnRight(bots, closest_x, closest_y, i)
-    	                break
-    	            elif(dist<=min_dist):
+    	            if(dist<=min_dist):
     	                min_dist = dist
     	                closest_x = bots[j].curr_pos.position.x
     	                closest_y = bots[j].curr_pos.position.y
-    	    if(e_turn==1):
-    	        break
-    	    elif(min_dist < AVOID_TOL):
-    	        if ((x_temp[i]-bots[i].curr_pos.position.x)==0):
-    	            slope = (y_temp[i]-bots[i].curr_pos.position.y)/(((x_temp[i])-bots[i].curr_pos.position.x)+0.01)
-    	        else:
-    	            slope = (y_temp[i]-bots[i].curr_pos.position.y)/(x_temp[i]-bots[i].curr_pos.position.x)
+    	    if(min_dist < AVOID_TOL):
+    	    #    if ((x_temp[i]-bots[i].curr_pos.position.x)==0):
+    	    #        slope = (y_temp[i]-bots[i].curr_pos.position.y)/(((x_temp[i])-bots[i].curr_pos.position.x)+0.01)
+    	    #    else:
+    	    #        slope = (y_temp[i]-bots[i].curr_pos.position.y)/(x_temp[i]-bots[i].curr_pos.position.x)
     	        
-    	        y_int = y_temp[i]-(slope*x_temp[i])
+    	    #    y_int = y_temp[i]-(slope*x_temp[i])
     	        
-    	        if ((x_temp[i]-bots[i].curr_pos.position.x)==0):
-    	            slope = (y_temp[i]-bots[i].curr_pos.position.y)/((x_temp[i]+1)-bots[i].curr_pos.position.x)
-    	        else:
-    	            slope = (y_temp[i]-bots[i].curr_pos.position.y)/(x_temp[i]-bots[i].curr_pos.position.x)
+    	    #    if ((x_temp[i]-bots[i].curr_pos.position.x)==0):
+    	    #        slope = (y_temp[i]-bots[i].curr_pos.position.y)/((x_temp[i]+1)-bots[i].curr_pos.position.x)
+    	    #    else:
+    	    #        slope = (y_temp[i]-bots[i].curr_pos.position.y)/(x_temp[i]-bots[i].curr_pos.position.x)
+    	    #    
+    	    #    y_int = y_temp[i]-(slope*x_temp[i])
     	        
-    	        y_int = y_temp[i]-(slope*x_temp[i])
-    	        
-    	        if((x_temp[i] >= bots[i].curr_pos.position.x and y_temp[i] >= bots[i].curr_pos.position.y) or (x_temp[i] >= bots[i].curr_pos.position.x and y_temp[i] <= bots[i].curr_pos.position.y)): # CASE 1: dest is above and right
-    	            if(closest_y > (closest_x*slope + y_int)): # bot[j] is above line between dest and bot[i], turn RIGHT
-    	                bot.turnRight(bots, closest_x, closest_y, i)
-    	            else: # bot[j] is below line between dest and bot[i], turn LEFT
-    	                bot.turnLeft(bots, closest_x, closest_y, i)
-    	        if((x_temp[i] <= bots[i].curr_pos.position.x and y_temp[i] >= bots[i].curr_pos.position.y) or (x_temp[i] <= bots[i].curr_pos.position.x and y_temp[i] <= bots[i].curr_pos.position.y)): # CASE 2: dest is above and left
-    	            if(closest_y < (closest_x*slope + y_int)): # bot[j] is below line between dest and bot[i], turn RIGHT
-    	                bot.turnRight(bots, closest_x, closest_y, i)
-    	            else: # bot[j] is above line between dest and bot[i], turn LEFT
-    	                bot.turnLeft(bots, closest_x, closest_y, i)
+    	    #    if((x_temp[i] >= bots[i].curr_pos.position.x and y_temp[i] >= bots[i].curr_pos.position.y) or (x_temp[i] >= bots[i].curr_pos.position.x and y_temp[i] <= bots[i].curr_pos.position.y)): # CASE 1: dest is above and right
+    	    #        if(closest_y > (closest_x*slope + y_int)): # bot[j] is above line between dest and bot[i], turn RIGHT
+    	    #            bot.turnRight(bots, closest_x, closest_y, i)
+    	    #        else: # bot[j] is below line between dest and bot[i], turn LEFT
+    	    #            bot.turnLeft(bots, closest_x, closest_y, i)
+    	    #    if((x_temp[i] <= bots[i].curr_pos.position.x and y_temp[i] >= bots[i].curr_pos.position.y) or (x_temp[i] <= bots[i].curr_pos.position.x and y_temp[i] <= bots[i].curr_pos.position.y)): # CASE 2: dest is above and left
+    	    #        if(closest_y < (closest_x*slope + y_int)): # bot[j] is below line between dest and bot[i], turn RIGHT
+    	    #            bot.turnRight(bots, closest_x, closest_y, i)
+    	    #        else: # bot[j] is above line between dest and bot[i], turn LEFT
+    	    #            bot.turnLeft(bots, closest_x, closest_y, i)
 		
-    	        #bot.turnRight(bots, closest_x, closest_y, i)
+    	        bot.turnRight(bots, closest_x, closest_y, i)
     	    else:
     	        x_temp[i] = x_dest[i]
     	        y_temp[i] = y_dest[i]
