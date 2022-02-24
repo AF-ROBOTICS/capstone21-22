@@ -18,3 +18,5 @@
 # ignore log files
 *.log
 *.LOG
+# ignore PyCharm files
+./.idea

@@ -3,14 +3,16 @@ from datetime import datetime
 import os
 import matplotlib.pyplot as plt
 from statistics import mean
-path = "/home/" + os.getlogin() + "/robotics_ws/src/capstone21-22/measurement_files/"
+path = "../measurement_files/"
 filename = datetime.now().strftime("%d%b%Y_%H-%M-%S")
 csv_name = path + "23Feb2022_15-49-02.csv"
 
-def visualize(x_pos, y_pos, x_dest, y_dest):
+def visualize(x_pos, y_pos, x_dest, y_dest, text):
     for i in range(len(x_pos)):
         plt.plot(x_dest[i], y_dest[i], 'g8', x_pos[i], y_pos[i], 'b*')
     plt.axis([0, 6, 0, 6])
+    plt.text(.5, .5, text)
+    plt.legend(["Goal Positions", "Actual Positions"])
     # plt.show()
     plt.savefig(path + filename + ".png")
 
@@ -36,8 +38,7 @@ if __name__ == "__main__":
                 y_pos.append(float(row[4]))
                 error.append(float(row[5]))
                 time.append(float(row[6]))
-        print(f"Mean error (cm): {round(mean(error)*100,4)}")
-        print(f"Mean time (s): {mean(time)}")
+        text = f"Mean error (cm): {round(mean(error)*100,2)}\nMean time (s): {round(mean(time),2)}"
+        print(text)
 
-    visualize(x_pos, y_pos, x_dest, y_dest)
-
+    visualize(x_pos, y_pos, x_dest, y_dest, text)
