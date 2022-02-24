@@ -4,22 +4,24 @@ Ground and Air Robot Teaming Capstone
 Date: 11 Jan 2022
 ----------------------------------------------------------------------------------"""
 
-import signal
-
 import rospy
+import signal
+import PathBuild
+import DynaLet
+import time
+import error_checking
+import usafalog
+import master
 
-from error_checking import *
-from master import *
+logger = usafalog.CreateLogger(__name__)
 
-logger = CreateLogger(__name__)
-# TODO: what if you have more or less robots than needed?
 NUM_BOTS = 25
 BASENAME = 'usafabot'
 
 
 def ctrl_c_handler(signum, frame):
     print('\n')
-    stop_bots(bots)
+    master.stop_bots(bots)
     logger.info("KILLED with CTRL_C")
     exit(1)
 
@@ -30,18 +32,28 @@ if __name__ == '__main__':
     rospy.init_node('master', anonymous=True)
     # fill list of Master class bots
     for i in range(0, NUM_BOTS):
-        bots.append(Master(BASENAME + str(i)))
-    stop_bots(bots)
-    assign_bots(bots)
+        bots.append(master.Master(BASENAME + str(i)))
+    init_time = time.perf_counter()
+    # stop_bots(bots)
+    x_dyna, y_dyna, word = DynaLet.custom_word()
+    if PathBuild.check_cache(word):
+        x_dyna, y_dyna = PathBuild.check_cache(word)
+        logger.info("Using cached points")
+    while not master.all_bots_found(bots): pass  # Find all robot starting positions
+    x_start, y_start = master.start_positions(bots)
+    start_points, end_points = PathBuild.pack_to_points(x_dyna, y_dyna, x_start, y_start)
+    x, y = PathBuild.build_path(start_points, end_points)
+    if len(x):  # only do this if it worked
+        PathBuild.add_to_cache(word, x, y)
+        master.assign_bots(bots, x, y)
     for bot in bots:
-        if not bot.timeout:
+        if bot.dest_set and not bot.timeout:
             bot.start()
-            while not bot.state == CLOSE or bot.state == DONE:
-                pass # TODO: How to not busy wait here
+            while not bot.state == master.CLOSE or bot.state == master.DONE:
+                pass  # TODO: How to not busy wait here
         else:
             logger.info(f"Skipping {bot.name}")
-
     logger.info("all bots complete")
-    stop_bots(bots)
-    measure_error(bots)
-    exit(0)
+    # stop_bots(bots)
+    error_checking.measure_error(bots)
+    rospy.spin()

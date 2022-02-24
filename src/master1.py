@@ -4,6 +4,7 @@
 import rospy
 import time
 import math
+import random
 from hungarian import build_hungarian
 
 from geometry_msgs.msg import Point, Pose
@@ -25,8 +26,6 @@ y_dest = [3.0, 2.5, 2.0, 2.75, 2.25, 2.5, 3.0, 2.5, 2.0, 3.0, 2.5, 3.0, 3.0, 2.5
 for i in range(0,len(x_dest)):
 	x_dest[i]=1.3*x_dest[i]-1.1	# this size works well in grid simulation
 	y_dest[i]=1.5*y_dest[i]-2	# this size works well in grid simulation
-	#x_dest[i]=2*x_dest[i]-1	# Test
-	#y_dest[i]=2*y_dest[i]		# Test
 
 temp_x = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 temp_y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
@@ -132,6 +131,7 @@ class Master:
     							slope = (y_dest[i]-bots[i].curr_pos.position.y)/((x_dest[i]+1)-bots[i].curr_pos.position.x)
     						else:
     							slope = (y_dest[i]-bots[i].curr_pos.position.y)/(x_dest[i]-bots[i].curr_pos.position.x)
+    						
     						y_int = y_dest[i]-(slope*x_dest[i])
     						
     						#slope_between_collision_and_current= (bots[j].curr_pos.position.y-bots[i].curr_pos.position.y)/(bots[j].curr_pos.position.x-bots[i].curr_pos.position.x)

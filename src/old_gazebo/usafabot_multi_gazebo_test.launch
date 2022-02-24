@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+
+  <param name="robot_description" 
+        command="$(find xacro)/xacro '$(find usafabot_gazebo)/urdf/usafabot.xacro'"/>
+
+  <param name="/use_sim_time" value="true" />
+
+  <!-- start world -->
+  <node 
+  	name="gazebo" pkg="gazebo_ros" type="gazebo" respawn="false"
+  	args="$(find gazebo_ros)/worlds/empty.world" output="screen" 
+  />
+
+  <group ns="usafabot0">
+     <param name="tf_prefix" value="usafabot0_tf" />
+    <include file="$(find usafabot_gazebo)/launch/usafabot_gazebo.launch" >
+      <arg name="init_pose" value="-x 0 -y 0 -z 0 -R 0 -P 0 -Y 1.5708" />
+      <arg name="robot_name"  value="usafabot0" />
+    </include>
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+	<node
+	name="position"
+	pkg="usafabot_gazebo"
+	type="pos_transform.py"
+	/>
+
+  </group>
+
+  <group ns="usafabot1">
+     <param name="tf_prefix" value="usafabot1_tf" />
+    <include file="$(find usafabot_gazebo)/launch/usafabot_gazebo.launch" >
+      <arg name="init_pose" value="-x 0 -y 1 -z 0 -R 0 -P 0 -Y 1.5708" />
+      <arg name="robot_name"  value="usafabot1" />
+    </include>
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+	<node
+	name="position"
+	pkg="usafabot_gazebo"
+	type="pos_transform.py"
+	/>
+
+  </group>
+  
+  <group ns="usafabot2">
+     <param name="tf_prefix" value="usafabot2_tf" />
+    <include file="$(find usafabot_gazebo)/launch/usafabot_gazebo.launch" >
+      <arg name="init_pose" value="-x 0 -y 2 -z 0 -R 0 -P 0 -Y 1.5708" />
+      <arg name="robot_name"  value="usafabot2" />
+    </include>
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+	<node
+	name="position"
+	pkg="usafabot_gazebo"
+	type="pos_transform.py"
+	/>
+
+  </group>
+  
+  <group ns="usafabot3">
+     <param name="tf_prefix" value="usafabot3_tf" />
+    <include file="$(find usafabot_gazebo)/launch/usafabot_gazebo.launch" >
+      <arg name="init_pose" value="-x 0 -y 3 -z 0 -R 0 -P 0 -Y 1.5708" />
+      <arg name="robot_name"  value="usafabot3" />
+    </include>
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+	<node
+	name="position"
+	pkg="usafabot_gazebo"
+	type="pos_transform.py"
+	/>
+
+  </group>
+  
+  <group ns="usafabot4">
+     <param name="tf_prefix" value="usafabot4_tf" />
+    <include file="$(find usafabot_gazebo)/launch/usafabot_gazebo.launch" >
+      <arg name="init_pose" value="-x 0 -y 4 -z 0 -R 0 -P 0 -Y 1.5708" />
+      <arg name="robot_name"  value="usafabot4" />
+    </include>
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+	<node
+	name="position"
+	pkg="usafabot_gazebo"
+	type="pos_transform.py"
+	/>
+
+  </group>
+
+  <group ns="usafabot5">
+     <param name="tf_prefix" value="usafabot5_tf" />
+    <include file="$(find usafabot_gazebo)/launch/usafabot_gazebo.launch" >
+      <arg name="init_pose" value="-x 0 -y 5 -z 0 -R 0 -P 0 -Y 1.5708" />
+      <arg name="robot_name"  value="usafabot5" />
+    </include>
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+	<node
+	name="position"
+	pkg="usafabot_gazebo"
+	type="pos_transform.py"
+	/>
+
+  </group>
+  
+  <group ns="usafabot6">
+     <param name="tf_prefix" value="usafabot6_tf" />
+    <include file="$(find usafabot_gazebo)/launch/usafabot_gazebo.launch" >
+      <arg name="init_pose" value="-x 1 -y 0 -z 0 -R 0 -P 0 -Y 1.5708" />
+      <arg name="robot_name"  value="usafabot6" />
+    </include>
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+	<node
+	name="position"
+	pkg="usafabot_gazebo"
+	type="pos_transform.py"
+	/>
+
+  </group>
+  
+  <group ns="usafabot7">
+     <param name="tf_prefix" value="usafabot7_tf" />
+    <include file="$(find usafabot_gazebo)/launch/usafabot_gazebo.launch" >
+      <arg name="init_pose" value="-x 1 -y 1 -z 0 -R 0 -P 0 -Y 1.5708" />
+      <arg name="robot_name"  value="usafabot7" />
+    </include>
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+	<node
+	name="position"
+	pkg="usafabot_gazebo"
+	type="pos_transform.py"
+	/>
+
+  </group>
+  
+  <group ns="usafabot8">
+     <param name="tf_prefix" value="usafabot8_tf" />
+    <include file="$(find usafabot_gazebo)/launch/usafabot_gazebo.launch" >
+      <arg name="init_pose" value="-x 1 -y 2 -z 0 -R 0 -P 0 -Y 1.5708" />
+      <arg name="robot_name"  value="usafabot8" />
+    </include>
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+	<node
+	name="position"
+	pkg="usafabot_gazebo"
+	type="pos_transform.py"
+	/>
+
+  </group>
+  
+  <group ns="usafabot9">
+     <param name="tf_prefix" value="usafabot9_tf" />
+    <include file="$(find usafabot_gazebo)/launch/usafabot_gazebo.launch" >
+      <arg name="init_pose" value="-x 1 -y 3 -z 0 -R 0 -P 0 -Y 1.5708" />
+      <arg name="robot_name"  value="usafabot9" />
+    </include>
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+	<node
+	name="position"
+	pkg="usafabot_gazebo"
+	type="pos_transform.py"
+	/>
+
+  </group>
+  
+  <group ns="usafabot10">
+     <param name="tf_prefix" value="usafabot10_tf" />
+    <include file="$(find usafabot_gazebo)/launch/usafabot_gazebo.launch" >
+      <arg name="init_pose" value="-x 1 -y 4 -z 0 -R 0 -P 0 -Y 1.5708" />
+      <arg name="robot_name"  value="usafabot10" />
+    </include>
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+	<node
+	name="position"
+	pkg="usafabot_gazebo"
+	type="pos_transform.py"
+	/>
+
+  </group>
+  
+  <group ns="usafabot11">
+     <param name="tf_prefix" value="usafabot11_tf" />
+    <include file="$(find usafabot_gazebo)/launch/usafabot_gazebo.launch" >
+      <arg name="init_pose" value="-x 1 -y 5 -z 0 -R 0 -P 0 -Y 1.5708" />
+      <arg name="robot_name"  value="usafabot11" />
+    </include>
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+	<node
+	name="position"
+	pkg="usafabot_gazebo"
+	type="pos_transform.py"
+	/>
+
+  </group>
+  
+  <group ns="usafabot12">
+     <param name="tf_prefix" value="usafabot12_tf" />
+    <include file="$(find usafabot_gazebo)/launch/usafabot_gazebo.launch" >
+      <arg name="init_pose" value="-x 2 -y 0 -z 0 -R 0 -P 0 -Y 1.5708" />
+      <arg name="robot_name"  value="usafabot12" />
+    </include>
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+	<node
+	name="position"
+	pkg="usafabot_gazebo"
+	type="pos_transform.py"
+	/>
+
+  </group>
+  
+  <group ns="usafabot13">
+     <param name="tf_prefix" value="usafabot13_tf" />
+    <include file="$(find usafabot_gazebo)/launch/usafabot_gazebo.launch" >
+      <arg name="init_pose" value="-x 2 -y 1 -z 0 -R 0 -P 0 -Y 1.5708" />
+      <arg name="robot_name"  value="usafabot13" />
+    </include>
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+	<node
+	name="position"
+	pkg="usafabot_gazebo"
+	type="pos_transform.py"
+	/>
+
+  </group>
+  
+  <group ns="usafabot14">
+     <param name="tf_prefix" value="usafabot14_tf" />
+    <include file="$(find usafabot_gazebo)/launch/usafabot_gazebo.launch" >
+      <arg name="init_pose" value="-x 2 -y 2 -z 0 -R 0 -P 0 -Y 1.5708" />
+      <arg name="robot_name"  value="usafabot14" />
+    </include>
+	<node
+	name="controller"
+	pkg="capstone21-22"
+	type="controller.py"
+	/>
+	<node
+	name="position"
+	pkg="usafabot_gazebo"
+	type="pos_transform.py"
+	/>
+
+  </group>
+
+</launch>
