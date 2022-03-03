@@ -1,6 +1,7 @@
 from statistics import mean
 import PathBuild
-
+import usafalog
+logger = usafalog.CreateLogger(__name__)
 MAX_BOTS = 25
 letter_library = {
     'A': ([0.0, 0.6, 0.15, 0.45, 0.3, 0.3],
@@ -96,9 +97,11 @@ def custom_word():
     while not 0 < word_sum <= MAX_BOTS:
         word_sum = 0
         usr_word = input("Enter word for robots to spell: ")
+        logger.debug(f"User entered \'{usr_word}\'")
         word_parsed = split(usr_word)
         for letter in word_parsed:
             word_sum = word_sum + len(letter_library.get(letter, [[], []])[0])
+        logger.debug(f"This word takes {word_sum} bots to make")
 
     # Separate each letter by 1 meter (box)
     for position, letter in enumerate(word_parsed):
