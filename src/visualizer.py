@@ -11,6 +11,8 @@ def visualize(x_pos, y_pos, x_dest, y_dest, text):
     for i in range(len(x_pos)):
         plt.plot(x_dest[i], y_dest[i], 'g8', x_pos[i], y_pos[i], 'b*')
     plt.axis([0, 6, 0, 6])
+    plt.xlabel("East-West Axis of Robot Workspace (m)")
+    plt.ylabel("North-South Axis of Robot Workspace (m)")
     plt.text(.5, .5, text)
     plt.legend(["Goal Positions", "Actual Positions"])
     # plt.show()

@@ -83,7 +83,8 @@ class Master:
             elif data.position.x != 0 or data.position.y != 0:
                 toc = time.perf_counter()
                 t = toc - tic
-                logger.info(f"Found {self.name} in {round(t, 4)} (s)")
+                logger.debug(
+                    f"Found {self.name} in {round(t, 4)} (s) at ({round(self.curr_pos.position.x, 2)}, {round(self.curr_pos.position.y, 2)}")
                 self.state = WAITING
 
     def stop(self):
@@ -93,7 +94,6 @@ class Master:
     def start(self):
         self.time = time.perf_counter()
         self.lock = False
-        logger.debug(f"starting timer for {self.name}")
         logger.info(f"{self.name} started")
 
     def callbackPublisher(self, event):
@@ -125,7 +125,6 @@ def assign_bots(bots: list, xdest=None, ydest=None):
         ydest = y_dest
     for bot, xdestintations, ydestinations in zip(bots, xdest, ydest):
         assert isinstance(bot, Master)
-        logger.debug(f"Dest set for: {bot.name}")
         bot.setGroundDestPosition(xdestintations, ydestinations)
 
 
@@ -136,6 +135,7 @@ def all_bots_found(bots: list):
             not_found += 1
     if not_found > 0:
         return False
+    logger.info("All bots found")
     return True
 
 
@@ -146,5 +146,5 @@ def start_positions(bots: list):
         if not bot.timeout:  # Only include found bots
             x.append(bot.curr_pos.position.x)
             y.append(bot.curr_pos.position.y)
-    logger.info(f"found {len(x)} positions")
+    logger.debug(f"found {len(x)} start positions")
     return x, y
