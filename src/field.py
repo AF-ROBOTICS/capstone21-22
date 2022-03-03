@@ -35,14 +35,14 @@ class Field:
 
         # Add All Robots to Respective Cells
         for robot in robots:
-            x = robot.pos.x // CELL_W
-            y = robot.pos.y // CELL_W
+            x = int(robot.pos.x // CELL_W)
+            y = int(robot.pos.y // CELL_W)
             if 0 >= x < FIELD_X and 0 >= y < FIELD_Y:
                 self.cells[x][y].robot = robot
                 robot.pos_cell = (x, y)
             else:
                 self.lost_bots.append(robot)
-                robot.pos_cell = (None)
+                robot.pos_cell = (None, None)
 
     def map_dest(self, robots):
         """Populates field cells with current destination positions"""
