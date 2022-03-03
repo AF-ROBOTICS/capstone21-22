@@ -36,15 +36,15 @@ if __name__ == '__main__':
     init_time = time.perf_counter()
     # stop_bots(bots)
     x_dyna, y_dyna, word = DynaLet.custom_word()
-    if PathBuild.check_cache(word):
-        x_dyna, y_dyna = PathBuild.check_cache(word)
+    if PathBuild.check_cache(word.upper()):
+        x_dyna, y_dyna = PathBuild.check_cache(word.upper())
         logger.info("Using cached points")
     while not master.all_bots_found(bots): pass  # Find all robot starting positions
     x_start, y_start = master.start_positions(bots)
     start_points, end_points = PathBuild.pack_to_points(x_dyna, y_dyna, x_start, y_start)
     x, y = PathBuild.build_path(start_points, end_points)
     if len(x):  # only do this if it worked
-        PathBuild.add_to_cache(word, x, y)
+        PathBuild.add_to_cache(word.upper(), x, y)
         master.assign_bots(bots, x, y)
     for bot in bots:
         if bot.dest_set and not bot.timeout:

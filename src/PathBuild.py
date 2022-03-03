@@ -205,7 +205,7 @@ def add_to_cache(phrase, x, y):
         pass
 
     f = open(cache_filename, 'w')
-    cache_dict[phrase.phrase.upper] = [x, y]
+    cache_dict[phrase] = [x, y]
     json.dump(cache_dict, f, indent=4)
     f.close()
 
@@ -219,7 +219,7 @@ def check_cache(phrase):
     except OSError:
         pass
 
-    return cache_dict.get(phrase.upper(), None)
+    return cache_dict.get(phrase, None)
 
 
 if __name__ == '__main__':
