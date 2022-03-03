@@ -125,7 +125,6 @@ def assign_bots(bots: list, xdest=None, ydest=None):
         ydest = y_dest
     for bot, xdestintations, ydestinations in zip(bots, xdest, ydest):
         assert isinstance(bot, Master)
-        logger.debug(f"Dest set for: {bot.name}")
         bot.setGroundDestPosition(xdestintations, ydestinations)
 
 
@@ -147,5 +146,5 @@ def start_positions(bots: list):
         if not bot.timeout:  # Only include found bots
             x.append(bot.curr_pos.position.x)
             y.append(bot.curr_pos.position.y)
-    logger.info(f"found {len(x)} positions")
+    logger.debug(f"found {len(x)} start positions")
     return x, y
