@@ -63,8 +63,8 @@ def single_greedy(field, field_next, robot):
     dist = []
 
     # Declare Potential Next Positions
-    x = [robot.pos_cell[0], robot.pos_cell[0] + 1, robot.pos_cell[0],     robot.pos_cell[0] - 1, robot.pos_cell[0]]
-    y = [robot.pos_cell[1], robot.pos_cell[1],     robot.pos_cell[1] + 1, robot.pos_cell[1],     robot.pos_cell[1] - 1]
+    x = [robot.pos_cell[0], robot.pos_cell[0] + 1, robot.pos_cell[0]    , robot.pos_cell[0] - 1, robot.pos_cell[0]    ]
+    y = [robot.pos_cell[1], robot.pos_cell[1]    , robot.pos_cell[1] + 1, robot.pos_cell[1]    , robot.pos_cell[1] - 1]
 
     # Loop Through All Actions
     for i in range(x):
