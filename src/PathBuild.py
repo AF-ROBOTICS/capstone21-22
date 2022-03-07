@@ -105,6 +105,8 @@ def animate(line, plot_interval):
     plt.plot([line.start.x, line.end.x], [line.start.y, line.end.y])
     plt.plot(line.end.x, line.end.y, "g*")
     plt.axis([0, 6, 0, 6])
+    plt.xlabel("East-West Axis of Robot Workspace (m)")
+    plt.ylabel("North-South Axis of Robot Workspace (m)")
     plt.show()
     tic = time.perf_counter()
     while time.perf_counter() - tic < plot_interval:
