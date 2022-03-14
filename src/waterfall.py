@@ -56,4 +56,6 @@ if __name__ == '__main__':
     logger.info("all bots complete")
     # stop_bots(bots)
     error_checking.measure_error(bots)
+    error_checking.breadcrumb_trail(bots)
+    logger.info("Waterfall Complete")
     rospy.spin()
