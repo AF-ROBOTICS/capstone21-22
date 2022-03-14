@@ -37,7 +37,7 @@ class Field:
         for robot in robots:
             x = int(robot.pos.x // CELL_W)
             y = int(robot.pos.y // CELL_W)
-            if 0 >= x < FIELD_X and 0 >= y < FIELD_Y:
+            if (0 <= x < FIELD_X) and (0 <= y < FIELD_Y):
                 self.cells[x][y].robot = robot
                 robot.pos_cell = (x, y)
             else:

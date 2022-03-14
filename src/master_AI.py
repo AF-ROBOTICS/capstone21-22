@@ -116,7 +116,7 @@ if __name__ == '__main__':
                     y = (robot.step_cell[1] + 0.5) * CELL_W
 
                     # Publish Position
-                    robot.pub.publish(Point(x, y))
+                    robot.pub.publish(Point(x, y, 0))
                     print("POINT PUBLISHED!")
 
                 # If Robot not successfully mapped
