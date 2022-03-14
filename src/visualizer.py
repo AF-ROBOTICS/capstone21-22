@@ -3,9 +3,11 @@ from datetime import datetime
 import os
 import matplotlib.pyplot as plt
 from statistics import mean
+
 path = "../measurement_files/"
 filename = datetime.now().strftime("%d%b%Y_%H-%M-%S")
 csv_name = path + "23Feb2022_15-49-02.csv"
+
 
 def visualize(x_pos, y_pos, x_dest, y_dest, text):
     for i in range(len(x_pos)):
@@ -21,8 +23,8 @@ def visualize(x_pos, y_pos, x_dest, y_dest, text):
 
 if __name__ == "__main__":
     bot = []
-    x_dest =[]
-    y_dest =[]
+    x_dest = []
+    y_dest = []
     x_pos = []
     y_pos = []
     error = []
@@ -40,7 +42,7 @@ if __name__ == "__main__":
                 y_pos.append(float(row[4]))
                 error.append(float(row[5]))
                 time.append(float(row[6]))
-        text = f"Mean error (cm): {round(mean(error)*100,2)}\nMean time (s): {round(mean(time),2)}"
+        text = f"Mean error (cm): {round(mean(error) * 100, 2)}\nMean time (s): {round(mean(time), 2)}"
         print(text)
 
     visualize(x_pos, y_pos, x_dest, y_dest, text)

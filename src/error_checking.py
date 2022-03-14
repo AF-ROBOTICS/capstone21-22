@@ -47,4 +47,15 @@ def visualize(bots):
     for bot in bots:
         plt.plot(bot.dest_pos.x, bot.dest_pos.y, 'g8', bot.x_avg, bot.y_avg, 'b*')
     plt.axis([0, 6, 0, 6])
-    plt.savefig(path+filename+".png")
+    plt.savefig(path + filename + ".png")
+
+
+def breadcrumb_trail(bots):
+    logger.info("Creating breadcrumb csvs")
+    for bot in bots:
+        with open(path + "lastBC/" + f"{bot.name}" + ".csv", "w") as BCfile:
+            csvwriter = csv.writer(BCfile)
+            logger.debug(f"Writing csv for {bot.name}")
+            csvwriter.writerow(['x', 'y'])
+            for point in bot.breadcrumbs:
+                csvwriter.writerow(point)

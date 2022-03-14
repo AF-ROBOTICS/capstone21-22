@@ -19,6 +19,8 @@ WORKING = 2  # The robot is trying to get to its dest
 CLOSE = 3  # The robot is close enough to release the next bot
 DONE = 4  # The robot is at its destination
 
+BREAD_PERIOD = 2  # (s) how often to drop a breadcrumb when robot is working
+
 # DFEC from inside to outside
 x_dest = [2.3, 2, 1.6, 1.3, 1.3, 1, 1, 1, 2, 2.3, 2.6, 3, 3.3, 3.6, 4, 4, 4, 4.6, 4.6, 3.6, 3.3, 3.3, 3, 3, 2]
 y_dest = [2.5, 2.5, 2.5, 2.75, 2.25, 2, 2.5, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2.5, 2, 3, 2, 2.5, 2, 2.5, 2, 2]
@@ -39,13 +41,14 @@ class Master:
         self.state = BOOT
         self.dest_set = False
         self.lock = True
+        self.breadcrumbs = [[], []]
         # -----------------------------------------------------------------------------
         # Topics and Timers
         # -----------------------------------------------------------------------------
         # Publish to the controller
         self.pub = rospy.Publisher(self.name + '/dest_pos', Point, queue_size=10)
         rospy.Timer(rospy.Duration(.1), self.callbackPublisher)  # Automatically publish dest pos
-
+        rospy.Timer(rospy.Duration(BREAD_PERIOD), self.drop_breadcrumbs)  # Periodically record curr_pos
         # Listen for the bots' current position to the controller
         rospy.Subscriber(self.name + '/curr_pos', Pose, self.callback_currPos)
 
@@ -94,6 +97,7 @@ class Master:
     def start(self):
         self.time = time.perf_counter()
         self.lock = False
+        self.state = WORKING
         logger.info(f"{self.name} started")
 
     def callbackPublisher(self, event):
@@ -102,6 +106,11 @@ class Master:
             self.pub.publish(0, 0, 0)
         else:
             self.pub.publish(self.dest_pos)
+
+    def drop_breadcrumbs(self, event):
+        if self.state == WORKING or self.state == CLOSE:
+            logger.debug(f"dropped breadcrumb for {self.name}")
+            self.breadcrumbs.append([self.curr_pos.position.x, self.curr_pos.position.y])
 
 
 def stop_bots(bots: list):
@@ -123,9 +132,9 @@ def assign_bots(bots: list, xdest=None, ydest=None):
         xdest = x_dest
     if ydest is None:
         ydest = y_dest
-    for bot, xdestintations, ydestinations in zip(bots, xdest, ydest):
+    for bot, xdestintation, ydestination in zip(bots, xdest, ydest):
         assert isinstance(bot, Master)
-        bot.setGroundDestPosition(xdestintations, ydestinations)
+        bot.setGroundDestPosition(xdestintation, ydestination)
 
 
 def all_bots_found(bots: list):
