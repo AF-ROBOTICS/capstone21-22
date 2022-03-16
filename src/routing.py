@@ -63,17 +63,21 @@ def single_greedy(field, field_next, robot):
     dist = []
 
     # Declare Potential Next Positions
-    x = [robot.pos_cell(0), robot.pos_cell(0) + 1, robot.pos_cell(0), robot.pos_cell(0) - 1, robot.pos_cell(0)]
-    y = [robot.pos_cell(1), robot.pos_cell(1), robot.pos_cell(1) + 1, robot.pos_cell(1), robot.pos_cell(1) - 1]
+    x = [robot.pos_cell[0], robot.pos_cell[0] + 1, robot.pos_cell[0]    , robot.pos_cell[0] - 1, robot.pos_cell[0]    ]
+    y = [robot.pos_cell[1], robot.pos_cell[1]    , robot.pos_cell[1] + 1, robot.pos_cell[1]    , robot.pos_cell[1] - 1]
 
     # Loop Through All Actions
-    for i in range(x):
+    for i in range(len(x)):
         # Find Distance from Cell to Goal
-        dist[i] = manhattan_distance(x[i], y[i], robot.dest_cell(0), robot.dest_cell(1))
+        dist.append( manhattan_distance(x[i], y[i], robot.dest_cell[0], robot.dest_cell[1]) )
         
         # Check if Cell is Occupied
-        if field_next.cells[x[i]][y[i]]:
+        if field_next.cells[x[i]][y[i]].robot:
             dist[i] += 999999
+
+        # Check if Cell was Occupied
+        if field.cells[x[i]][y[i]].robot:
+            dist[i] += 1
 
     # Find Ideal Action
     i = dist.index(min(dist))
@@ -83,7 +87,7 @@ def single_greedy(field, field_next, robot):
     field_next.cells[x[i]][y[i]].robot = robot
 
     # If Bot is Finished, Update It
-    if robot.pos_cell.x == robot.dest_cell.x and robot.pos_cell.y == robot.dest_cell.y:
+    if robot.pos_cell[0] == robot.dest_cell[0] and robot.pos_cell[1] == robot.dest_cell[1]:
         robot.status = 2
 
     # Return Next Step

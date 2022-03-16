@@ -10,7 +10,7 @@ from enum import Enum
 # Global Variables
 FIELD_W = 5.5   # (m) x-axis
 FIELD_L = 5     # (m) y-axis
-CELL_W  = 0.2   # (m) 
+CELL_W  = 0.3   # (m) 
 
 FIELD_X = FIELD_W // CELL_W + 1 # Discrete Indices
 FIELD_Y = FIELD_L // CELL_W + 1
