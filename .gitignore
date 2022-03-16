@@ -12,6 +12,8 @@
 
 # ignore python cache files
 *.pyc
+**/*.pyc
+**/**/**.pyc
 # ignore png files
 *.png
 *.PNG
