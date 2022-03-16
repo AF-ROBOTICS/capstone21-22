@@ -15,10 +15,10 @@
 **/*.pyc
 **/**/**.pyc
 # ignore png files
-*.png
-*.PNG
+#*.png
+#*.PNG
 # ignore log files
-*.log
-*.LOG
+#*.log
+#*.LOG
 # ignore PyCharm files
 ./.idea
