@@ -87,7 +87,7 @@ class Master:
                 toc = time.perf_counter()
                 t = toc - tic
                 logger.debug(
-                    f"Found {self.name} in {round(t, 4)} (s) at ({round(self.curr_pos.position.x, 2)}, {round(self.curr_pos.position.y, 2)}")
+                    f"Found {self.name} in {round(t, 4)} (s) at ({round(self.curr_pos.position.x, 2)}, {round(self.curr_pos.position.y, 2)})")
                 self.state = WAITING
 
     def stop(self):
