@@ -1,17 +1,19 @@
 import csv
-from master import *
 from datetime import datetime
 from statistics import mean
-from usafalog import *
 
+# import matplotlib.pyplot as plt
+
+from master import *
+from usafalog import *
 
 logger = CreateLogger(__name__)
 logger.debug("Entering error")
 # CSV filepath
 path = "/home/" + os.getlogin() + "/robotics_ws/src/capstone21-22/measurement_files/"
 # CSV filename for error measurement ex: 08Dec2022_14-40-43.csv
-filename = datetime.now().strftime("%d%b%Y_%H-%M-%S") + ".csv"
-outfile = path + filename
+filename = datetime.now().strftime("%d%b%Y_%H-%M-%S")
+outfile = path + filename + ".csv"
 # CSV Headers
 fields = ['bot', 'x_dest', 'x_avg_pos', 'y_dest', 'y_avg_pos', 'pos_err', 'time']
 
@@ -38,3 +40,22 @@ def measure_error(bots: list, num_samples=5, sample_period=10):
                 [bot.name, str(bot.dest_pos.x), (mean(bot.x_avg)), str(bot.dest_pos.y), str(mean(bot.y_avg)),
                  str(bot.pos_err), str(bot.time)])
     logger.info(f"CSV created with filename:  {filename}")
+    # visualize(bots)
+
+
+def visualize(bots):
+    for bot in bots:
+        plt.plot(bot.dest_pos.x, bot.dest_pos.y, 'g8', bot.x_avg, bot.y_avg, 'b*')
+    plt.axis([0, 6, 0, 6])
+    plt.savefig(path + filename + ".png")
+
+
+def breadcrumb_trail(bots):
+    logger.info("Creating breadcrumb csvs")
+    for bot in bots:
+        with open(path + "lastBC/" + f"{bot.name}" + ".csv", "w") as BCfile:
+            csvwriter = csv.writer(BCfile)
+            logger.debug(f"Writing csv for {bot.name}")
+            csvwriter.writerow(['x', 'y'])
+            for point in bot.breadcrumbs:
+                csvwriter.writerow(point)

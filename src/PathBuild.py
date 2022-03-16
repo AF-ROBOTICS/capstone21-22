@@ -1,6 +1,14 @@
+import json
+# import matplotlib.pyplot as plt
+import os
 import random
 import time
-import matplotlib.pyplot as plt
+import copy
+import usafalog
+
+logger = usafalog.CreateLogger(__name__)
+
+cache_filename = "/home/" + os.getlogin() + "/robotics_ws/src/capstone21-22/measurement_files/PathCache.json"
 
 
 class Point:
@@ -10,6 +18,7 @@ class Point:
 
     def __str__(self):
         return f"x: {self.x} y: {self.y}"
+
 
 # Given two points, defines a line
 class Line:
@@ -28,7 +37,7 @@ class Line:
 
 
 # Minimum clearance between line and robot
-BUFFER_DIST = .15  # meters
+BUFFER_DIST = .5  # meters
 
 # Default starting Points
 x_robot = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.4, 2.6, 2.8, 3.2, 3.4, 3.6, 3.8, 6.0, 6.0, 6.0, 6.0, 3.6, 3.4, 3.2,
@@ -96,13 +105,15 @@ def animate(line, plot_interval):
     plt.plot([line.start.x, line.end.x], [line.start.y, line.end.y])
     plt.plot(line.end.x, line.end.y, "g*")
     plt.axis([0, 6, 0, 6])
+    plt.xlabel("East-West Axis of Robot Workspace (m)")
+    plt.ylabel("North-South Axis of Robot Workspace (m)")
     plt.show()
     tic = time.perf_counter()
     while time.perf_counter() - tic < plot_interval:
         pass
 
 
-def isValidLine(line):
+def is_valid_line(line):
     for point in end_points:  # Check does not cross any set points
         if line_close_to_point(line, point):
             return False
@@ -113,12 +124,12 @@ def isValidLine(line):
 def solve(origins, destinations):
     global NUM_TRIES
     NUM_TRIES += 1
-    if origins:  # if not all of the starting positions have been assigned
+    if destinations:  # if not all of the destination positions have been assigned
         start = origins.pop(0)  # get current start position
         for i, dest in enumerate(destinations):  # loop through all of the remaining positions
             test_line = Line(start, dest)  # draw a line between the start and end
             # animate(test_line, .2)
-            if isValidLine(test_line):  # if the line isn't too close to other established end points
+            if is_valid_line(test_line):  # if the line isn't too close to other established end points
                 end_points.append(dest)
                 destinations.pop(i)  # remove the end point from the list of possible end points
                 if solve(origins, destinations):  # if the levels below work, return True
@@ -130,33 +141,49 @@ def solve(origins, destinations):
     return True  # all starting positions have been assigned, so it worked
 
 
-def buildPath(starts, ends):
+def build_path(starts, ends):
     global NUM_TRIES
+    global end_points
+    end_points = []
     NUM_TRIES = 0
     return_x = []
     return_y = []
+    plot_copy = copy.copy(starts)
     if solve(starts, ends):
-        print(f"{NUM_TRIES} combinations were tried, but this is the one for you:")
-        print("Destinations:")
+        logger.debug(f"{NUM_TRIES} paths were tried")
+        logger.debug("Destinations:")
         for point in end_points:
             return_x.append(point.x)
             return_y.append(point.y)
-            print(point.__str__())
-        # plot successful result
-        for i in range(0, len(x_robot)):
-            plt.plot([x_robot[i], return_x[i]], [y_robot[i], return_y[i]])
-        plt.show()
+            logger.info(point.__str__())
+        # plot_result(plot_copy, return_x, return_y)
     else:
-        print(f"unable to solve (tried {NUM_TRIES} times)")
-    # print any remaining points
-    print('start:', starts)
-    print('dest:', ends)
+        logger.warning(f"unable to solve (tried {NUM_TRIES} times)")
+    # log any remaining points
+    if starts:
+        logger.info(f"{len(starts)} remaining starting positions")
+    if ends:
+        logger.info(f"{len(ends)} remaining destination positions")
 
     return return_x, return_y
 
 
-def pack_to_points(x_start, y_start, x_end, y_end):
+def plot_result(starts, xpoints, ypoints):
+    for i in range(0, len(xpoints)):
+        plt.plot([starts[i].x, xpoints[i]], [starts[i].y, ypoints[i]])
+    plt.axis([0, 6, 0, 6])
+    plt.show()
+    plt.plot(xpoints, ypoints, 'r*')
+    plt.axis([0, 6, 0, 6])
+    plt.show()
+
+
+def pack_to_points(x_end, y_end, x_start=None, y_start=None):
     # pack into list of tuples
+    if y_start is None:
+        y_start = y_robot
+    if x_start is None:
+        x_start = x_robot
     start_list = list(zip(x_start, y_start))
     dest_list = list(zip(x_end, y_end))
     # convert to list of points
@@ -164,17 +191,43 @@ def pack_to_points(x_start, y_start, x_end, y_end):
     ending_points = []
     for i in range(0, len(start_list)):
         starting_points.append(Point(start_list[i][0], start_list[i][1]))
+    for i in range(0, len(dest_list)):
         ending_points.append(Point(dest_list[i][0], dest_list[i][1]))
-
     return starting_points, ending_points
+
+
+def add_to_cache(phrase, x, y):
+    cache_dict = {}
+
+    try:
+        f = open(cache_filename)
+        cache_dict = json.load(f)
+        f.close()
+    except OSError:
+        pass
+
+    f = open(cache_filename, 'w')
+    cache_dict[phrase] = [x, y]
+    json.dump(cache_dict, f, indent=4)
+    f.close()
+
+
+def check_cache(phrase):
+    cache_dict = {}
+    try:
+        f = open(cache_filename)
+        cache_dict = json.load(f)
+        f.close()
+    except OSError:
+        pass
+
+    return cache_dict.get(phrase, None)
 
 
 if __name__ == '__main__':
     # try multiple times/shuffles
-    plt.close('all')
-    robot_starts, robot_ends = pack_to_points(x_robot, y_robot, x_dest, y_dest)
+    # plt.close('all')
+    robot_starts, robot_ends = pack_to_points(x_dest, y_dest, x_robot, y_robot)
     # For testing
-    # random.shuffle(starts)
     random.shuffle(robot_ends)
-    ##
-    buildPath(robot_starts, robot_ends)
+    build_path(robot_starts, robot_ends)
