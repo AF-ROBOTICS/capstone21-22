@@ -1,15 +1,15 @@
 import csv
-from datetime import datetime
 import os
+from datetime import datetime
+
 import matplotlib.pyplot as plt
-from statistics import mean
 
 path = "../measurement_files/"
 filename = datetime.now().strftime("%d%b%Y_%H-%M-%S")
 csv_name = path + "23Feb2022_15-49-02.csv"
 
 
-def visualize(x_pos, y_pos, x_dest, y_dest, text):
+def points(x_pos, y_pos, x_dest, y_dest, text):
     for i in range(len(x_pos)):
         plt.plot(x_dest[i], y_dest[i], 'g8', x_pos[i], y_pos[i], 'b*')
     plt.axis([0, 6, 0, 6])
@@ -21,28 +21,60 @@ def visualize(x_pos, y_pos, x_dest, y_dest, text):
     plt.savefig(path + filename + ".png")
 
 
-if __name__ == "__main__":
-    bot = []
-    x_dest = []
-    y_dest = []
-    x_pos = []
-    y_pos = []
-    error = []
-    time = []
-    with open(csv_name, 'r') as csvfile:
-        csvreader = csv.reader(csvfile)
-        csvreader.__next__()
-        for row in csvreader:
-            if float(row[6]) != 0:
-                print(row)
-                bot.append(row[0])
-                x_dest.append(float(row[1]))
-                x_pos.append(float(row[2]))
-                y_dest.append(float(row[3]))
-                y_pos.append(float(row[4]))
-                error.append(float(row[5]))
-                time.append(float(row[6]))
-        text = f"Mean error (cm): {round(mean(error) * 100, 2)}\nMean time (s): {round(mean(time), 2)}"
-        print(text)
+def paths():
+    extension = 'csv'
+    os.chdir('../measurement_files/lastBC')
+    # all_filenames = [i for i in glob.glob('*.{}'.format(extension))]
+    # all_filenames.sort()
+    all_filenames = ['usafabot' + str(i) + '.csv' for i in range(25)]
+    for filename in all_filenames:
+        current_points = []
+        with open(filename) as current_file:
+            csvreader = csv.reader(current_file)
+            # Get rid of headers and blanks
+            csvreader.__next__()
+            csvreader.__next__()
+            csvreader.__next__()
+            # print(filename)
+            for row in csvreader:
+                # print(row)
+                current_points.append(row)
+            x = []
+            y = []
+            for point in current_points:
+                x.append(float(point[0]))
+                y.append(float(point[1]))
+            print(x, '\n', y)
+            plt.plot(x, y, linestyle='--', marker='o', color='b')
+    plt.axis([0, 6, 0, 6])
+    plt.xlabel("East-West Axis of Robot Workspace (m)")
+    plt.ylabel("North-South Axis of Robot Workspace (m)")
+    plt.show()
 
-    visualize(x_pos, y_pos, x_dest, y_dest, text)
+
+if __name__ == "__main__":
+    # bot = []
+    # x_dest = []
+    # y_dest = []
+    # x_pos = []
+    # y_pos = []
+    # error = []
+    # time = []
+    # with open(csv_name, 'r') as csvfile:
+    #     csvreader = csv.reader(csvfile)
+    #     csvreader.__next__()
+    #     for row in csvreader:
+    #         if float(row[6]) != 0:
+    #             print(row)
+    #             bot.append(row[0])
+    #             x_dest.append(float(row[1]))
+    #             x_pos.append(float(row[2]))
+    #             y_dest.append(float(row[3]))
+    #             y_pos.append(float(row[4]))
+    #             error.append(float(row[5]))
+    #             time.append(float(row[6]))
+    #     text = f"Mean error (cm): {round(mean(error) * 100, 2)}\nMean time (s): {round(mean(time), 2)}"
+    #     print(text)
+    #
+    # points(x_pos, y_pos, x_dest, y_dest, text)
+    paths()
