@@ -20,3 +20,9 @@
 *.LOG
 # ignore PyCharm files
 ./.idea
+measurement_files/Waterfall.log
+measurement_files/Waterfall.log
+.gitignore
+src/__pycache__/master.cpython-38.pyc
+.gitignore
+src/__pycache__/waterfall.cpython-38.pyc
