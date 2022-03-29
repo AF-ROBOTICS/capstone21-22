@@ -37,11 +37,12 @@ class Master:
         self.y_avg = []
         self.timeout = False
         self.time = 0
-        self.dist = 999999999.015
+        self.dist = float('Inf')
         self.state = BOOT
         self.dest_set = False
         self.lock = True
         self.breadcrumbs = [[], []]
+        self.BC_counter = 0
         # -----------------------------------------------------------------------------
         # Topics and Timers
         # -----------------------------------------------------------------------------
@@ -111,6 +112,10 @@ class Master:
         if self.state == WORKING or self.state == CLOSE:
             logger.debug(f"dropped breadcrumb for {self.name}")
             self.breadcrumbs.append([self.curr_pos.position.x, self.curr_pos.position.y])
+        elif self.state == DONE and self.BC_counter < 2:  # drop 2 crumbs after getting to point
+            logger.debug(f"dropped DONE breadcrumb for {self.name}")
+            self.breadcrumbs.append([self.curr_pos.position.x, self.curr_pos.position.y])
+            self.BC_counter += 1
 
 
 def stop_bots(bots: list):

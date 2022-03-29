@@ -89,19 +89,20 @@ def split(string):
     return [char for char in string]
 
 
-def custom_word():
+def custom_word(usr_word=None):
     x_destinations = []
     y_destinations = []
     word_sum = 0
     # Get user input. Only letters in dictionary allowed and cannot use more bots than there are
     while not 0 < word_sum <= MAX_BOTS:
         word_sum = 0
-        usr_word = input("Enter word for robots to spell: ")
-        logger.debug(f"User entered \'{usr_word}\'")
+        if usr_word is None:
+            usr_word = input("Enter word for robots to spell: ")
+            logger.debug(f"User entered \'{usr_word}\'")
         word_parsed = split(usr_word)
         for letter in word_parsed:
             word_sum = word_sum + len(letter_library.get(letter, [[], []])[0])
-        logger.debug(f"This word takes {word_sum} bots to make")
+        logger.debug(f"{usr_word} word takes {word_sum} bots to make")
 
     # Separate each letter by 1 meter (box)
     for position, letter in enumerate(word_parsed):
