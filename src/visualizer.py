@@ -20,8 +20,8 @@ def points(x_pos, y_pos, x_dest, y_dest, text, path):
 
 
 def paths(path):
-    colors = ['r', 'g', 'b', 'k']
-    markers = ['.', 'o', '1', '*', '^']
+    colors = ['r', 'g', 'b', 'm', 'k']
+    markers = ['.', '1', '*', '^']
     i = 0
     os.chdir(path + '/BreadCrumbs')
     all_filenames = ['usafabot' + str(i) + '.csv' for i in range(25)]

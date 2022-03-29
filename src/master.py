@@ -21,6 +21,8 @@ DONE = 4  # The robot is at its destination
 
 BREAD_PERIOD = 2  # (s) how often to drop a breadcrumb when robot is working
 
+PUBLISH = True  # if allowed to publish
+
 # DFEC from inside to outside
 x_dest = [2.3, 2, 1.6, 1.3, 1.3, 1, 1, 1, 2, 2.3, 2.6, 3, 3.3, 3.6, 4, 4, 4, 4.6, 4.6, 3.6, 3.3, 3.3, 3, 3, 2]
 y_dest = [2.5, 2.5, 2.5, 2.75, 2.25, 2, 2.5, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2.5, 2, 3, 2, 2.5, 2, 2.5, 2, 2]
@@ -103,10 +105,11 @@ class Master:
 
     def callbackPublisher(self, event):
         # logger.debug(f"Publishing {self.name}")
-        if self.lock:
-            self.pub.publish(0, 0, 0)
-        else:
-            self.pub.publish(self.dest_pos)
+        if PUBLISH:
+            if self.lock:
+                self.pub.publish(0, 0, 0)
+            else:
+                self.pub.publish(self.dest_pos)
 
     def drop_breadcrumbs(self, event):
         if self.state == WORKING or self.state == CLOSE:
@@ -118,7 +121,9 @@ class Master:
             self.BC_counter += 1
 
 
-def stop_bots(bots: list):
+def stop_pub(bots: list):
+    global PUBLISH
+    PUBLISH = False
     for bot in bots:
         assert isinstance(bot, Master)
         bot.stop()

@@ -21,7 +21,8 @@ BASENAME = 'usafabot'
 
 def ctrl_c_handler(signum, frame):
     print('\n')
-    master.stop_bots(bots)
+    master.stop_pub(bots)
+    rospy.signal_shutdown("CTRL C")
     logger.info("KILLED with CTRL_C")
     exit(1)
 
@@ -46,16 +47,18 @@ if __name__ == '__main__':
     if len(x):  # only do this if it worked
         PathBuild.add_to_cache(word.upper(), x, y)
         master.assign_bots(bots, x, y)
-    for bot in bots:
-        if bot.dest_set and not bot.timeout:
-            bot.start()
-            while not bot.state == master.CLOSE or bot.state == master.DONE:
-                pass  # TODO: How to not busy wait here
-        else:
-            logger.info(f"Skipping {bot.name}")
-    logger.info("all bots complete")
-    # stop_bots(bots)
-    error_checking.measure_error(bots)
-    error_checking.breadcrumb_trail(bots)
-    logger.info("Waterfall Complete")
+        for bot in bots:
+            if bot.dest_set and not bot.timeout:
+                bot.start()
+                while not bot.state == master.CLOSE or bot.state == master.DONE:
+                    pass  # TODO: How to not busy wait here
+            else:
+                logger.info(f"Skipping {bot.name}")
+        logger.info("all bots complete")
+        # stop_bots(bots)
+        error_checking.measure_error(bots)
+        error_checking.breadcrumb_trail(bots)
+        logger.info("Waterfall Complete")
+    else:
+        logger.warning("No bots assigned")
     rospy.spin()

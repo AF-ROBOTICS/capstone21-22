@@ -122,10 +122,13 @@ def custom_word(usr_word=None):
 
 
 if __name__ == '__main__':
+    x_circ = [-0.002, 2.398, 5.998, 2.398, -0.002, 2.598, 5.998, 2.598, -0.002, 2.798, 5.998, 2.798, -0.002, 3.198,
+              5.998, 3.198, -0.002, 3.398, 3.398, -0.002, 3.598, 3.598, -0.002, 3.798, -0.002]
+    y_circ = [2.2, 6, 3.4, 0, 2.4, 6, 3.2, 0, 2.6, 6, 2.8, 0, 2.8, 6, 2.6, 0, 3.2, 6, 0, 3.4, 6, 0, 3.6, 6, 3.8]
     while True:
         x_dyna, y_dyna, word = custom_word()
         if PathBuild.check_cache(word):
             x_dyna, y_dyna = PathBuild.check_cache(word)
-        start_points, end_points = PathBuild.pack_to_points(x_dyna, y_dyna)
+        start_points, end_points = PathBuild.pack_to_points(x_dyna, y_dyna, x_circ, y_circ)
         x, y = PathBuild.build_path(start_points, end_points)
-        PathBuild.add_to_cache(word, x, y)
+        # PathBuild.add_to_cache(word, x, y)

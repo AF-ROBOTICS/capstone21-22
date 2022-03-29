@@ -37,7 +37,7 @@ class Line:
 
 
 # Minimum clearance between line and robot
-BUFFER_DIST = .5  # meters
+BUFFER_DIST = .45  # meters
 
 # Default starting Points
 x_robot = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.4, 2.6, 2.8, 3.2, 3.4, 3.6, 3.8, 6.0, 6.0, 6.0, 6.0, 3.6, 3.4, 3.2,
@@ -73,7 +73,10 @@ def lines_intersect(line1, line2):
 def line_close_to_point(line: Line, point: Point, endpoints=False):
     # Find perpendicular line through given point
     perpendicular_line = Line()
-    perpendicular_line.m = -1 / line.m
+    try:
+        perpendicular_line.m = -1 / line.m
+    except ZeroDivisionError:
+        perpendicular_line.m = float('Inf')
     perpendicular_line.b = point.y - perpendicular_line.m * point.x
     # find where the shortest distance to point occurs
     intersect, x = lines_intersect(line, perpendicular_line)
