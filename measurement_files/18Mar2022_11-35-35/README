@@ -1,0 +1,12 @@
+Not an actual run of waterfall. 
+
+This a run of a test program to "brute force" all potential phrases through the PathBuilder algorithm.
+
+While each phrase was not printed in the log file the program started with "A" and was meant to run until "ZZZZZ"
+
+This program was allowed to run from 18 March until 29 March and ran the algorithm for phrases from "A" to "AAF"
+
+Some phrases took more than a day to compute and in extreme cases more than 3-5 days.
+
+This could potentially be fixed by optimizing the bot locations for PathBuild, but each failed attempt will still take over a million "drawn" lines
+
