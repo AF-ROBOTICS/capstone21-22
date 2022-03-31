@@ -12,14 +12,17 @@
 
 # ignore python cache files
 *.pyc
+**/*.pyc
+**/**/**.pyc
 # ignore png files
-*.png
-*.PNG
+#*.png
+#*.PNG
 # ignore log files
-*.log
-*.LOG
+#*.log
+#*.LOG
 # ignore PyCharm files
 ./.idea
+<<<<<<< HEAD
 measurement_files/Waterfall.log
 measurement_files/Waterfall.log
 .gitignore
@@ -33,3 +36,5 @@ src/__pycache__/robot.cpython-38.pyc
 src/__pycache__/routing.cpython-38.pyc
 src/__pycache__/usafalog.cpython-38.pyc
 src/__pycache__/waterfall.cpython-38.pyc
+=======
+>>>>>>> 4060b9a2763162ef8f644f0b864fe737a274eb1e

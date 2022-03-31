@@ -21,6 +21,8 @@ DONE = 4  # The robot is at its destination
 
 BREAD_PERIOD = 2  # (s) how often to drop a breadcrumb when robot is working
 
+PUBLISH = True  # if allowed to publish
+
 # DFEC from inside to outside
 x_dest = [2.3, 2, 1.6, 1.3, 1.3, 1, 1, 1, 2, 2.3, 2.6, 3, 3.3, 3.6, 4, 4, 4, 4.6, 4.6, 3.6, 3.3, 3.3, 3, 3, 2]
 y_dest = [2.5, 2.5, 2.5, 2.75, 2.25, 2, 2.5, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2.5, 2, 3, 2, 2.5, 2, 2.5, 2, 2]
@@ -37,11 +39,12 @@ class Master:
         self.y_avg = []
         self.timeout = False
         self.time = 0
-        self.dist = 999999999.015
+        self.dist = float('Inf')
         self.state = BOOT
         self.dest_set = False
         self.lock = True
         self.breadcrumbs = [[], []]
+        self.BC_counter = 0
         # -----------------------------------------------------------------------------
         # Topics and Timers
         # -----------------------------------------------------------------------------
@@ -87,7 +90,7 @@ class Master:
                 toc = time.perf_counter()
                 t = toc - tic
                 logger.debug(
-                    f"Found {self.name} in {round(t, 4)} (s) at ({round(self.curr_pos.position.x, 2)}, {round(self.curr_pos.position.y, 2)}")
+                    f"Found {self.name} in {round(t, 4)} (s) at ({round(self.curr_pos.position.x, 2)}, {round(self.curr_pos.position.y, 2)})")
                 self.state = WAITING
 
     def stop(self):
@@ -102,18 +105,25 @@ class Master:
 
     def callbackPublisher(self, event):
         # logger.debug(f"Publishing {self.name}")
-        if self.lock:
-            self.pub.publish(0, 0, 0)
-        else:
-            self.pub.publish(self.dest_pos)
+        if PUBLISH:
+            if self.lock:
+                self.pub.publish(0, 0, 0)
+            else:
+                self.pub.publish(self.dest_pos)
 
     def drop_breadcrumbs(self, event):
         if self.state == WORKING or self.state == CLOSE:
             logger.debug(f"dropped breadcrumb for {self.name}")
             self.breadcrumbs.append([self.curr_pos.position.x, self.curr_pos.position.y])
+        elif self.state == DONE and self.BC_counter < 2:  # drop 2 crumbs after getting to point
+            logger.debug(f"dropped DONE breadcrumb for {self.name}")
+            self.breadcrumbs.append([self.curr_pos.position.x, self.curr_pos.position.y])
+            self.BC_counter += 1
 
 
-def stop_bots(bots: list):
+def stop_pub(bots: list):
+    global PUBLISH
+    PUBLISH = False
     for bot in bots:
         assert isinstance(bot, Master)
         bot.stop()

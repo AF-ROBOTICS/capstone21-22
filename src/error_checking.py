@@ -1,18 +1,21 @@
 import csv
-from datetime import datetime
 from statistics import mean
+import os
+import time
+import master
+import usafalog
 
-# import matplotlib.pyplot as plt
-
-from master import *
-from usafalog import *
-
-logger = CreateLogger(__name__)
+logger = usafalog.CreateLogger(__name__)
 logger.debug("Entering error")
 # CSV filepath
 path = "/home/" + os.getlogin() + "/robotics_ws/src/capstone21-22/measurement_files/"
-# CSV filename for error measurement ex: 08Dec2022_14-40-43.csv
-filename = datetime.now().strftime("%d%b%Y_%H-%M-%S")
+os.chdir(path)
+# Assume operating out of the most recently created directory
+all_sdirs = [d for d in os.listdir('.') if os.path.isdir(d)]
+current_dir = max(all_sdirs, key=os.path.getmtime)
+# Update path to be in the run's specific directory
+path = path + current_dir + '/'
+filename = 'Error Measurement'
 outfile = path + filename + ".csv"
 # CSV Headers
 fields = ['bot', 'x_dest', 'x_avg_pos', 'y_dest', 'y_avg_pos', 'pos_err', 'time']
@@ -22,7 +25,7 @@ def measure_error(bots: list, num_samples=5, sample_period=10):
     logger.info(f"Collecting  {num_samples} taken every  {sample_period}  seconds")
     for Cycle in range(0, num_samples):
         for bot in bots:
-            assert isinstance(bot, Master)
+            assert isinstance(bot, master.Master)
             # Add sample to array
             bot.x_avg.append(bot.curr_pos.position.x)
             bot.y_avg.append(bot.curr_pos.position.y)
@@ -43,17 +46,15 @@ def measure_error(bots: list, num_samples=5, sample_period=10):
     # visualize(bots)
 
 
-def visualize(bots):
-    for bot in bots:
-        plt.plot(bot.dest_pos.x, bot.dest_pos.y, 'g8', bot.x_avg, bot.y_avg, 'b*')
-    plt.axis([0, 6, 0, 6])
-    plt.savefig(path + filename + ".png")
-
-
 def breadcrumb_trail(bots):
     logger.info("Creating breadcrumb csvs")
+    # Create folder for breadcrumb trail in specific run directory
+    os.chdir(path)
+    os.mkdir('BreadCrumbs')
+    os.chdir('./BreadCrumbs')
+    # save each bot's breadcrumb trail in a csv
     for bot in bots:
-        with open(path + "lastBC/" + f"{bot.name}" + ".csv", "w") as BCfile:
+        with open(f"{bot.name}" + ".csv", "w") as BCfile:
             csvwriter = csv.writer(BCfile)
             logger.debug(f"Writing csv for {bot.name}")
             csvwriter.writerow(['x', 'y'])
