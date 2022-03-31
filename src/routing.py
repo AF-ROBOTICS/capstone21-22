@@ -79,9 +79,19 @@ def single_greedy(field, field_next, robot):
         if field.cells[x[i]][y[i]].robot:
             dist[i] += 1
 
+        # Check if Robot Stayed On Previous Iterations
+        if i == 0 and not robot.status == 2:
+            dist[i] += robot.stay_count
+
     # Find Ideal Action
     i = dist.index(min(dist))
     action = Action(i)
+
+    # Update Stay Count
+    if i == 0:
+        robot.stay_count += 1
+    else:
+        robot.stay_count = 0
 
     # Map Bot to Next Field
     field_next.cells[x[i]][y[i]].robot = robot

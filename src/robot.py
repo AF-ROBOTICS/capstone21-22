@@ -26,6 +26,7 @@ class Robot:
         self.pos_cell = (None, None)
         self.dest_cell = (None, None)
         self.step_cell = (None, None)
+        self.stay_count = 0
         
         # Ros Publisher
         self.pub = rospy.Publisher(self.name + '/dest_pos', Point, queue_size = 10)
