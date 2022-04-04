@@ -58,7 +58,8 @@ if __name__ == '__main__':
         # stop_bots(bots)
         error_checking.measure_error(bots)
         error_checking.breadcrumb_trail(bots)
-        logger.info("Waterfall Complete")
+        error_checking.plot_result(start_points, x, y)
     else:
         logger.warning("No bots assigned")
+    logger.info("Waterfall Complete")
     rospy.spin()
