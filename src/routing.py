@@ -1,10 +1,21 @@
 #!/usr/bin/env python
 
-# routing.py - Robotic Teaming Artificial Intelligence
-# Author: Cason Couch
-# Description: TThis file contains various working designs for routing codes. 
-#   The routing codes accept information on the current positions of all bots 
-#   and can be interchanged within a master file.
+# +----------------------------------------------------------------------------
+# |
+# | United States Air Force Academy     __  _______ ___    _________
+# | Dept of Electrical &               / / / / ___//   |  / ____/   |
+# | Computer Engineering              / / / /\__ \/ /| | / /_  / /| |
+# | 2354 Fairchild Drive Ste 2F6     / /_/ /___/ / ___ |/ __/ / ___ |
+# | USAF Academy, CO 80840           \____//____/_/  |_/_/   /_/  |_|
+# |
+# | ---------------------------------------------------------------------------
+# |
+# | FILENAME      : routing.py
+# | AUTHOR(S)     : C1C Cason Couch
+# | CREATED       : 5 Novermber 2021
+# | Last Update   : 06 Apr 2022
+"""This file contains various working designs for routing codes. 
+The routing codes accept information on the current positions of all bots and can be interchanged within a master file."""
 
 # Imports
 from util import Action, manhattan_distance

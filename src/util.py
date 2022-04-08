@@ -1,8 +1,20 @@
 #!/usr/bin/env python
 
-# routing.py - Robotic Teaming Artificial Intelligence
-# Author: Cason Couch
-# Description: This file contains the Robot class
+# +----------------------------------------------------------------------------
+# |
+# | United States Air Force Academy     __  _______ ___    _________
+# | Dept of Electrical &               / / / / ___//   |  / ____/   |
+# | Computer Engineering              / / / /\__ \/ /| | / /_  / /| |
+# | 2354 Fairchild Drive Ste 2F6     / /_/ /___/ / ___ |/ __/ / ___ |
+# | USAF Academy, CO 80840           \____//____/_/  |_/_/   /_/  |_|
+# |
+# | ---------------------------------------------------------------------------
+# |
+# | FILENAME      : util.py
+# | AUTHOR(S)     : C1C Cason Couch
+# | CREATED       : 5 Novermber 2021
+# | Last Update   : 06 Apr 2022
+"""This file contains dependencies and general references for the AI portions of this capstone"""
 
 import heapq
 from enum import Enum

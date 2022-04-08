@@ -1,8 +1,22 @@
 #!/usr/bin/env python3
-"""----------------------------------------------------------------------------------
-Ground Robot Teaming Capstone: Ground Controller
-Date: 15 Nov 2021
-----------------------------------------------------------------------------------"""
+
+# +----------------------------------------------------------------------------
+# |
+# | United States Air Force Academy     __  _______ ___    _________
+# | Dept of Electrical &               / / / / ___//   |  / ____/   |
+# | Computer Engineering              / / / /\__ \/ /| | / /_  / /| |
+# | 2354 Fairchild Drive Ste 2F6     / /_/ /___/ / ___ |/ __/ / ___ |
+# | USAF Academy, CO 80840           \____//____/_/  |_/_/   /_/  |_|
+# |
+# | ---------------------------------------------------------------------------
+# |
+# | FILENAME      : master_AI.py
+# | AUTHOR(S)     : C1C Cason Couch
+# | CREATED       : 5 Novermber 2021
+# | Last Update   : 06 Apr 2022
+"""This file serves as the main file for the artificial intelligence implementation.
+It utilizes the robot and field classes from robot.py and field.py. It also uses routes from routing.py.
+General references come from util.py."""
 
 # Import important libraries
 import rospy
