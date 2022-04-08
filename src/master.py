@@ -113,10 +113,10 @@ class Master:
 
     def drop_breadcrumbs(self, event):
         if self.state == WORKING or self.state == CLOSE:
-            logger.debug(f"dropped breadcrumb for {self.name}")
+            # logger.debug(f"dropped breadcrumb for {self.name}")
             self.breadcrumbs.append([self.curr_pos.position.x, self.curr_pos.position.y])
         elif self.state == DONE and self.BC_counter < 2:  # drop 2 crumbs after getting to point
-            logger.debug(f"dropped DONE breadcrumb for {self.name}")
+            # logger.debug(f"dropped DONE breadcrumb for {self.name}")
             self.breadcrumbs.append([self.curr_pos.position.x, self.curr_pos.position.y])
             self.BC_counter += 1
 

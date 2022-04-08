@@ -37,7 +37,7 @@ class Line:
 
 
 # Minimum clearance between line and robot
-BUFFER_DIST = .45  # meters
+BUFFER_DIST = .5  # meters
 
 # Default starting Points
 x_robot = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.4, 2.6, 2.8, 3.2, 3.4, 3.6, 3.8, 6.0, 6.0, 6.0, 6.0, 3.6, 3.4, 3.2,
@@ -169,16 +169,6 @@ def build_path(starts, ends):
         logger.info(f"{len(ends)} remaining destination positions")
 
     return return_x, return_y
-
-
-def plot_result(starts, xpoints, ypoints):
-    for i in range(0, len(xpoints)):
-        plt.plot([starts[i].x, xpoints[i]], [starts[i].y, ypoints[i]])
-    plt.axis([0, 6, 0, 6])
-    plt.show()
-    plt.plot(xpoints, ypoints, 'r*')
-    plt.axis([0, 6, 0, 6])
-    plt.show()
 
 
 def pack_to_points(x_end, y_end, x_start=None, y_start=None):

@@ -1,7 +1,8 @@
 import csv
-from statistics import mean
 import os
 import time
+from statistics import mean
+from matplotlib import pyplot as plt
 import master
 import usafalog
 
@@ -60,3 +61,15 @@ def breadcrumb_trail(bots):
             csvwriter.writerow(['x', 'y'])
             for point in bot.breadcrumbs:
                 csvwriter.writerow(point)
+
+
+def plot_result(starts, xpoints, ypoints):
+    for i in range(0, len(xpoints)):
+        plt.plot([starts[i].x, xpoints[i]], [starts[i].y, ypoints[i]])
+    plt.axis([0, 6, 0, 6])
+    plt.xlabel("East-West Axis of Robot Workspace (m)")
+    plt.ylabel("North-South Axis of Robot Workspace (m)")
+    plt.savefig(path + 'Planned Paths' + ".png")
+    # plt.plot(xpoints, ypoints, 'r*')
+    # plt.axis([0, 6, 0, 6])
+    # plt.show()
