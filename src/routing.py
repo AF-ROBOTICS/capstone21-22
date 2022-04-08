@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
-# robot.py - Robotic Teaming Artificial Intelligence
+# routing.py - Robotic Teaming Artificial Intelligence
 # Author: Cason Couch
-# Description: This file contains the Robot class
+# Description: TThis file contains various working designs for routing codes. 
+#   The routing codes accept information on the current positions of all bots 
+#   and can be interchanged within a master file.
 
 # Imports
 from util import Action, manhattan_distance
@@ -11,7 +13,7 @@ from util import Action, manhattan_distance
 #                Routing Algorithms                 #
 #####################################################
 
-# # Greedy Search Algorithm
+# # Greedy Search Algorithm: Status-Incomplete
 # def greedy(field, robots):
 #     """Greedy Search Algorithm for one robot timestep"""
     
@@ -55,9 +57,9 @@ from util import Action, manhattan_distance
 #     # If Goal not Found Return Empty List
 #     return []
 
-# A*: A-Star Search Algorithm for Routing
+# Single-Step Greedy: Status-Working!
 def single_greedy(field, field_next, robot):
-    """Greedy Search Algorithm for routing robot"""
+    """Evaluates one iteration of a greedy search using previous robot positions"""
     
     # Distances Array
     dist = []
@@ -103,7 +105,7 @@ def single_greedy(field, field_next, robot):
     # Return Next Step
     return (x[i], y[i])
 
-# # A*: A-Star Search Algorithm for Routing
+# # A*: Status-Incomplete
 # def a_star(field, robot):
 #     """A* Search Algorithm for routing robots"""
 
