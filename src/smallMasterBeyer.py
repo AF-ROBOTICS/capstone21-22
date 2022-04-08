@@ -136,7 +136,7 @@ if __name__ == '__main__':
 #            curr_x, curr_y = bot.getCurrPos()
 #            print(curr_x, curr_y)
 #            curr_dist = ((x_dest[i] - bot.curr_pos.position.x) ** 2 + (y_dest[i] - self.curr_pos.position.y) ** 2) ** 0.5
-#            if curr_dist < DEST_DIST :
+#            if curr_dist < CLOSE_DIST :
 #                i += 1
 #                toc = time.perf_counter()
 #                print(bot.name + " is complete")
