@@ -1,4 +1,24 @@
 #!/usr/bin/env python3
+# +----------------------------------------------------------------------------
+# |
+# | United States Air Force Academy     __  _______ ___    _________
+# | Dept of Electrical &               / / / / ___//   |  / ____/   |
+# | Computer Engineering              / / / /\__ \/ /| | / /_  / /| |
+# | 2354 Fairchild Drive Ste 2F6     / /_/ /___/ / ___ |/ __/ / ___ |
+# | USAF Academy, CO 80840           \____//____/_/  |_/_/   /_/  |_|
+# |
+# | ---------------------------------------------------------------------------
+# |
+# | FILENAME      : small_master.py
+# | AUTHOR(S)     : C1C Sean Lewis
+# | CREATED       : 11 Jan 2022
+# | Last Update   : 06 Apr 2022
+"""
+This file can be used to test different algorithms in environments with less than 25 robots. Currently, There are comment lines that have the capability to declare robots and final destinations for four gazebo environments with 2, 4, 8, and 25 robots. To support a different number of robots, one would have to change the number of bots in this file as well as create a new gazebo file. The algorithm in the airplane() function right now is the slope-based algorithm that implements left and right turns. This solution currently does not work well with multiple collisions.
+
+This script can be ran in both simulation and real world using the command:
+'rosrun capstone21-22 small_master.py'
+"""
 
 # Import important libraries
 import rospy
@@ -9,41 +29,39 @@ from hungarian import build_hungarian
 
 from geometry_msgs.msg import Point, Pose
 
-# Must match number of robots entered by user
+#For 2 robots uncomment the lines below:
 #robots = ['usafabot0', 'usafabot1']
-#robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4', 'usafabot5', 'usafabot6', 'usafabot7']
-
-#must match number of robots entered by user
-robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
-          'usafabot5', 'usafabot6', 'usafabot7', 'usafabot8', 'usafabot9',
-          'usafabot10', 'usafabot11', 'usafabot12', 'usafabot13', 'usafabot14',
-          'usafabot15', 'usafabot16', 'usafabot17', 'usafabot18', 'usafabot19',
-          'usafabot20', 'usafabot21', 'usafabot22', 'usafabot23', 'usafabot24']
-
 #Destination Points
-x_dest = [1.0, 1.0, 1.0, 1.30, 1.30, 1.60, 2.0, 2.0, 2.0, 2.3, 2.3, 2.6, 3.0, 3.0, 3.0, 3.3, 3.3, 3.3, 3.6, 3.6, 4.0, 4.0, 4.0, 4.6, 4.6]
-y_dest = [3.0, 2.5, 2.0, 2.75, 2.25, 2.5, 3.0, 2.5, 2.0, 3.0, 2.5, 3.0, 3.0, 2.5, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0]
+#x_dest = [2, 2]
+#y_dest = [1, 3]
+
+#For 4 robots uncomment the lines below:
+#robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot4']
+#Destination Points
+#x_dest = [3, 3, 1, 1]
+#y_dest = [3, 1, 1, 3]
+
+#For 8 robots uncomment the lines below:
+#robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4', 'usafabot5', 'usafabot6', 'usafabot7']
+#Destination Points
+#x_dest = [3, 1, 3, 1, 3, 1, 2, 2]
+#y_dest = [3, 1, 1, 3, 2, 2, 1, 3]
+
+#For 25 robots uncomment the lines below:
+#robots = ['usafabot0', 'usafabot1', 'usafabot2', 'usafabot3', 'usafabot4',
+#          'usafabot5', 'usafabot6', 'usafabot7', 'usafabot8', 'usafabot9',
+#          'usafabot10', 'usafabot11', 'usafabot12', 'usafabot13', 'usafabot14',
+#          'usafabot15', 'usafabot16', 'usafabot17', 'usafabot18', 'usafabot19',
+#          'usafabot20', 'usafabot21', 'usafabot22', 'usafabot23', 'usafabot24']
+#Destination Points
+#x_dest = [1.0, 1.0, 1.0, 1.30, 1.30, 1.60, 2.0, 2.0, 2.0, 2.3, 2.3, 2.6, 3.0, 3.0, 3.0, 3.3, 3.3, 3.3, 3.6, 3.6, 4.0, 4.0, 4.0, 4.6, 4.6]
+#y_dest = [3.0, 2.5, 2.0, 2.75, 2.25, 2.5, 3.0, 2.5, 2.0, 3.0, 2.5, 3.0, 3.0, 2.5, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0, 3.0, 2.5, 2.0, 3.0, 2.0]
 
 # Resize DFEC letters
 for i in range(0,len(x_dest)):
 	x_dest[i]=2*x_dest[i]-1.1	# this size works well in grid simulation
 	y_dest[i]=2*y_dest[i]-2	# this size works well in grid simulation
 
-# Destination Points Case 1
-#x_dest = [3, 1, 3, 1, 3, 1, 2, 2]
-#y_dest = [3, 1, 1, 3, 2, 2, 1, 3]
-
-# Destination Points Case 2
-#x_dest = [2, 2]
-#y_dest = [3, 3]
-
-# Destination Points Case 3
-#x_dest = [3, 1]
-#y_dest = [2, 2]
-
-# Destination Points Case 4
-#x_dest = [2, 2]
-#y_dest = [1, 3]
 
 # Closest distance tolerance for avoidance
 AVOID_TOL = 0.5 # increased avoid tolerance for test demo with smaller DFEC
@@ -132,32 +150,37 @@ class Master:
     	                closest_x = bots[j].curr_pos.position.x
     	                closest_y = bots[j].curr_pos.position.y
     	    if(min_dist < AVOID_TOL):
-    	    #    if ((x_temp[i]-bots[i].curr_pos.position.x)==0):
-    	    #        slope = (y_temp[i]-bots[i].curr_pos.position.y)/(((x_temp[i])-bots[i].curr_pos.position.x)+0.01)
-    	    #    else:
-    	    #        slope = (y_temp[i]-bots[i].curr_pos.position.y)/(x_temp[i]-bots[i].curr_pos.position.x)
+    	    	# need a new way of turning robots becuase the below way does not work on real world.
+    	    	
+    	    # Slope Based Collision Avoidance
+    	        if ((x_temp[i]-bots[i].curr_pos.position.x)==0):
+    	            slope = (y_temp[i]-bots[i].curr_pos.position.y)/(((x_temp[i])-bots[i].curr_pos.position.x)+0.01)
+    	        else:
+    	            slope = (y_temp[i]-bots[i].curr_pos.position.y)/(x_temp[i]-bots[i].curr_pos.position.x)
     	        
-    	    #    y_int = y_temp[i]-(slope*x_temp[i])
+    	        y_int = y_temp[i]-(slope*x_temp[i])
     	        
-    	    #    if ((x_temp[i]-bots[i].curr_pos.position.x)==0):
-    	    #        slope = (y_temp[i]-bots[i].curr_pos.position.y)/((x_temp[i]+1)-bots[i].curr_pos.position.x)
-    	    #    else:
-    	    #        slope = (y_temp[i]-bots[i].curr_pos.position.y)/(x_temp[i]-bots[i].curr_pos.position.x)
-    	    #    
-    	    #    y_int = y_temp[i]-(slope*x_temp[i])
+    	        if ((x_temp[i]-bots[i].curr_pos.position.x)==0):
+    	            slope = (y_temp[i]-bots[i].curr_pos.position.y)/((x_temp[i]+1)-bots[i].curr_pos.position.x)
+    	        else:
+    	            slope = (y_temp[i]-bots[i].curr_pos.position.y)/(x_temp[i]-bots[i].curr_pos.position.x)
     	        
-    	    #    if((x_temp[i] >= bots[i].curr_pos.position.x and y_temp[i] >= bots[i].curr_pos.position.y) or (x_temp[i] >= bots[i].curr_pos.position.x and y_temp[i] <= bots[i].curr_pos.position.y)): # CASE 1: dest is above and right
-    	    #        if(closest_y > (closest_x*slope + y_int)): # bot[j] is above line between dest and bot[i], turn RIGHT
-    	    #            bot.turnRight(bots, closest_x, closest_y, i)
-    	    #        else: # bot[j] is below line between dest and bot[i], turn LEFT
-    	    #            bot.turnLeft(bots, closest_x, closest_y, i)
-    	    #    if((x_temp[i] <= bots[i].curr_pos.position.x and y_temp[i] >= bots[i].curr_pos.position.y) or (x_temp[i] <= bots[i].curr_pos.position.x and y_temp[i] <= bots[i].curr_pos.position.y)): # CASE 2: dest is above and left
-    	    #        if(closest_y < (closest_x*slope + y_int)): # bot[j] is below line between dest and bot[i], turn RIGHT
-    	    #            bot.turnRight(bots, closest_x, closest_y, i)
-    	    #        else: # bot[j] is above line between dest and bot[i], turn LEFT
-    	    #            bot.turnLeft(bots, closest_x, closest_y, i)
-		
-    	        bot.turnRight(bots, closest_x, closest_y, i)
+    	        y_int = y_temp[i]-(slope*x_temp[i])
+    	        
+    	        if((x_temp[i] >= bots[i].curr_pos.position.x and y_temp[i] >= bots[i].curr_pos.position.y) or (x_temp[i] >= bots[i].curr_pos.position.x and y_temp[i] <= bots[i].curr_pos.position.y)): # CASE 1: dest is above and right
+    	            if(closest_y > (closest_x*slope + y_int)): # bot[j] is above line between dest and bot[i], turn RIGHT
+    	                bot.turnRight(bots, closest_x, closest_y, i)
+    	            else: # bot[j] is below line between dest and bot[i], turn LEFT
+    	                bot.turnLeft(bots, closest_x, closest_y, i)
+    	        if((x_temp[i] <= bots[i].curr_pos.position.x and y_temp[i] >= bots[i].curr_pos.position.y) or (x_temp[i] <= bots[i].curr_pos.position.x and y_temp[i] <= bots[i].curr_pos.position.y)): # CASE 2: dest is above and left
+    	            if(closest_y < (closest_x*slope + y_int)): # bot[j] is below line between dest and bot[i], turn RIGHT
+    	                bot.turnRight(bots, closest_x, closest_y, i)
+    	            else: # bot[j] is above line between dest and bot[i], turn LEFT
+    	                bot.turnLeft(bots, closest_x, closest_y, i)
+    	    
+    	    # Right Turn Only Collision Avoidance
+    	    #    bot.turnRight(bots, closest_x, closest_y, i)
+    	    
     	    else:
     	        x_temp[i] = x_dest[i]
     	        y_temp[i] = y_dest[i]
