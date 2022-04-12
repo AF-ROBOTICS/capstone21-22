@@ -35,6 +35,7 @@ This script requires:
     * error_checking
     * usafalog
     * master
+    * copy
 
 
 This file contains 3 functions:
@@ -42,7 +43,7 @@ This file contains 3 functions:
     * waterfall : Starts each robot when the one before it has reached its destination
     * ctrl_c_handler : Cleanly exits on keyboard interrupt
 """
-
+import copy
 import signal
 
 import rospy
@@ -55,7 +56,7 @@ import usafalog
 
 logger = usafalog.CreateLogger(__name__)
 
-NUM_BOTS = 25
+NUM_BOTS = 24  # Temporary
 BASENAME = 'usafabot'
 
 
@@ -103,6 +104,7 @@ def main():
     # Use DynaLet to assign robot destinations
     x_start, y_start = master.start_positions(bots)
     start_points, end_points = PathBuild.pack_to_points(x_dyna, y_dyna, x_start, y_start)
+    start_copy = copy.copy(start_points)
     x, y = PathBuild.build_path(start_points, end_points)
 
     if len(x):  # only move robots if assignment was successful
@@ -112,7 +114,7 @@ def main():
         # Collect/store data
         error_checking.measure_error(bots)
         error_checking.breadcrumb_trail(bots)
-        error_checking.plot_result(start_points, x, y)
+        error_checking.plot_result(start_copy, x, y)
 
     else:
         logger.warning("No bots assigned")

@@ -27,25 +27,28 @@ def paths(path):
     all_filenames = ['usafabot' + str(i) + '.csv' for i in range(25)]
     for filename in all_filenames:
         current_points = []
-        with open(filename) as current_file:
-            csvreader = csv.reader(current_file)
-            # Get rid of headers and blanks
-            csvreader.__next__()
-            csvreader.__next__()
-            csvreader.__next__()
-            # Each row contains an (x,y) breadcrumb
-            for row in csvreader:
-                # print(row)
-                current_points.append(row)
-            x = []
-            y = []
-            # Separate into x and y lists to plot
-            for point in current_points:
-                x.append(float(point[0]))
-                y.append(float(point[1]))
-            # Plot each trail using a different line/marker combination
-            plt.plot(x, y, linestyle='--', marker=markers[i % len(markers)], color=colors[i % len(colors)])
-            i += 1
+        try:
+            with open(filename) as current_file:
+                csvreader = csv.reader(current_file)
+                # Get rid of headers and blanks
+                csvreader.__next__()
+                csvreader.__next__()
+                csvreader.__next__()
+                # Each row contains an (x,y) breadcrumb
+                for row in csvreader:
+                    # print(row)
+                    current_points.append(row)
+                x = []
+                y = []
+                # Separate into x and y lists to plot
+                for point in current_points:
+                    x.append(float(point[0]))
+                    y.append(float(point[1]))
+                # Plot each trail using a different line/marker combination
+                plt.plot(x, y, linestyle='--', marker=markers[i % len(markers)], color=colors[i % len(colors)])
+                i += 1
+        except OSError:
+            print(f"Unable to open {filename}")
     plt.axis([0, 6, 0, 6])
     plt.xlabel("East-West Axis of Robot Workspace (m)")
     plt.ylabel("North-South Axis of Robot Workspace (m)")
