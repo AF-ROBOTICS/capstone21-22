@@ -56,7 +56,7 @@ import usafalog
 
 logger = usafalog.CreateLogger(__name__)
 
-NUM_BOTS = 24  # Temporary
+NUM_BOTS = 23  # Temporary
 BASENAME = 'usafabot'
 
 

@@ -1,11 +1,43 @@
+#!/usr/bin/env python3
+# +----------------------------------------------------------------------------
+# |
+# | United States Air Force Academy     __  _______ ___    _________
+# | Dept of Electrical &               / / / / ___//   |  / ____/   |
+# | Computer Engineering              / / / /\__ \/ /| | / /_  / /| |
+# | 2354 Fairchild Drive Ste 2F6     / /_/ /___/ / ___ |/ __/ / ___ |
+# | USAF Academy, CO 80840           \____//____/_/  |_/_/   /_/  |_|
+# |
+# | ---------------------------------------------------------------------------
+# |
+# | FILENAME      : DynaLet.py
+# | AUTHOR(S)     : C1C Anthony Tolbert, C1C Matthew DeMaso
+# | CREATED       : 09 Feb 2022
+# | Last Update   : 14 Apr 2022
+"""
+This module allows the user to enter a custom phrase and get back a list of destinations for the robots to spell out
+ that phrase using a dictionary of points for each individual letter
+
+This script requires:
+    * usafalog
+    * statistics
+    * PathBuild (debugging only)
+
+This file contains 1 standalone functions and 1 main function for debugging:
+    Function
+    ---------
+    custom_word : Word/phrase to be spelled with usafabots. Not used in most cases. When used, user input is bypassed
+"""
 from statistics import mean
 import PathBuild
 import usafalog
 logger = usafalog.CreateLogger(__name__)
 MAX_BOTS = 25
+
+# Stores the positions of robots to make each letter in reference to the origin with a width of .6m and a height of 1m
+# x and y coordinates are stored as parallel lists
 letter_library = {
-    'A': ([0.0, 0.6, 0.15, 0.45, 0.3, 0.3],
-          [0.0, 0.0, 0.50, 0.50, 1.0, 0.5]),
+    'A': ([0.0, 0.6, 0.15, 0.45, 0.3],
+          [0.0, 0.0, 0.50, 0.50, 1.0]),
     # TODO: B looks kinda weird
     'B': ([0.0, 0.0, 0.0, 0.60, 0.60, 0.40, 0.4, 0.4],
           [0.0, 0.5, 1.0, 0.25, 0.75, 0.50, 0.0, 1.0]),
@@ -84,39 +116,54 @@ letter_library = {
 }
 
 
-def split(string):
-    string = string.upper()
-    return [char for char in string]
-
-
 def custom_word(usr_word=None):
+    """
+    Use a given word or solicit one from the user and return destination points to spell the word with usafabots
+
+    Parameters
+    ----------
+    usr_word : str, optional
+        Word/phrase to be spelled with usafabots. Not used in most cases. When used, user input is bypassed
+
+    Returns
+    --------
+    x_destinations : list of floats
+        1 of 2 parallel lists containing the x-coordinates of destination points
+    y_destinations : list of floats
+        1 of 2 parallel lists containing the y-coordinates of destination points
+    usr_word : str
+        word that is being spelled out by these points. (used for caching and logging especially when not passed as arg)
+    """
     x_destinations = []
     y_destinations = []
-    word_sum = 0
+    word_sum = 0  # Count of the number of robots needed to spell the particular word
     # Get user input. Only letters in dictionary allowed and cannot use more bots than there are
     while not 0 < word_sum <= MAX_BOTS:
-        word_sum = 0
+        word_sum = 0  # Reset count at each iteration of the loop
         if usr_word is None:
             usr_word = input("Enter word for robots to spell: ")
             logger.debug(f"User entered \'{usr_word}\'")
-        word_parsed = split(usr_word)
+        word_parsed = [char for char in usr_word.upper()]
         for letter in word_parsed:
             word_sum = word_sum + len(letter_library.get(letter, [[], []])[0])
         logger.debug(f"{usr_word} word takes {word_sum} bots to make")
 
     # Separate each letter by 1 meter (box)
     for position, letter in enumerate(word_parsed):
+        # Get the coordinates for each letter in phrase
         x_cords = letter_library.get(letter, [[], []])[0]
         y_cords = letter_library.get(letter, [[], []])[1]
+        # Add spacing in the x direction in order the letters appear in the word
         for x_cord in x_cords:
             x_destinations.append(x_cord + position)
+        # Add spacing in the y direction to center the robots along the vertical axis of the workspace
         for y_cord in y_cords:
             y_destinations.append(y_cord + 2)
 
-    # Shift phrase to center of map
-    center_offset = 2.5 - mean(x_destinations)
-    for each in range(len(x_destinations)):
-        x_destinations[each] = x_destinations[each] + center_offset
+    # Shift phrase to center of map (5m wide)
+    center_offset = 5/2 - mean(x_destinations)
+    for x_point in x_destinations:
+        x_point += center_offset
 
     return x_destinations, y_destinations, usr_word
 
@@ -129,6 +176,9 @@ if __name__ == '__main__':
         x_dyna, y_dyna, word = custom_word()
         if PathBuild.check_cache(word):
             x_dyna, y_dyna = PathBuild.check_cache(word)
-        start_points, end_points = PathBuild.pack_to_points(x_dyna, y_dyna, x_circ, y_circ)
+        import matplotlib.pyplot as plt
+        plt.plot(x_dyna, y_dyna, 'g8')
+        plt.show()
+        start_points, end_points = PathBuild.pack_to_points(x_dyna, y_dyna)
         x, y = PathBuild.build_path(start_points, end_points)
         # PathBuild.add_to_cache(word, x, y)
