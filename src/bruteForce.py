@@ -1,10 +1,41 @@
-# test basis for filling out JSON file with dest points for all combinations of letters
+#!/usr/bin/env python3
+# +----------------------------------------------------------------------------
+# |
+# | United States Air Force Academy     __  _______ ___    _________
+# | Dept of Electrical &               / / / / ___//   |  / ____/   |
+# | Computer Engineering              / / / /\__ \/ /| | / /_  / /| |
+# | 2354 Fairchild Drive Ste 2F6     / /_/ /___/ / ___ |/ __/ / ___ |
+# | USAF Academy, CO 80840           \____//____/_/  |_/_/   /_/  |_|
+# |
+# | ---------------------------------------------------------------------------
+# |
+# | FILENAME      : bruteForce.py
+# | AUTHOR(S)     : C1C Anthony Tolbert
+# | CREATED       : 29 Mar 2022
+# | Last Update   : 18 Apr 2022
+"""
+This is a test module that runs through every possible phrase that could be entered by the user and attempts to build a
+ waterfall path with that input
+
+This module was orginally designed to run over Spring Break '22 (approx. 10 days) as the only process running. Upon
+return, the program had made it through 'AAF'. Needless to say this is a time intensive process.
+
+This script requires:
+    * DynaLet
+    * PathBuild
+
+This file contains 1 standalone function and a main function:
+    Functions
+    ---------
+    * make_list : Create list of strings from "A" to "ZZZZZ"
+"""
 import PathBuild
 import DynaLet
 
 
 # iterate over uppercase ascii range [65,190] for 5 letters
 def make_list():
+    """Create list of strings from "A" to "ZZZZZ" """
     words = []
     j = k = l = m = -1
     for i in range(12356630):  # not the true number of iterations
@@ -27,10 +58,6 @@ def make_list():
         if m >= 0:
             word += chr(m % 26 + 65)
         word.reverse()
-        words.append(''.join(word))
-        # if ''.join(word) == 'ZZZZZ':
-        #     print(i)
-        #     return
     return words
 
 
