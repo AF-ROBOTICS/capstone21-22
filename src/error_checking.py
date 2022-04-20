@@ -140,8 +140,10 @@ def plot_result(starts, xpoints, ypoints):
     """
     for i in range(0, len(xpoints)):
         plt.plot([starts[i].x, xpoints[i]], [starts[i].y, ypoints[i]])
+        plt.plot(xpoints, ypoints, 'bo')
     plt.axis([0, 6, 0, 6])
     plt.xlabel("East-West Axis of Robot Workspace (m)")
     plt.ylabel("North-South Axis of Robot Workspace (m)")
+    plt.title(f"Waterfall run on {current_dir}")
     plt.savefig(path + 'Planned Paths' + ".png")
     # plt.show()

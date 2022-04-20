@@ -146,6 +146,9 @@ def custom_word(usr_word=None):
         word_parsed = [char for char in usr_word.upper()]
         for letter in word_parsed:
             word_sum = word_sum + len(letter_library.get(letter, [[], []])[0])
+            if word_sum > MAX_BOTS:
+                logger.warning(f"'{usr_word}' take too many bots to spell ({word_sum})")
+                usr_word = None
         logger.debug(f"{usr_word} word takes {word_sum} bots to make")
 
     # Separate each letter by 1 meter (box)
@@ -162,8 +165,8 @@ def custom_word(usr_word=None):
 
     # Shift phrase to center of map (5m wide)
     center_offset = 5/2 - mean(x_destinations)
-    for x_point in x_destinations:
-        x_point += center_offset
+    for i in range(len(x_destinations)):
+        x_destinations[i] += center_offset
 
     return x_destinations, y_destinations, usr_word
 
