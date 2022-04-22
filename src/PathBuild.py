@@ -232,9 +232,12 @@ def animate(line: Line, plot_interval: float):
         Minimum time to wait before exiting function (min time to wait until shows the next plot)
     """
     plt.close('all')
+    fig, ax = plt.subplots()  # Needed for the circles
     # Plot all end points
     for point in end_points:
-        plt.plot(point.x, point.y, 'r^')
+        cir = plt.Circle((point.x, point.y), BUFFER_DIST, color='r', fill=False)
+        ax.plot(point.x, point.y, 'k^')
+        ax.add_patch(cir)
     plt.plot([line.start.x, line.end.x], [line.start.y, line.end.y])
     plt.plot(line.end.x, line.end.y, "g*")
     plt.axis([0, 6, 0, 6])
