@@ -144,6 +144,6 @@ def plot_result(starts, xpoints, ypoints):
     plt.axis([0, 6, 0, 6])
     plt.xlabel("East-West Axis of Robot Workspace (m)")
     plt.ylabel("North-South Axis of Robot Workspace (m)")
-    plt.title(f"Waterfall run on {current_dir}")
+    plt.title(f"Planned paths")
     plt.savefig(path + 'Planned Paths' + ".png")
     # plt.show()
