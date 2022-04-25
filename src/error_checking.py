@@ -59,7 +59,7 @@ outfile = path + filename + ".csv"
 fields = ['bot', 'x_dest', 'x_avg_pos', 'y_dest', 'y_avg_pos', 'pos_err', 'time']
 
 
-def measure_error(bots: list, num_samples=5, sample_period=10):
+def measure_error(bots: list, num_samples=2, sample_period=10):
     """
     Record data collection fields in Master class to csv file
 

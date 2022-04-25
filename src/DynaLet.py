@@ -146,10 +146,14 @@ def custom_word(usr_word=None):
         word_parsed = [char for char in usr_word.upper()]
         for letter in word_parsed:
             word_sum = word_sum + len(letter_library.get(letter, [[], []])[0])
+            logger.debug(f"{usr_word} word takes {word_sum} bots to make")
             if word_sum > MAX_BOTS:
                 logger.warning(f"'{usr_word}' take too many bots to spell ({word_sum})")
-                usr_word = None
-        logger.debug(f"{usr_word} word takes {word_sum} bots to make")
+                if usr_word == "DFEC":  # Handle special case (DFEC is in cache)
+                    word_sum = 25
+                    break
+                else:
+                    usr_word = None
 
     # Separate each letter by 1 meter (box)
     for position, letter in enumerate(word_parsed):
