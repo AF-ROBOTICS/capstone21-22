@@ -145,5 +145,6 @@ def plot_result(starts, xpoints, ypoints):
     plt.xlabel("East-West Axis of Robot Workspace (m)")
     plt.ylabel("North-South Axis of Robot Workspace (m)")
     plt.title(f"Planned paths")
+    plt.grid()
     plt.savefig(path + 'Planned Paths' + ".png")
     # plt.show()

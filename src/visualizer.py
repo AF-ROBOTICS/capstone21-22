@@ -70,6 +70,7 @@ def points(x_pos, y_pos, x_dest, y_dest, text, path):
     plt.xlabel("East-West Axis of Robot Workspace (m)")
     plt.ylabel("North-South Axis of Robot Workspace (m)")
     plt.title(f"Point Comparison")
+    plt.grid()
     plt.text(.5, .5, text)
     plt.legend(["Goal Positions", "Actual Positions"])
     # plt.show()
@@ -124,6 +125,7 @@ def paths(path):
     plt.xlabel("East-West Axis of Robot Workspace (m)")
     plt.ylabel("North-South Axis of Robot Workspace (m)")
     plt.title(f"Breadcumb Trails")
+    plt.grid()
     # plt.show()
     plt.savefig(path + '/Breadcrumb Trail' + ".png")
 

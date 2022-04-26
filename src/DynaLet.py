@@ -32,7 +32,7 @@ import PathBuild
 import usafalog
 logger = usafalog.CreateLogger(__name__)
 MAX_BOTS = 25
-SCALE = 1
+SCALE = 1  # Parameter that can be adjusted to expand the size of letters (should be between 1 and ~1.75)
 # Stores the positions of robots to make each letter in reference to the origin with a width of .6m and a height of 1m
 # x and y coordinates are stored as parallel lists
 letter_library = {
