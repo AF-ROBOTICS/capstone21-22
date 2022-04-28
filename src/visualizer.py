@@ -163,7 +163,10 @@ def read_error_file(csv_name):
                     y_dest.append(float(row[3]))
                     y_pos.append(float(row[4]))
                     error.append(float(row[5]))
-                    time.append(float(row[6]))
+                    if float(row[6]) < 144000:
+                        time.append(float(row[6]))
+                    else:
+                        print(f"WARNING: {row[0]} time rejected for being too high ({row[6]})")
             text = f"Mean error (cm): {round(mean(error) * 100, 2)}\nMean time (s): {round(mean(time), 2)}\n" \
                    f"Median time (s): {round(median(time), 2)}"
             print(text)
