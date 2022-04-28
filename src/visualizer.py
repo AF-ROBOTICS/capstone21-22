@@ -178,11 +178,14 @@ def main():
     root.withdraw()
     # Get path from user, assuming setup by waterfall run and cwd is capstone21-22/src
     path = filedialog.askdirectory(initialdir='../measurement_files')
-    os.chdir(path)
-    x_dest, y_dest, x_pos, y_pos, error, time, text = read_error_file(path + '/Error Measurement.csv')
-    points(x_pos, y_pos, x_dest, y_dest, text, path)
-    plt.close('all')  # In case plots are shown and not saved
-    paths(path)
+    try:
+        os.chdir(path)
+        x_dest, y_dest, x_pos, y_pos, error, time, text = read_error_file(path + '/Error Measurement.csv')
+        points(x_pos, y_pos, x_dest, y_dest, text, path)
+        plt.close('all')  # In case plots are shown and not saved
+        paths(path)
+    except TypeError as err:
+        print("Dialog closed without selecting a folder. No action taken!")
 
 
 if __name__ == "__main__":
