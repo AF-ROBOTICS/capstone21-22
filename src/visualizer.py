@@ -119,15 +119,15 @@ def paths(path):
                     i += 1
             except OSError:
                 print(f"Unable to open {filename}")
+        plt.axis([0, 6, 0, 6])
+        plt.xlabel("East-West Axis of Robot Workspace (m)")
+        plt.ylabel("North-South Axis of Robot Workspace (m)")
+        plt.title(f"Breadcumb Trails")
+        plt.grid()
+        # plt.show()
+        plt.savefig(path + '/Breadcrumb Trail' + ".png")
     except OSError:
         print(f"No folder '/BreadCrumbs' in {path}")
-    plt.axis([0, 6, 0, 6])
-    plt.xlabel("East-West Axis of Robot Workspace (m)")
-    plt.ylabel("North-South Axis of Robot Workspace (m)")
-    plt.title(f"Breadcumb Trails")
-    plt.grid()
-    # plt.show()
-    plt.savefig(path + '/Breadcrumb Trail' + ".png")
 
 
 def read_error_file(csv_name):
@@ -184,8 +184,11 @@ def main():
     try:
         os.chdir(path)
         x_dest, y_dest, x_pos, y_pos, error, time, text = read_error_file(path + '/Error Measurement.csv')
-        points(x_pos, y_pos, x_dest, y_dest, text, path)
-        plt.close('all')  # In case plots are shown and not saved
+        if x_dest != []:
+            points(x_pos, y_pos, x_dest, y_dest, text, path)
+            plt.close('all')  # In case plots are shown and not saved
+        else:
+            print(f"WARNING: No data read from {path + '/Error Measurement.csv'}")
         paths(path)
     except TypeError as err:
         print("Dialog closed without selecting a folder. No action taken!")
