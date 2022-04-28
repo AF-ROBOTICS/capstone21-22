@@ -32,7 +32,7 @@ import PathBuild
 import usafalog
 logger = usafalog.CreateLogger(__name__)
 MAX_BOTS = 25
-
+SCALE = 1  # Parameter that can be adjusted to expand the size of letters (should be between 1 and ~1.75)
 # Stores the positions of robots to make each letter in reference to the origin with a width of .6m and a height of 1m
 # x and y coordinates are stored as parallel lists
 letter_library = {
@@ -146,10 +146,14 @@ def custom_word(usr_word=None):
         word_parsed = [char for char in usr_word.upper()]
         for letter in word_parsed:
             word_sum = word_sum + len(letter_library.get(letter, [[], []])[0])
+            logger.debug(f"{usr_word} word takes {word_sum} bots to make")
             if word_sum > MAX_BOTS:
                 logger.warning(f"'{usr_word}' take too many bots to spell ({word_sum})")
-                usr_word = None
-        logger.debug(f"{usr_word} word takes {word_sum} bots to make")
+                if usr_word == "DFEC":  # Handle special case (DFEC is in cache)
+                    word_sum = 25
+                    break
+                else:
+                    usr_word = None
 
     # Separate each letter by 1 meter (box)
     for position, letter in enumerate(word_parsed):
@@ -158,15 +162,17 @@ def custom_word(usr_word=None):
         y_cords = letter_library.get(letter, [[], []])[1]
         # Add spacing in the x direction in order the letters appear in the word
         for x_cord in x_cords:
-            x_destinations.append(x_cord + position)
+            x_destinations.append((x_cord + position) * SCALE)
         # Add spacing in the y direction to center the robots along the vertical axis of the workspace
         for y_cord in y_cords:
-            y_destinations.append(y_cord + 2)
+            y_destinations.append(y_cord * SCALE)
 
-    # Shift phrase to center of map (5m wide)
-    center_offset = 5/2 - mean(x_destinations)
+    # Shift phrase to center of map (5.5m x 5m)
+    x_center_offset = 5.5 / 2 - mean(x_destinations)
+    y_center_offset = 5.0 / 2 - mean(y_destinations)
     for i in range(len(x_destinations)):
-        x_destinations[i] += center_offset
+        x_destinations[i] += x_center_offset
+        y_destinations[i] += y_center_offset
 
     return x_destinations, y_destinations, usr_word
 
@@ -177,8 +183,8 @@ if __name__ == '__main__':
     y_circ = [2.2, 6, 3.4, 0, 2.4, 6, 3.2, 0, 2.6, 6, 2.8, 0, 2.8, 6, 2.6, 0, 3.2, 6, 0, 3.4, 6, 0, 3.6, 6, 3.8]
     while True:
         x_dyna, y_dyna, word = custom_word()
-        if PathBuild.check_cache(word):
-            x_dyna, y_dyna = PathBuild.check_cache(word)
+        # if PathBuild.check_cache(word):
+        #     x_dyna, y_dyna = PathBuild.check_cache(word)
         import matplotlib.pyplot as plt
         plt.plot(x_dyna, y_dyna, 'g8')
         plt.show()

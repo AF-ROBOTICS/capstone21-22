@@ -66,6 +66,7 @@ logger = usafalog.CreateLogger(__name__)
 cache_filename = "/home/" + os.getlogin() + "/robotics_ws/src/capstone21-22/measurement_files/PathCache.json"
 
 
+
 class Point:
     """
     A simple class for representing a 2-D point
@@ -75,12 +76,13 @@ class Point:
     x : x position
     y : y position
     """
+
     def __init__(self, x=0, y=0):
         self.x = x
         self.y = y
 
     def __str__(self):
-        return f"x: {self.x} y: {self.y}"
+        return f"x: {round(self.x, 4)} y: {round(self.y, 4)}"
 
 
 # Given two points, defines a line
@@ -107,6 +109,7 @@ class Line:
     end : Point
         end of line segment
     """
+
     def __init__(self, start=Point(), end=Point()):
         """
         Parameters
@@ -217,12 +220,15 @@ def line_close_to_point(line: Line, point: Point, endpoints=False):
         return False
 
 
-def animate(line: Line, plot_interval: float):
+def animate(line: Line, plot_interval: float = 0):
     """
-    Creates a pyplot to show proposed line and all established endpoints
+    Creates a pyplot to show proposed line and all established endpoints. Severly degrades speed performance
 
     Matplotlib disabled to protect against possible TKINTER errors, but can be re-enabled to use this function, mainly
      for debugging
+
+     If plot_interval < 0: the plots will be saved in the home folder directory named "Animation". Otherwise, the plots
+      will be show on the screen
 
     Parameters
     ----------
@@ -243,10 +249,17 @@ def animate(line: Line, plot_interval: float):
     plt.axis([0, 6, 0, 6])
     plt.xlabel("East-West Axis of Robot Workspace (m)")
     plt.ylabel("North-South Axis of Robot Workspace (m)")
-    plt.show()
-    tic = time.perf_counter()
-    while time.perf_counter() - tic < plot_interval:
-        pass
+    if plot_interval > 0:
+        plt.show()
+        tic = time.perf_counter()
+        while time.perf_counter() - tic < plot_interval:
+            pass
+    else:
+        try:
+            global NUM_TRIES
+            fig.savefig("/home/dfec/Animation/" + str(NUM_TRIES) + ".png")
+        except OSError:
+            logger.warning("Error creating animation images in /home/dfec/Animation/")
 
 
 def is_valid_line(line: Line):
@@ -286,7 +299,7 @@ def solve(origins: list, destinations: list):
         start = origins.pop(0)  # get current start position
         for i, dest in enumerate(destinations):  # loop through all of the remaining positions
             test_line = Line(start, dest)  # draw a line between the start and end
-            # animate(test_line, .2)
+            # animate(test_line, 0)
             if is_valid_line(test_line):  # if the line isn't too close to other established end points
                 end_points.append(dest)  # add the end point to the list of established end points
                 destinations.pop(i)  # remove the end point from the list of possible end points

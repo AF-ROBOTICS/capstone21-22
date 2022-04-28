@@ -70,6 +70,7 @@ def points(x_pos, y_pos, x_dest, y_dest, text, path):
     plt.xlabel("East-West Axis of Robot Workspace (m)")
     plt.ylabel("North-South Axis of Robot Workspace (m)")
     plt.title(f"Point Comparison")
+    plt.grid()
     plt.text(.5, .5, text)
     plt.legend(["Goal Positions", "Actual Positions"])
     # plt.show()
@@ -118,14 +119,15 @@ def paths(path):
                     i += 1
             except OSError:
                 print(f"Unable to open {filename}")
+        plt.axis([0, 6, 0, 6])
+        plt.xlabel("East-West Axis of Robot Workspace (m)")
+        plt.ylabel("North-South Axis of Robot Workspace (m)")
+        plt.title(f"Breadcumb Trails")
+        plt.grid()
+        # plt.show()
+        plt.savefig(path + '/Breadcrumb Trail' + ".png")
     except OSError:
         print(f"No folder '/BreadCrumbs' in {path}")
-    plt.axis([0, 6, 0, 6])
-    plt.xlabel("East-West Axis of Robot Workspace (m)")
-    plt.ylabel("North-South Axis of Robot Workspace (m)")
-    plt.title(f"Breadcumb Trails")
-    # plt.show()
-    plt.savefig(path + '/Breadcrumb Trail' + ".png")
 
 
 def read_error_file(csv_name):
@@ -161,7 +163,10 @@ def read_error_file(csv_name):
                     y_dest.append(float(row[3]))
                     y_pos.append(float(row[4]))
                     error.append(float(row[5]))
-                    time.append(float(row[6]))
+                    if float(row[6]) < 144000:
+                        time.append(float(row[6]))
+                    else:
+                        print(f"WARNING: {row[0]} time rejected for being too high ({row[6]})")
             text = f"Mean error (cm): {round(mean(error) * 100, 2)}\nMean time (s): {round(mean(time), 2)}\n" \
                    f"Median time (s): {round(median(time), 2)}"
             print(text)
@@ -176,11 +181,17 @@ def main():
     root.withdraw()
     # Get path from user, assuming setup by waterfall run and cwd is capstone21-22/src
     path = filedialog.askdirectory(initialdir='../measurement_files')
-    os.chdir(path)
-    x_dest, y_dest, x_pos, y_pos, error, time, text = read_error_file(path + '/Error Measurement.csv')
-    points(x_pos, y_pos, x_dest, y_dest, text, path)
-    plt.close('all')  # In case plots are shown and not saved
-    paths(path)
+    try:
+        os.chdir(path)
+        x_dest, y_dest, x_pos, y_pos, error, time, text = read_error_file(path + '/Error Measurement.csv')
+        if x_dest != []:
+            points(x_pos, y_pos, x_dest, y_dest, text, path)
+            plt.close('all')  # In case plots are shown and not saved
+        else:
+            print(f"WARNING: No data read from {path + '/Error Measurement.csv'}")
+        paths(path)
+    except TypeError as err:
+        print("Dialog closed without selecting a folder. No action taken!")
 
 
 if __name__ == "__main__":

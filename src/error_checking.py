@@ -59,7 +59,7 @@ outfile = path + filename + ".csv"
 fields = ['bot', 'x_dest', 'x_avg_pos', 'y_dest', 'y_avg_pos', 'pos_err', 'time']
 
 
-def measure_error(bots: list, num_samples=5, sample_period=10):
+def measure_error(bots: list, num_samples=2, sample_period=10):
     """
     Record data collection fields in Master class to csv file
 
@@ -144,6 +144,7 @@ def plot_result(starts, xpoints, ypoints):
     plt.axis([0, 6, 0, 6])
     plt.xlabel("East-West Axis of Robot Workspace (m)")
     plt.ylabel("North-South Axis of Robot Workspace (m)")
-    plt.title(f"Waterfall run on {current_dir}")
+    plt.title(f"Planned paths")
+    plt.grid()
     plt.savefig(path + 'Planned Paths' + ".png")
     # plt.show()
