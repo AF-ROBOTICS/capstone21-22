@@ -11,6 +11,7 @@
 # |
 # | FILENAME      : error_checking.py
 # | AUTHOR(S)     : C1C Anthony Tolbert
+# | CONTACT       : (559) 326-4289, ajtolbert63@yahoo.com
 # | CREATED       : 11 Jan 2022
 # | Last Update   : 18 Apr 2022
 """

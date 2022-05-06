@@ -11,6 +11,7 @@
 # |
 # | FILENAME      : usafalog.py
 # | AUTHOR(S)     : C1C Anthony Tolbert
+# | CONTACT       : (559) 326-4289, ajtolbert63@yahoo.com
 # | CREATED       : 11 Jan 2022
 # | Last Update   : 06 Apr 2022
 """

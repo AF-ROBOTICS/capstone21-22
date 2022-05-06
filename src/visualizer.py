@@ -11,6 +11,7 @@
 # |
 # | FILENAME      : visualizer.py
 # | AUTHOR(S)     : C1C Anthony Tolbert
+# | CONTACT       : (559) 326-4289, ajtolbert63@yahoo.com
 # | CREATED       : 22 Feb 2022
 # | Last Update   : 14 Apr 2022
 """

@@ -1,3 +1,4 @@
+"""Used to compile the error data of a series of runs into one Point Comparison Plot"""
 import visualizer
 
 e = 0

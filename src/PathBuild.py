@@ -11,6 +11,7 @@
 # |
 # | FILENAME      : PathBuild.py
 # | AUTHOR(S)     : C1C Anthony Tolbert
+# | CONTACT       : (559) 326-4289, ajtolbert63@yahoo.com
 # | CREATED       : 5 Feb 2022
 # | Last Update   : 12 Apr 2022
 """
