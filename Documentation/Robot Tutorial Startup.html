@@ -14565,13 +14565,13 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Robotics-Teaming-Capstone-Tutorial">Robotics Teaming Capstone Tutorial<a class="anchor-link" href="#Robotics-Teaming-Capstone-Tutorial">&#182;</a></h1><h3 id="ECE-495">ECE 495<a class="anchor-link" href="#ECE-495">&#182;</a></h3><h4 id="C1C-Matthew-U.-DeMaso">C1C Matthew U. DeMaso<a class="anchor-link" href="#C1C-Matthew-U.-DeMaso">&#182;</a></h4><h3 id="Powering-up-NUC">Powering up NUC<a class="anchor-link" href="#Powering-up-NUC">&#182;</a></h3><ol>
+<h1 id="Robotics-Teaming-Capstone-Tutorial">Robotics Teaming Capstone Tutorial<a class="anchor-link" href="#Robotics-Teaming-Capstone-Tutorial">&#182;</a></h1><h3 id="DFEC">DFEC<a class="anchor-link" href="#DFEC">&#182;</a></h3><h4 id="C1C-Matthew-U.-DeMaso">C1C Matthew U. DeMaso<a class="anchor-link" href="#C1C-Matthew-U.-DeMaso">&#182;</a></h4><h3 id="Powering-up-NUC">Powering up NUC<a class="anchor-link" href="#Powering-up-NUC">&#182;</a></h3><ol>
 <li><p>Turn on NUC Computer (square power button on front right side of device).
 <br /></p>
 </li>
 <li><p>Log onto NUC</p>
 <ul>
-<li>USERNAME: Robotics***</li>
+<li>USERNAME: DFEC</li>
 <li>PASSWORD: dfec3141
 <br />
 <br /></li>
@@ -14585,89 +14585,94 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
  <img src="./Images/roscore2.png"></p>
 </li>
 </ol>
+
+</div>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Powering-On-Robots">Powering On Robots<a class="anchor-link" href="#Powering-On-Robots">&#182;</a></h3><ol>
-<li>Inspect robot condition. Wheels fully seated on axles, motors fully depressed into housing, wires out of the way of wheel wells. Check battery charge on 10,000 MAh battery pack (above 30%). Check charge of AA-Batteries underneath Chassis (Must be changed weekly).</li>
-</ol>
-<ol>
-<li>Ensure all robots have the proper pin connections (Red, Brown, Yellow, Orange to pins 4, 6, 8, 10 respectively).
- <img src="./Images/IO_Bus.jpg"></li>
-</ol>
-<ol>
+<li><p>Inspect robot condition. Wheels fully seated on axles, motors fully depressed into housing, wires out of the way of wheel wells. Check battery charge on 10,000 MAh battery pack (above 40%). Check charge of AA-Batteries underneath Chassis (Must be changed weekly).</p>
+</li>
+<li><p>Ensure all robots have the proper pin connections (Red, Brown, Yellow, Orange to pins 4, 6, 8, 10 respectively).
+ <img src="./Images/IO_Bus.jpg"></p>
+</li>
 <li><p>Plug wire into USB-A port J12 into Micro-USB of TI-RSLK Microcontroller.</p>
 <p><img src="./Images/MicroController_Data.jpg"></p>
 </li>
-</ol>
-<ol>
-<li>Ensure all robots are oriented to the <strong>west wall</strong> to properly calibrate IMU's.
+<li><p>Ensure all robots are oriented to the <strong>west wall</strong> to properly calibrate IMU's.
  <img src="./Images/ww.jpg">
- <img src="./Images/ww2.jpg"></li>
-</ol>
-<ol>
-<li>Turn all robots on first by plugging USB-A end of wire into "out" of battery back located on the USAFAbot and plugging the micro-usb end of wire into "power" (J1 PWN IN) of Raspberry pi. Check for blinking green ACT LED on pi.
+ <img src="./Images/ww2.jpg"></p>
+</li>
+<li><p>If the battery is not already connected: Connect the USB-A end of wire into one of the two USB-A ports of battery pack and  plug the micro-usb end of wire into "power" (J1 PWN IN) of Raspberry pi. Once the battery is connected a single click of its power button will turn the battery on and a double click will turn the battery pack off. Check for blinking green ACT LED on pi to determine the state of the battery.
  <img src="./Images/Pi_Power.jpg">
- <img src="./Images/Pi_Power2.jpg"></li>
-</ol>
-<ol>
-<li>Press button on bottom left side of TI-RSLK board. The OLED display should illuminate and a green indicator light should be seen on the board when viewed from the top of the robot. INSERT PICTURES
- <img src="./Images/TI_GR.jpg"></li>
-</ol>
-<h3 id="Ensuring-Robot-Connectivity">Ensuring Robot Connectivity<a class="anchor-link" href="#Ensuring-Robot-Connectivity">&#182;</a></h3><ol>
-<li><strong>DO NOT STOP ROSCORE</strong></li>
-</ol>
-<ol>
-<li>Open New Terminal <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>t</kbd></li>
-</ol>
-<ol>
-<li>Run rostopic list. 
- <img src="./Images/rostopic_list2.png"></li>
-</ol>
-<ol>
-<li>Ensure that one instance of <em>/rosout, /rosout_agg, /tf, and tf_static/</em> are running. Then, each robot (usafabot0-24) should have <em>/usafabot**/cmd_vel, </em>/curr_pos, <em>/dest_pos, </em>/joint_states, <em>/odom/</em>, and <em>/wheel_speeds</em>. It may take up to 2 minutes for all the robots to appear on the list.
- <img src="./Images/rostopic_list.png"></li>
-</ol>
-<ol>
-<li>If a robot is missing, repeat steps 4-6. Ensure that the robot is fully powered off before plugging in pi and turning on TI-RSLK board again.</li>
-</ol>
-<ol>
-<li>Run rosnode list.
- <img src="./Images/rosnode_list2.png"></li>
-</ol>
-<ol>
-<li>Ensure <em>/rosout</em> is running. Each robot (usafabot0-24) after running rosnode list has the following nodes, <em>usafabot**/bot_to_map, </em>/controller, <em>/roadrunner, </em>/robot_state_publisher, <em>/serial</em>.
- <img src="./Images/rosnode_list.png"></li>
-</ol>
-<ol>
-<li>If a robot is missing, repeat steps 4-6. Ensure that the robot is fully powered off before plugging in pi and turning on TI-RSLK board again.</li>
-</ol>
-<h3 id="Running-the-Program">Running the Program<a class="anchor-link" href="#Running-the-Program">&#182;</a></h3><ol>
-<li>Close all <strong>BUT ROSCORE TERMINAL</strong>.</li>
-</ol>
-<ol>
-<li>Open New Terminal <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>t</kbd></li>
-</ol>
-<ol>
-<li>Run Desired program. The current working program is MasterBeyer.py in the capstone21-22 folder.
- <img src="./Images/rosrun_MB.png"></li>
+ <img src="./Images/Pi_Power2.jpg"></p>
+</li>
+<li><p>Press button on bottom left side of TI-RSLK board. The LCD display should illuminate and a green indicator light should be seen on the board when viewed from the top of the robot.
+ <img src="./Images/TI_GR.jpg"></p>
+</li>
 </ol>
 
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div>
 <div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Ensuring-Robot-Connectivity">Ensuring Robot Connectivity<a class="anchor-link" href="#Ensuring-Robot-Connectivity">&#182;</a></h3><ol>
+<li><p><strong>DO NOT STOP ROSCORE</strong></p>
+</li>
+<li><p>Open New Terminal <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>t</kbd></p>
+</li>
+<li><p>Run rostopic list. 
+ <img src="./Images/rostopic_list2.png"></p>
+</li>
+<li><p>Ensure that one instance of <em>/rosout, /rosout_agg, /tf, and tf_static/</em> are running. Then, each robot (usafabot0-24) should have <em>/usafabot**/cmd_vel, </em>/curr_pos, <em>/dest_pos, </em>/joint_states, <em>/odom/</em>, and <em>/wheel_speeds</em>. It may take up to 2 minutes for all the robots to appear on the list.
+ <img src="./Images/rostopic_list.png"></p>
+</li>
+<li><p>If a robot is missing, repeat steps 4-6. Ensure that the robot is fully powered off before powering the pi and turning on TI-RSLK board again. If a robot is still missing after restarting, ensure that the appropriate lanuch files and source files are correct compared to the other robots.</p>
+</li>
+<li><p>Run rosnode list.
+ <img src="./Images/rosnode_list2.png"></p>
+</li>
+<li><p>Ensure <em>/rosout</em> is running. Each robot (usafabot0-24) after running rosnode list has the following nodes, <em>usafabot**/bot_to_map, </em>/controller, <em>/roadrunner, </em>/robot_state_publisher, <em>/serial</em>.
+ <img src="./Images/rosnode_list.png"></p>
+</li>
+<li><p>If a robot is missing, repeat steps 4-6. Ensure that the robot is fully powered off before powering the pi and turning on TI-RSLK board again. If a robot is still missing after restarting, ensure that the appropriate lanuch files and source files are correct compared to the other robots.</p>
+</li>
+</ol>
 
-     </div>
 </div>
 </div>
 </div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Running-the-Program">Running the Program<a class="anchor-link" href="#Running-the-Program">&#182;</a></h3><ol>
+<li><p>Close all <strong>BUT ROSCORE TERMINAL</strong>.</p>
+</li>
+<li><p>Open New Terminal <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>t</kbd></p>
+</li>
+<li><p>Run Desired program. The current working program is waterfall.py in the capstone21-22 folder. <kbd>rosrun capstone21-22 waterfall.py</kbd></p>
+</li>
+<li><p>For subsequent runs you <strong>must restart ROSCORE</strong> and all of the robots between each run. A bug has been identified where the rostopics add significant latency to the program after running for any longer than about 10 minutes.</p>
+</li>
+<li><p><em>Currently only implemented for waterfall</em>: During the run, a new folder will be created containing logging and measurement data. This data can be interpreted and visualized by running the visualizer.py script.</p>
+<ol>
+<li><p>From the terminal, open the capstone21-22/src folder <kbd>roscd capstone21-22/src</kbd></p>
+</li>
+<li><p>Run the visualizer script <kbd>python3 visualizer.py</kbd></p>
+</li>
+<li><p>The script will open a dialog box to select a folder. Select the desired folder by double clicking it. You can be sure of proper selection when the only folder visable is the 'BreadCrumbs' folder</p>
+</li>
+<li>The script will then update the folder to include plots showing the error in position and breadcrumb trails.</li>
+</ol>
+</li>
+</ol>
 
+</div>
+</div>
 </div>
 </body>
 

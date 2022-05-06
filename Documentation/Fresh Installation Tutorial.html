@@ -14565,13 +14565,13 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Robotics-Teaming-Installation-Tutorial">Robotics Teaming Installation Tutorial<a class="anchor-link" href="#Robotics-Teaming-Installation-Tutorial">&#182;</a></h1><h3 id="ECE-495">ECE 495<a class="anchor-link" href="#ECE-495">&#182;</a></h3><h4 id="C1C-Matthew-U.-DeMaso,-C1C-Anthony-J.-Tolbert">C1C Matthew U. DeMaso, C1C Anthony J. Tolbert<a class="anchor-link" href="#C1C-Matthew-U.-DeMaso,-C1C-Anthony-J.-Tolbert">&#182;</a></h4><h3 id="Setting-Up-The-NUC">Setting Up The NUC<a class="anchor-link" href="#Setting-Up-The-NUC">&#182;</a></h3><ol>
+<h1 id="Robotics-Teaming-Installation-Tutorial">Robotics Teaming Installation Tutorial<a class="anchor-link" href="#Robotics-Teaming-Installation-Tutorial">&#182;</a></h1><h3 id="DFEC">DFEC<a class="anchor-link" href="#DFEC">&#182;</a></h3><h4 id="C1C-Matthew-U.-DeMaso,-C1C-Anthony-J.-Tolbert">C1C Matthew U. DeMaso, C1C Anthony J. Tolbert<a class="anchor-link" href="#C1C-Matthew-U.-DeMaso,-C1C-Anthony-J.-Tolbert">&#182;</a></h4><h3 id="Setting-Up-The-NUC">Setting Up The NUC<a class="anchor-link" href="#Setting-Up-The-NUC">&#182;</a></h3><ol>
 <li><p>The NUC comes with Ubuntu 20.04 and ROS already, so you will not need to worry about installing any of those packages.
 <br/></p>
 </li>
 <li><p>Login:</p>
 
-<pre><code> Username: robotics***
+<pre><code> Username: DFEC
  Password: dfec3141
 </code></pre>
 <p><br/></p>
@@ -14660,12 +14660,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Downloading-Files-and-Synching-Device-with-GitHub">Downloading Files and Synching Device with GitHub<a class="anchor-link" href="#Downloading-Files-and-Synching-Device-with-GitHub">&#182;</a></h2><ol>
-<li>Ensure you have a working <a href="https://github.com">GitHub</a> account.</li>
-</ol>
-<ol>
-<li>Open a new Terminal on the NUC <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>t</kbd></li>
-</ol>
-<ol>
+<li><p>Ensure you have a working <a href="https://github.com">GitHub</a> account.</p>
+</li>
+<li><p>Open a new Terminal on the NUC <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>t</kbd></p>
+</li>
 <li><p>Generate a New SSH Key substituting your e-mail adress instead of <strong><em>mudemaso@gmail.com</em></strong></p>
 <p><img src="./Images/SSH_Keygen.png"></p>
 </li>
@@ -14689,11 +14687,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </li>
 <li><p>Expand the Window to see the whole contents of the file (ends in your email). Copy The contents of the file. You must use right mouse, copy. <kbd>Ctrl</kbd>+<kbd>v</kbd><strong>DOES NOT WORK</strong></p>
 </li>
-</ol>
-<ol>
-<li>Open a web browser and sign into your GitHub Account.</li>
-</ol>
-<ol>
+<li><p>Open a web browser and sign into your GitHub Account.</p>
+</li>
 <li><p>In the top right-hand of the window, select the dropdown menu from your account picture and click on settings.</p>
 <p><img src="./Images/GitHub_Settings.png"></p>
 </li>
@@ -14705,8 +14700,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </li>
 <li><p>In the "Title" Field, put a descriptive title.</p>
 </li>
-</ol>
-<ol>
 <li><p>In the "Key" Field, paste the copied key from Step 10 into this field. When Finished, press "Add SSH Key".</p>
 <p><img src="./Images/GitHub_Settings4.png"></p>
 </li>
@@ -14719,8 +14712,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </li>
 <li><p>Open a new Terminal on the NUC <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>t</kbd></p>
 </li>
-</ol>
-<ol>
 <li><p>Navigate to the <em>robotics_ws-&gt;src</em> directory.</p>
 <p><img src="./Images/NavPath.png"></p>
 </li>
@@ -14729,9 +14720,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </li>
 <li><p>Upon Completion the Repo is copied and you are now able to use all typical git commands from the terminal with the Repo!</p>
 </li>
-</ol>
-<ol>
-<li>Attain usafabot directory and gazebo directory from Dr. Baek / Mr. Beyer for simulations and working on real robot. Put them in your <em>robotics_ws-&gt;src directory</em>.</li>
+<li><p>Attain usafabot directory and gazebo directory from Dr. Baek / Mr. Beyer for simulations and working on real robot. Put them in your <em>robotics_ws-&gt;src directory</em>.</p>
+</li>
 </ol>
 
 </div>
@@ -14796,16 +14786,13 @@ catkin_make
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Installing-Jupyter-Notebook-For-Documentation-(Personal-Computer-/-Cadet-Laptop)-TODO:-Should-probably-change-instructions-from-Teams-to-GIT">Installing Jupyter-Notebook For Documentation (Personal Computer / Cadet Laptop) TODO: Should probably change instructions from Teams to GIT<a class="anchor-link" href="#Installing-Jupyter-Notebook-For-Documentation-(Personal-Computer-/-Cadet-Laptop)-TODO:-Should-probably-change-instructions-from-Teams-to-GIT">&#182;</a></h3><ol>
-<li>Download Py-Charm edu from their <a href="https://www.jetbrains.com/edu-products/download/#section=pycharm-edu">Educational Website</a></li>
-</ol>
-<ol>
-<li>Download Windows Terminal from the <a href="https://www.microsoft.com/en-US/p/windows-terminal/9n0dx20hk701?activetab=pivot:overviewtab">Microsoft Store</a></li>
-</ol>
-<ol>
-<li>Open Windows Terminal on your computer.</li>
-</ol>
-<ol>
+<h3 id="Installing-Jupyter-Notebook-For-Documentation-(Personal-Computer-/-Cadet-Laptop)">Installing Jupyter-Notebook For Documentation (Personal Computer / Cadet Laptop)<a class="anchor-link" href="#Installing-Jupyter-Notebook-For-Documentation-(Personal-Computer-/-Cadet-Laptop)">&#182;</a></h3><ol>
+<li><p>Download Py-Charm edu from their <a href="https://www.jetbrains.com/edu-products/download/#section=pycharm-edu">Educational Website</a></p>
+</li>
+<li><p>Download Windows Terminal from the <a href="https://www.microsoft.com/en-US/p/windows-terminal/9n0dx20hk701?activetab=pivot:overviewtab">Microsoft Store</a></p>
+</li>
+<li><p>Open Windows Terminal on your computer.</p>
+</li>
 <li><p>Check what version of python you have installed. It should be <strong>3.8</strong>. exit() python when finished.</p>
 <p><img src="./Images/py_check.png"></p>
 </li>
@@ -14814,11 +14801,8 @@ catkin_make
 </li>
 <li><p>When installing, you will see yellow text with an error saying a path is not current. i.e. C:\Users\CadetName...</p>
 </li>
-</ol>
-<ol>
-<li>Copy the path that was not active and in your computer settings go <em>System-&gt;About-&gt;Advanced System Settings</em>.</li>
-</ol>
-<ol>
+<li><p>Copy the path that was not active and in your computer settings go <em>System-&gt;About-&gt;Advanced System Settings</em>.</p>
+</li>
 <li><p>Go to Environment Variables.</p>
 <p><img src="./Images/envvar.PNG"></p>
 </li>
@@ -14830,37 +14814,43 @@ catkin_make
 </li>
 <li><p>Repeat steps 9-10 for <em>path</em> within the <em>system variables</em>.</p>
 </li>
-</ol>
-<ol>
-<li>Click <em>Okay</em> and exit out of all settings.</li>
-</ol>
-<ol>
-<li>Close Windows Terminal.</li>
-</ol>
-<ol>
-<li>Go to the <em>Capstone Team's Page-&gt;Files</em>.</li>
-</ol>
-<ol>
-<li><p>Hit Sync and proceed with instructions.</p>
-<p><img src="./Images/sync.png"></p>
+<li><p>Click <em>Okay</em> and exit out of all settings.</p>
 </li>
-<li><p>After files have synched, navigate to the <em>Capstone_Documentation</em> in your local file browser. There should be a little office building for the folder.</p>
+<li><p>Close Windows Terminal.</p>
 </li>
-<li><p>Right Click in the folder and click <em>Open in Windows Terminal</em>
-<br/></p>
+<li><p>Clone the Capstone Repository to the machine.</p>
+</li>
+<li><p>After files have synched, navigate to the <em>Documentation</em> folder in your local file browser.</p>
+</li>
+<li><p>Right Click in the folder and click <em>Open in Windows Terminal</em></p>
 </li>
 <li><p>In windows termial, type <em>jupyter-notebook</em></p>
 <p><img src="./Images/notebook1.png"></p>
 </li>
 <li><p>Jupyter-Notebook will open in your prefered browser. You can now access all documentation notebooks and edit with jupyter-notebook.</p>
 </li>
-</ol>
-<ol>
-<li>For a tutorial on how to use it, look at <a href="https://www.dataquest.io/blog/jupyter-notebook-tutorial/">this helpful website</a>.</li>
+<li><p>For a tutorial on how to use it, look at <a href="https://www.dataquest.io/blog/jupyter-notebook-tutorial/">this helpful website</a>.</p>
+</li>
 </ol>
 
 </div>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
 </div>
 </body>
 

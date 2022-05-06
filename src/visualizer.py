@@ -164,7 +164,7 @@ def read_error_file(csv_name):
                     y_dest.append(float(row[3]))
                     y_pos.append(float(row[4]))
                     error.append(float(row[5]))
-                    if float(row[6]) < 144000:
+                    if float(row[6]) < 1800:
                         time.append(float(row[6]))
                     else:
                         print(f"WARNING: {row[0]} time rejected for being too high ({row[6]})")
